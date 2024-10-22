@@ -24,7 +24,24 @@ if (isset($columnSortOrder)) {
 
 $searchQuery = "";
 if(isset($_SESSION['allChildId'])) {
-    $searchQuery .= "AND user_id IN (".implode(',',$_SESSION['allChildId']).")";
+    $searchQuery .= "AND daily_reporting.user_id IN (".implode(',',$_SESSION['allChildId']).")";
+}
+
+if(isset($_POST['selected_user']) && !empty($_POST['selected_user'])) {
+    $searchQuery .= "AND daily_reporting.user_id = '".$_POST['selected_user']."'";
+}
+
+if(!empty($_POST['selected_start_date']) && !empty($_POST['selected_end_date'])) {
+    $start_date = date_format(date_create($_POST['selected_start_date']),'Y-m-d');
+    $end_date = date_format(date_create($_POST['selected_end_date']),'Y-m-d');
+    $searchQuery .= "AND daily_reporting.date BETWEEN '$start_date' AND '$end_date'";
+} elseif (!empty($_POST['selected_start_date']) && empty($_POST['selected_end_date'])) {
+    $start_date = date_format(date_create($_POST['selected_start_date']),'Y-m-d');
+    $end_date = date("Y-m-d");
+    $searchQuery .= "AND daily_reporting.date BETWEEN '$start_date' AND '$end_date'";
+} elseif (empty($_POST['selected_start_date']) && !empty($_POST['selected_end_date'])) {
+    $end_date = date_format(date_create($_POST['selected_end_date']),'Y-m-d');
+    $searchQuery .= "AND daily_reporting.date  <= '$end_date'";
 }
 
 $delete_query = "";

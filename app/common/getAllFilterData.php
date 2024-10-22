@@ -83,4 +83,84 @@ function getDesignation() {
     return $option;
 }
 
+/**
+ * On Super Admin Login 
+ * -- Get all the user list for those projection are generated
+ * On Admin login
+ * -- Get all the user list for those projection are genrated and belong to there organization
+ * On User login
+ * -- Get user list for those projection are genrated and came under him.
+ */
+
+function getProjectionUser() {
+    global $conn;
+    $searchQuery = '';
+    if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
+        $searchQuery .= "AND users.Organization_id = '".$_SESSION['Organization_id']."'";
+    }
+    if(isset($_SESSION['allChildId'])) {
+        $searchQuery .= "AND users.ID IN (".implode(',',$_SESSION['allChildId']).")";
+    }
+    $option = '<option value="">Select User</option>';
+    $delete_query = "users.Deleted_At IS NULL";
+    $users = $conn->query("SELECT DISTINCT users.Name as `name`,users.ID as `id` FROM users JOIN Projection ON users.ID = Projection.user_id WHERE $delete_query $searchQuery");
+    while ($row = mysqli_fetch_assoc($users)) {
+        $option .= '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
+    }
+    return $option;
+}
+
+/**
+ * On Super Admin Login 
+ * -- Get all the projection type list for those projection are generated
+ * On Admin login
+ * -- Get all the projection type list for those projection are genrated and belong to there organization
+ * On User login
+ * -- Get projection type list for those projection are genrated and belong to there department , vertical and organization.
+ */
+function getProjectionType() {
+    global $conn;
+    $searchQuery = '';
+    if($_SESSION['role'] == '3') {
+        $searchQuery .= "AND Projection_type.organization_id = '".$_SESSION['Organization_id']."'";
+    }
+    if($_SESSION['role'] == '2') {
+        $searchQuery .= "AND Projection_type.organization_id = '".$_SESSION['Organization_id']."' AND Projection_type.branch_id = '".$_SESSION['Branch_id']."' AND Projection_type.vertical_id = '".$_SESSION['Vertical_id']."' AND Projection_type.department_id = '".$_SESSION['Department_id']."'";
+    }
+    $delete_query = "Projection_type.Deleted_At IS NULL";
+    $option = '<option value="">Select Projection Type</option>';
+    $projection_type = $conn->query("SELECT DISTINCT Projection_type.Name as `name`, Department.department_name as `department`, Projection_type.ID as `id` FROM Projection_type JOIN Projection ON Projection_type.ID = Projection.projectionType LEFT JOIN Department ON Department.id = Projection_type.department_id WHERE $delete_query $searchQuery");
+    while ($row = mysqli_fetch_assoc($projection_type)) {
+        $option .= '<option value = "'.$row['id'].'">'.$row['name']."(".$row['department'].")".'</option>';
+    }
+    return $option;
+}
+
+/**
+ * On Super Admin Login 
+ * -- Get all the user list for those daily report are generated
+ * On Admin login
+ * -- Get all the user list for those daily report are genrated and belong to there organization
+ * On User login
+ * -- Get user list for those daily report are genrated and came under him.
+ */
+
+function getDailyReportUser() {
+    global $conn;
+    $searchQuery = '';
+    if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
+        $searchQuery .= "AND users.Organization_id = '".$_SESSION['Organization_id']."'";
+    }
+    if(isset($_SESSION['allChildId'])) {
+        $searchQuery .= "AND users.ID IN (".implode(',',$_SESSION['allChildId']).")";
+    }
+    $option = '<option value="">Select User</option>';
+    $delete_query = "users.Deleted_At IS NULL";
+    $dailyreport_user = $conn->query("SELECT DISTINCT users.Name as `name`,users.ID as `id` FROM users JOIN daily_reporting ON users.ID = daily_reporting.user_id WHERE $delete_query $searchQuery");
+    while ($row = mysqli_fetch_assoc($dailyreport_user)) {
+        $option .= '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
+    }
+    return $option;
+
+}
 ?>

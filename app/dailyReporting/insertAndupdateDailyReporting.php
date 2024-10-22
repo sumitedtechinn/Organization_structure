@@ -276,6 +276,7 @@ $("#form-dailyReporting").on('submit',function(e){
                         });
                     }
                     $('.modal').modal('hide');
+                    getFilterData();
                     $('#dailyReportTable').DataTable().ajax.reload(null, false);
                 } else {
                     if (data.type == 'error') {
@@ -291,6 +292,7 @@ $("#form-dailyReporting").on('submit',function(e){
                             icon: data.type,
                         });
                         $('.modal').modal('hide');
+                        getFilterData();
                         $('#dailyReportTable').DataTable().ajax.reload(null, false);
                     }
                 }

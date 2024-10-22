@@ -184,6 +184,7 @@ $("#form-projection").on('submit',function(e){
                 if (data.status == 200) {
                     $('.modal').modal('hide');
                     toastr.success(data.message);
+                    getFilterData();
                     $('#projectionTable').DataTable().ajax.reload(null, false);
                 } else {
                     if(data.message == 'Duplicate') {

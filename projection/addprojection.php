@@ -26,39 +26,13 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-between gap-2 mt-3" >
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="filterRecord()">
-                        <option value="">Select Branch</option>
-                        <?php $branch = $conn->query("SELECT DISTINCT Branch.Branch_name as `name` , Branch.ID as `ID` FROM Branch JOIN Projection ON Branch.ID = Projection.Branch_id");
-                            while ($row = mysqli_fetch_assoc($branch)) {
-                                echo '<option value = "'.$row['ID'].'">'.$row['name'].'</option>';
-                            }
-                        ?>
+            <div class="d-flex align-items-center justify-content-between gap-2 mt-3" style="padding-right: 1%;" >
+                <div class="col-sm-4" style="z-index: 0 !important;">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="projectionUser_filter" id="projectionUser_filter" onchange="filterRecord(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="filterRecord()">
-                        <option value="">Select Vertical</option>
-                        <?php $vertical = $conn->query("SELECT DISTINCT Vertical.Vertical_name as `name`,Vertical.ID as `id` FROM Vertical JOIN Projection ON Vertical.ID = Projection.Vertical_id");
-                            while ($row = mysqli_fetch_assoc($vertical)) {
-                                echo '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="user_filter" id="user_filter" onchange="filterRecord()">
-                        <option value="">Select Users</option>
-                        <?php $users = $conn->query("SELECT DISTINCT users.Name as `name`,users.ID as `id` FROM users JOIN Projection ON users.ID = Projection.User_id");
-                            while ($row = mysqli_fetch_assoc($users)) {
-                                echo '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control month_container form-control-sm single-select select2" name="select_month" id="select_month" onchange="filterRecord()">
+                <div class="col-sm-4" style="z-index: 0 !important;">
+                    <select type="text" class="form-control month_container form-control-sm single-select select2" name="select_month" id="select_month" onchange="filterRecord(this.id)">
                         <option value=""> Select Month</option>
                         <option value="1" > January</option>
                         <option value="2" > February</option>
@@ -75,14 +49,8 @@
                         <option value="13">All Month</option>   
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="projection_type_filter" id="projection_type_filter" onchange="filterRecord()">
-                        <option value="">Select Projection Type</option>
-                        <?php $projection_type = $conn->query("SELECT DISTINCT Projection_type.Name as `name`,Projection_type.ID as `id` FROM Projection_type JOIN Projection ON Projection_type.ID = Projection.projectionType");
-                            while ($row = mysqli_fetch_assoc($projection_type)) {
-                                echo '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
-                            }
-                        ?>
+                <div class="col-sm-4" style="z-index: 0 !important;">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="projectionType_filter" id="projectionType_filter" onchange="filterRecord(this.id)">
                     </select>
                 </div>
             </div>
@@ -123,10 +91,8 @@ $('#projectionTable').DataTable({
         'type': 'POST',
         'data' : function (d) {
             d.selected_month = $('#select_month').val(); 
-            d.selected_branch = $("#branch_filter").val();
-            d.selected_vertical = $("#vertical_filter").val();
-            d.selected_user = $("#user_filter").val();
-            d.selected_projection_type = $("#projection_type_filter").val();
+            d.selected_user = $("#projectionUser_filter").val();
+            d.selected_projection_type = $("#projectionType_filter").val();
         }
     },
     'columns': [{
@@ -199,7 +165,27 @@ $('#projectionTable').DataTable({
     "aaSorting": []
 });
 
-function filterRecord() {
+$(document).ready(function(){
+    getFilterData();
+});
+
+function getFilterData() {
+    var filter_data_field = ['projectionType','projectionUser'];
+    $.ajax({
+        url : "/app/common/getAllFilterData", 
+        type : "post",
+        contentType: 'json',  // Set the content type to JSON 
+        data: JSON.stringify(filter_data_field), 
+        dataType: 'json', 
+        success : function(data) {
+            for (const key in data) {
+                $("#"+key+"_filter").html(data[key]);
+            }
+        }   
+    });
+}
+
+function filterRecord(id) {
     $('#projectionTable').DataTable().ajax.reload(null, false);
 }
 
@@ -265,14 +251,17 @@ function deleteProjectionDetails(id,table) {
                 success: function(data) {
                     if (data.status == 200) {
                     toastr.success(data.message);
+                    getFilterData();
                     $('#projectionTable').DataTable().ajax.reload();
                     } else {
+                    getFilterData();
                     toastr.error(data.message);
                     $('#projectionTable').DataTable().ajax.reload();
                     }
                 }
             });
         } else {
+            getFilterData();
             $('#projectionTable').DataTable().ajax.reload();
         }
     });  

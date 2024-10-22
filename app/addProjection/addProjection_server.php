@@ -37,14 +37,6 @@ if (isset($_POST['selected_month']) && !empty($_POST['selected_month'])) {
     $searchQuery .= " AND Projection.month = MONTH(CURRENT_TIMESTAMP)";
 }
 
-if (isset($_POST['selected_branch']) && !empty($_POST['selected_branch'])) {
-    $searchQuery .= " AND Projection.branch_id = '".$_POST['selected_branch']."'";
-}
-
-if (isset($_POST['selected_vertical']) && !empty($_POST['selected_vertical'])) {
-    $searchQuery .= " AND Projection.vertical_id = '".$_POST['selected_vertical']."'";
-}
-
 if (isset($_POST['selected_user']) && !empty($_POST['selected_user'])) {
     $searchQuery .= " AND Projection.user_id = '".$_POST['selected_user']."'";
 }
