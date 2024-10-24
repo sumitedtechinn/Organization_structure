@@ -116,7 +116,7 @@ if (isset($_REQUEST['id'])) {
                 <div class="col-sm-6">
                     <label class="col-sm-12 col-form-label">Role</label>
                     <div class="col-sm-12">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="role" id="role"></select>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="role" id="role" onchange="checkUserOrganizationInfo(this.value)"></select>
                     </div>
                 </div>     
             </div>
@@ -250,6 +250,33 @@ $(function(){
     }
     });
 })
+
+function checkUserOrganizationInfo(role_id) {
+    <?php if(!empty($user_details)) { ?>
+    var id = '<?=$_REQUEST['id']?>';
+    $.ajax({
+        url : "/app/common/checkAssignDetails",  
+        type: 'post',
+        data: {
+            role_id,
+            id,
+            'search' : 'user_role'
+        },
+        dataType: 'json',
+        success : function(data) {
+            if( data.status == 400) {
+                Swal.fire({
+                    text: data.text,
+                    title : data.title,
+                    icon: 'warning',
+                });
+                $("#role").val(data.previous);
+                $("#role").trigger('change');    
+            }
+        }
+    });
+    <?php } ?>
+}
 
 $('#hide-modal').click(function() {
     $('.modal').modal('hide');

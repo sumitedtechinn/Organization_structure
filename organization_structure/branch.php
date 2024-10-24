@@ -28,7 +28,7 @@ $node_color = mysqli_fetch_column($node_color);
                     </div>
                     <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Branch</button>
                     <?php } ?>
-                    <?php if( in_array('Branch Create',$_SESSION['permission'])) { ?>
+                    <?php if(in_array('Branch Create',$_SESSION['permission'])) { ?>
                     <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add"  onclick="addBranches()" data-bs-toggle="tooltip">
                     <i class="bi bi-plus-circle-fill" id="add_branch"></i>
                     </div>
@@ -173,10 +173,24 @@ var branchTrashSettings = {
             data: "Branch" ,
             render : function(data,type,row) {
                 var name = row.Branch_name;
-                var branch_head = row.Branch_head;
                 var country_code = row.Country_code;
                 var contact = row.Contact;
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "text-wrap mb-1" style = "min-width:150px!important;" ><b>Branch Head : </b>'+branch_head+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p></div>';
+                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p></div>';
+            }
+        },{
+            data: "Branch_head", 
+            render : function(data,type,row) {
+                if(Array.isArray(data)) {
+                    var head = '';
+                    for (const key in data) {
+                        for(const keys in data[key]['user_name']) {
+                            head += '<p class = "mb-1"><b>'+data[key]['user_name'][keys]+' : </b> '+data[key]['designation']+'</p>';
+                        }
+                    }
+                    return '<div>'+head+'</div>';
+                } else {
+                    return '<div><b>'+data+'</b></div>';    
+                }
             }
         },{
             data: "organization_name" , 
@@ -226,11 +240,10 @@ $("#trash_button").on('click',function(){
 
 
 $("#return_button").on('click',function(){
-    $('#branchTable').dataTable(branchSettings);
+    $("#branchTable").dataTable(branchSettings);
     $("#return_button").css('display','none');
     $("#trash_button").css('display','block');
 });
-
 
 $("#organization_filter").on('change',function(){
     $('#branchTable').dataTable(branchSettings);

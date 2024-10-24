@@ -130,9 +130,9 @@
                             centers += '<br>';
                         }
                     }
-                    return '<div style="width:250px !important">' + centers + '</div>';
+                    return '<div>' + centers + '</div>';
                 } else {
-                    return '<div style="width:250px !important">' + data + '</div>';
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {
@@ -152,9 +152,9 @@
                             centers += '<br>';
                         }
                     }
-                    return '<div style="width:250px !important">' + centers + '</div>';
+                    return '<div>' + centers + '</div>';
                 } else {
-                    return '<div style="width:250px !important">' + data + '</div>';
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {
@@ -174,9 +174,9 @@
                             centers += '<br>';
                         }
                     }
-                    return '<div style="width:250px !important">' + centers + '</div>';
+                    return '<div>' + centers + '</div>';
                 } else {
-                    return '<div style="width:250px !important">' + data + '</div>';
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {
@@ -232,7 +232,8 @@
         }, {
             data: "user_name",
             render: function(data, type, row) {
-                return '<div class = "text-wrap" style = "width:150px;">' + data + '</div>';
+                var user = (row.user_delete == 'No') ? '<div class = "text-wrap" style = "width:150px;">' + data + '</div>' : '<div class = "text-wrap text-danger" style = "width:150px;">' + data + '</div>'
+                return user;
             }
         }, {
             data: "date",
@@ -247,16 +248,30 @@
                 return '<div><i class="bi bi-telephone"></i><b> ' + data + '</b></div>';
             }
         }, {
+            data: "numofmeeting",
+            render: function(data, type, row) {
+                return '<div><i class="bi bi-calendar-event"></i><b> ' + data + '</b></div>';
+            }
+        }, {
             data: "doc_prepare",
             render: function(data, type, row) {
                 if (Array.isArray(data)) {
                     let centers = '';
+                    let i = 0;
                     for (let key in data) {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key] + '</span>';
+                        i++;
+                        if (data[key]['center_delete'] == 'Yes') {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        } else {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        }
+                        if (i % 2 == 0) {
+                            centers += '<br>';
+                        }
                     }
                     return '<div>' + centers + '</div>';
                 } else {
-                    return data;
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {
@@ -264,12 +279,21 @@
             render: function(data, type, row) {
                 if (Array.isArray(data)) {
                     let centers = '';
+                    let i = 0;
                     for (let key in data) {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key] + '</span>';
+                        i++;
+                        if (data[key]['center_delete'] == 'Yes') {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        } else {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        }
+                        if (i % 2 == 0) {
+                            centers += '<br>';
+                        }
                     }
                     return '<div>' + centers + '</div>';
                 } else {
-                    return data;
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {
@@ -277,12 +301,21 @@
             render: function(data, type, row) {
                 if (Array.isArray(data)) {
                     let centers = '';
+                    let i = 0;
                     for (let key in data) {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key] + '</span>';
+                        i++;
+                        if (data[key]['center_delete'] == 'Yes') {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        } else {
+                            centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                        }
+                        if (i % 2 == 0) {
+                            centers += '<br>';
+                        }
                     }
                     return '<div>' + centers + '</div>';
                 } else {
-                    return data;
+                    return '<div>' + data + '</div>';
                 }
             }
         }, {

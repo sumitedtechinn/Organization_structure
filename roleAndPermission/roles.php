@@ -3,7 +3,11 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <?php
-$roles = $conn->query("SELECT * FROM roles WHERE Deleted_At IS NULL");
+$searchQuery = '';
+if($_SESSION['role'] == '3') {
+    $searchQuery .= "AND ID = '2'";
+}
+$roles = $conn->query("SELECT * FROM roles WHERE Deleted_At IS NULL $searchQuery");
 $roles_details = [];
 if ($roles->num_rows > 0 ) {
     $roles_details = mysqli_fetch_all($roles,MYSQLI_ASSOC);
@@ -51,12 +55,14 @@ if ($roles->num_rows > 0 ) {
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0" id = "table-heading">Roles Info</h5>
+                <?php if(in_array('Role Delete',$_SESSION['permission'])) { ?>
                 <div id="page-button">
                     <div class="theme-icons shadow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
                         <i class="bi bi-trash-fill"></i>
                     </div>
                     <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Role</button>
                 </div>
+                <?php } ?>
             </div>
             <div class="table-responsive mt-3">
                 <table class="table align-middle" id="roleTable">

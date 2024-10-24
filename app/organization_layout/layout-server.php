@@ -35,8 +35,13 @@ if($_SESSION['role'] == '2') {
         $organization_id = mysqli_real_escape_string($conn,$filter_record['organization_id']);
         generateOrganizationStructure();
     } else {
-        $organization = $conn->query("SELECT id FROM `organization` LIMIT 1");
-        $organization_id = mysqli_fetch_column($organization);
+        $organization_id = '';
+        if ($_SESSION['role'] == '3') {
+            $organization_id = mysqli_real_escape_string($conn,$_SESSION['Organization_id']);
+        } else {
+            $organization = $conn->query("SELECT id FROM `organization` LIMIT 1");
+            $organization_id = mysqli_fetch_column($organization);
+        }
         generateOrganizationStructure();
     }
 }
@@ -99,7 +104,6 @@ function getOrganizationData() : bool {
         $layout[] = array(
             "id" => "organization_". $organization_data['id'],
             "Name" => $organization_data['organization_name'] , 
-            "Organization_head" => $organization_data['organization_head'],
             "Designation" => "Organization" , 
             "Image" => $organization_data['logo'],
             "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
@@ -118,7 +122,7 @@ function getUserInsideOrganization() {
     global $layout;
     global $conn;
     global $organization_id;
-    $organization_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id IS NULL AND users.Organization_id = '$organization_id' AND users.Deleted_At IS NULL");
+    $organization_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id IS NULL AND users.Organization_id = '$organization_id' AND users.Assinged_Person_id IS NOT NULL AND users.Deleted_At IS NULL");
     if($organization_user->num_rows > 0 ) {
         while ($row = mysqli_fetch_assoc($organization_user)) {
             $date1 = new DateTime($row['DOJ']);
@@ -211,7 +215,7 @@ function getUserInsideBranch() {
     $branch_list = $conn->query("SELECT ID FROM Branch WHERE organization_id = '$organization_id' $searchQuery AND Deleted_At IS NULL");
     if($branch_list->num_rows > 0) {
         while ($branch = mysqli_fetch_assoc($branch_list)) {
-            $organization_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id = '".$branch['ID']."' AND users.Organization_id = '$organization_id'");
+            $organization_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id = '".$branch['ID']."' AND users.Assinged_Person_id IS NOT NULL AND users.Organization_id = '$organization_id'");
             if($organization_user->num_rows > 0 ) {
                 while ($row = mysqli_fetch_assoc($organization_user)) {
                     $date1 = new DateTime($row['DOJ']);

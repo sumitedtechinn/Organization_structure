@@ -19,7 +19,9 @@
                 <small class="mb-0 dropdown-user-designation">
                 <?php
                 if ($_SESSION['role'] == 1) {
-                  echo "Admin" ; 
+                  $guard_name = $conn->query("SELECT guard_name FROM `roles` WHERE ID = '".$_SESSION['role']."'");
+                  $guard_name = mysqli_fetch_column($guard_name);
+                  echo $guard_name;  
                 } else {
                   $designation_code = $conn->query("SELECT Designation.code as `designation_code` FROM `users` LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Designation_id = '".$_SESSION['Designation_id']."'");
                   $designation_code = mysqli_fetch_column($designation_code);

@@ -44,14 +44,14 @@ if (isset($_REQUEST['id'])) {
             <div class="row mb-2">
                 <label class="col-sm-4 col-form-label">Department</label>
                 <div class="col-sm-8">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="department" id="department" onchange="getBranchList(this.value)">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="department" id="department" onchange="checkDepartmetnforUpdate(this.value)">
                     </select>
                 </div>
             </div>
             <div class="row mb-2">
                 <label class="col-sm-4 col-form-label">Branch</label>
                 <div class="col-sm-8">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="branch" id="branch">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="branch" id="branch" onchange="checkBranchForUpdate(this.value)">
                     </select>
                 </div>
             </div>
@@ -137,6 +137,67 @@ function getBranchList(department_id) {
     });    
 }
 
+function checkBranchForUpdate(branch_id) {
+    <?php if(!empty($projection_type_details)) { ?>
+        var id = '<?=$_REQUEST['id']?>';
+        var search = 'Projection_type';
+        $.ajax({
+            url : "/app/common/checkAssignDetails",
+            type : "post", 
+            data : {
+            id,
+            search,
+            branch_id,
+            "type" : "update_branch"
+            },
+            dataType : "json",
+            success : function(data) {
+                if(data.status == 400) {
+                    Swal.fire({
+                        title : data.title,
+                        text : data.text,
+                        icon: 'error',
+                    });
+                    $("#branch").val(data.previous);
+                    $("#branch").trigger('change');
+                }   
+            }
+        });
+    <?php } ?>
+}
+
+function checkDepartmetnforUpdate(department_id) {
+    <?php if(!empty($projection_type_details)) { ?>
+        var id = '<?=$_REQUEST['id']?>';
+        var search = 'Projection_type';
+        $.ajax({
+            url : "/app/common/checkAssignDetails" ,
+            type : "post", 
+            data : {
+            id,
+            search,
+            department_id,
+            "type" : "update_department"
+            },
+            dataType : "json",
+            success : function(data) {
+                if(data.status == 400) {
+                    Swal.fire({
+                        title : data.title,
+                        text : data.text,
+                        icon: 'error',
+                    });
+                    $("#department").val(data.previous);
+                    $("#department").trigger('change');
+                } else if(data.status == 200) {
+                    getBranchList(department_id);            
+                }   
+            }
+        })
+    <?php } else { ?>
+        getBranchList(department_id);
+    <?php } ?>
+}
 
 $('#hide-modal').click(function() {
     $('.modal').modal('hide');

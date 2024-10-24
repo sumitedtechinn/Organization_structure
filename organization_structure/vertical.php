@@ -157,7 +157,7 @@ var verticalTrashSettings = {
                 return '<div class = "d-flex align-items-center gap-3 fs-6">'+image+name+'</div>';
             }
         },{
-            data: "Program" ,
+            data: "organization" ,
         },{
             data: "Branch_name" ,
         },{         

@@ -309,8 +309,12 @@ function updateDailyReport() {
             die;
         }
     }
-    $doc_updated_prepare_ids = json_encode(array_merge($update_doc_prepare,$doc_prepare_ids));
-
+    $doc_updated_prepare_ids = array_merge($update_doc_prepare,$doc_prepare_ids);
+    if(count($doc_updated_prepare_ids) > 0) {
+        $doc_updated_prepare_ids = json_encode($doc_updated_prepare_ids);
+    } else {
+        $doc_updated_prepare_ids = '';
+    }
     $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`doc_prepare`='$doc_updated_prepare_ids',`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
     if(empty($projectionTypeName)) {
         showResponse($updateDailyReport,'updated','success');

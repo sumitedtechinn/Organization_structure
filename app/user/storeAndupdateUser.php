@@ -37,7 +37,7 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['user_email']) && isset($_REQUES
                 $path_name = "/../../assets/images/sample_user.jpeg";
             }
         }
-        $update_query = $conn->query("UPDATE users SET Name= '$user_name' , Email= '$email' , Mobile = '$contact' , Country_code = '$country_code' , DOJ = '$doj',Password = '$password' , Address = '$address' , Country = '$country' , State = '$state' , City = '$city' , Photo = '$path_name' , Updated_On = CURRENT_TIMESTAMP WHERE ID = '".$_REQUEST['ID']."'");
+        $update_query = $conn->query("UPDATE users SET Name= '$user_name' , `role` = $role_id ,Email= '$email' , Mobile = '$contact' , Country_code = '$country_code' , DOJ = '$doj',Password = '$password' , Address = '$address' , Country = '$country' , State = '$state' , City = '$city' , Photo = '$path_name' , Updated_On = CURRENT_TIMESTAMP WHERE ID = '".$_REQUEST['ID']."'");
         showResponse($update_query,'Updated');
     } else {
         if (is_null($path_name)) {

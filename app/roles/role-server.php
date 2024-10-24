@@ -29,8 +29,11 @@ if (!empty($searchValue)) {
     $searchQuery = "AND (name LIKE '%$searchValue%' OR guard_name LIKE '%$searchValue%')"; 
 }
 
-$delete_query = '';
+if($_SESSION['role'] == '3' || $_SESSION['role'] == '2') {
+    $searchQuery .= "AND ID != '1'";
+}
 
+$delete_query = '';
 if (isset($_POST['roleType']) && $_POST['roleType'] == 'deleteRole' ) {
     $delete_query .= "Deleted_At IS NOT NULL";
 } else {
@@ -38,7 +41,7 @@ if (isset($_POST['roleType']) && $_POST['roleType'] == 'deleteRole' ) {
 }
 
 ## Total number of records without filtering
-$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM roles WHERE $delete_query");
+$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM roles WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($all_count);
 $totalRecords = $records['allcount'];
 

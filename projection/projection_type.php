@@ -122,7 +122,7 @@ var projectionTypeSettings = {
             edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails(' + row.ID + ')"><i class="bi bi-pencil-fill"></i></div>';
             <?php } ?>
             <?php if(in_array('Projection Type Delete',$_SESSION['permission'])) { ?>
-            del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "deleteDetails(' + row.ID + ',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+            del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails(' + row.ID + ',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
             <?php } ?>
             return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' + edit + del + '</div>';
         }

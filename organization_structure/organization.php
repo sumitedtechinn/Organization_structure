@@ -24,7 +24,7 @@ $node_color = mysqli_fetch_column($node_color);
                     <div class="theme-icons sha dow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
                         <i class="bi bi-trash-fill"></i>
                     </div>
-                    <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Role</button>
+                    <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Organization</button>
                     <?php } ?>
                     <?php if( in_array('Organization Create',$_SESSION['permission'])) { ?>
                     <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add"  onclick="addOrganization()" data-bs-toggle="tooltip">
@@ -97,13 +97,13 @@ var organizationSettings = {
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var edit = '';
-                var del = '';
+                var edit = '';var del = '';
+                var table = 'organization';
                 <?php if(in_array('Organization Update',$_SESSION['permission'])) { ?>
-                     edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                    edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
                 <?php } ?>
                 <?php if(in_array('Organization Delete',$_SESSION['permission'])) { ?>
-                     del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;organization&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
                 <?php } ?>
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             }
@@ -114,8 +114,7 @@ var organizationSettings = {
     "scrollCollapse": true,
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
-            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
         });
     },
     "aaSorting": []
@@ -178,8 +177,7 @@ var organizationTrashSettings = {
     "scrollCollapse": true,
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
-            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
         });
     },
     "aaSorting": []

@@ -20,7 +20,11 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['search'])) {
         $assing_response = checkAssignDepartment();
     } elseif ($_REQUEST['search'] == 'users') {
         $assing_response = checkAssignUser();
-    } 
+    } elseif ($_REQUEST['search'] == 'user_role') {
+        $assing_response = checkUserAssignOrganization();
+    } elseif ($_REQUEST['search'] == 'Projection_type') {
+        $assing_response = checkAssignProjectionType();
+    }
 }
 
 echo $assing_response;
@@ -28,7 +32,7 @@ echo $assing_response;
 function checkAssignOrganization() {
 
     global $conn;
-    $check_branch = $conn->query("SELECT COUNT(ID) FROM `Branch` WHERE organization_id = '".$_REQUEST['id']."'");
+    $check_branch = $conn->query("SELECT COUNT(ID) FROM `Branch` WHERE organization_id = '".$_REQUEST['id']."' AND Deleted_At IS NULL");
     if (mysqli_fetch_column($check_branch) > 0) {
         return (json_encode(['status'=> 400,'title'=>"Organization can't delete",'text'=>"Branchs assign to this!"]));
     }
@@ -38,7 +42,7 @@ function checkAssignOrganization() {
 function checkAssignBranch() {
 
     global $conn;
-    $check_vertical = $conn->query("SELECT COUNT(ID) FROM `Vertical` WHERE Branch_id LIKE '%".$_REQUEST['id']."%'");
+    $check_vertical = $conn->query("SELECT COUNT(ID) FROM `Vertical` WHERE Branch_id LIKE '%".$_REQUEST['id']."%' AND Deleted_At IS NULL");
     if (mysqli_fetch_column($check_vertical) > 0) {
         if (isset($_REQUEST['type']) && isset($_REQUEST['organization_id'])) {
             $currentSelectedOrganization_id = $_REQUEST['organization_id'];
@@ -59,7 +63,7 @@ function checkAssignBranch() {
 function checkVerticalAssign() {
 
     global $conn;
-    $check_department = $conn->query("SELECT COUNT(id) FROM `Department` WHERE vertical_id = '".$_REQUEST['id']."'");
+    $check_department = $conn->query("SELECT COUNT(id) FROM `Department` WHERE vertical_id = '".$_REQUEST['id']."' AND Deleted_At IS NULL");
     if (mysqli_fetch_column($check_department) > 0) {
         if(isset($_REQUEST['type']) == "update_organization" && isset($_REQUEST['organization_id'])) {
             $currentSelectedOrganization_id = $_REQUEST['organization_id'];
@@ -71,9 +75,8 @@ function checkVerticalAssign() {
                 return (json_encode(['status'=> 400 ,'title'=>"Sorry can't update Organization" ,'text'=>"Department assign on this vertical",'previous' => $assignOrganization_id]));
             }
         } else {
-            return json_encode(['status'=> 400 , 'title'=>"Verical can't delete" , 'text'=>"Department assign to this!"]);
+            return json_encode(['status'=> 400 , 'title'=>"Vertical can't delete" , 'text'=>"Department assign to this!"]);
         }
-        
     } else {
         if(isset($_REQUEST['type']) && isset($_REQUEST['organization_id'])) {
             $currentSelectedOrganization_id = $_REQUEST['organization_id'];
@@ -275,4 +278,79 @@ function checkAssignUser(){
     }
 }
 
+function checkUserAssignOrganization() {
+    global $conn; 
+    $user_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $role_id = mysqli_real_escape_string($conn,$_REQUEST['role_id']);
+    $checkUserOrganizationAssign = $conn->query("SELECT IF(Organization_id IS NOT NULL , 'Yes' , 'No') as `user_assign` , role FROM users WHERE ID = '$user_id'");
+    $checkUserOrganizationAssign = mysqli_fetch_all($checkUserOrganizationAssign,MYSQLI_ASSOC);
+    if($checkUserOrganizationAssign[0]['user_assign'] == 'Yes') {
+        if($checkUserOrganizationAssign[0]['role'] == $role_id) {
+            return json_encode(['status' => 200 , 'message' => 'same role']);
+        } else {
+            return json_encode(['status' => 400 , 'text' => 'Organization info assign to user' , 'title' => "Sorry..role not update" , "previous" => $checkUserOrganizationAssign[0]['role']]);
+        }
+    } else {
+        return json_encode(['status'=> 200 , 'message' => 'user role can be change']);
+    }
+}
+
+/**
+ * Task -1 
+ * Check that given projectionntype id any projection are generated or not 
+ * If not genereate then pass status = 200 if generate then pass status 400
+ */
+function checkAssignProjectionType() {
+
+    global $conn; 
+    $projection_type_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $checkProjectionType = $conn->query("SELECT * FROM `Projection` WHERE projectionType = '$projection_type_id' AND Deleted_At IS NULL");
+    if($checkProjectionType->num_rows > 0 ) {
+        if( isset($_REQUEST['type']) && $_REQUEST['type'] == "update_branch" && isset($_REQUEST['branch_id'])) {
+            $currentBranch_id = $_REQUEST['branch_id'];
+            $assignBranch_id = $conn->query("SELECT branch_id FROM Projection_type WHERE ID = '$projection_type_id'");
+            $assignBranch_id = mysqli_fetch_column($assignBranch_id);
+            if ($currentBranch_id == $assignBranch_id) {
+                return json_encode(['status' => 200 , 'message' => "same branch"]);    
+            } else {
+                return (json_encode(['status'=> 400 ,'title'=>"Sorry can't update Branch" ,'text'=>"Projection genrated on this projection type",'previous' => $assignBranch_id]));
+            }
+        } elseif (isset($_REQUEST['type']) && $_REQUEST['type'] == "update_department" && isset($_REQUEST['department_id'])) {
+            $currentDepartment_id = $_REQUEST['department_id'];
+            $assignDepartment_id = $conn->query("SELECT department_id FROM Projection_type WHERE ID = '$projection_type_id'");
+            $assignDepartment_id = mysqli_fetch_column($assignDepartment_id);
+            if ($currentDepartment_id == $assignDepartment_id) {
+                return json_encode(['status' => 200 , 'message' => "same department"]);
+            } else {
+                return (json_encode(['status'=> 400 ,'title'=>"Sorry can't update Department" ,'text'=>"Projection genrated on this projection type",'previous' => $assignDepartment_id]));
+            }
+        } else {
+            return (json_encode(['status'=> 400,'title'=>"Projection type can't delete",'text'=>"Projection generated on this projection type"]));
+        }
+    } else {
+        if( isset($_REQUEST['type']) && $_REQUEST['type'] == "update_branch" && isset($_REQUEST['branch_id'])) {
+            $currentBranch_id = $_REQUEST['branch_id'];
+            $assignBranch_id = $conn->query("SELECT branch_id FROM Projection_type WHERE ID = '$projection_type_id'");
+            $assignBranch_id = mysqli_fetch_column($assignBranch_id);
+            if ($currentBranch_id == $assignBranch_id) {
+                return json_encode(['status' => 200 , 'message' => "same branch"]);    
+            } else {
+                return json_encode(['status' => 200 , 'message' => "projection not generated"]);
+            }
+        } elseif (isset($_REQUEST['type']) && $_REQUEST['type'] == "update_department" && isset($_REQUEST['department_id'])) {
+            $currentDepartment_id = $_REQUEST['department_id'];
+            $assignDepartment_id = $conn->query("SELECT department_id FROM Projection_type WHERE ID = '$projection_type_id'");
+            $assignDepartment_id = mysqli_fetch_column($assignDepartment_id);
+            if ($currentDepartment_id == $assignDepartment_id) {
+                return json_encode(['status' => 200 , 'message' => "same department"]);
+            } else {
+                return json_encode(['status' => 200 , 'message' => "User not assign as parent"]);
+            }
+        } else {
+            return json_encode(['status' => 200]);
+        }
+        
+    }
+
+}
 ?>

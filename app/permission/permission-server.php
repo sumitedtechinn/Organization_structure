@@ -27,23 +27,29 @@ $searchQuery = "";
 if(!empty($_POST['apply_page_filter']))  {
     $searchQuery .= " AND permission.page = '".$_POST['apply_page_filter']."'";
 }
- 
+
 if (!empty($_POST['permission_type_filter'])) {
     $searchQuery .= " AND permission.permission_type = '".$_POST['permission_type_filter']."'";
 }
 
+$delete_query = '';
+if(isset($_POST['deleteType'])) {
+    $delete_query = 'Deleted_At IS NOT NULL';
+} else {
+    $delete_query = 'Deleted_At IS NULL';
+}
 ## Total number of records without filtering
-$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM permission WHERE Deleted_At IS NULL $searchQuery");
+$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM permission WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($all_count);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$filter_count = $conn->query("SELECT COUNT(ID) as `filtered` FROM permission WHERE Deleted_At IS NULL $searchQuery");
+$filter_count = $conn->query("SELECT COUNT(ID) as `filtered` FROM permission WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
 ## Fetch Record
-$permission_list = $conn->query("SELECT permission.ID as `ID`, Permission_type.Name as `type`, pages.Name as `page`, permission.Created_at as `created` FROM `permission` LEFT JOIN Permission_type ON Permission_type.ID = permission.permission_type LEFT JOIN pages ON pages.ID = permission.page WHERE Deleted_at IS NUll  $searchQuery $orderby LIMIT $row , $rowperpage");
+$permission_list = $conn->query("SELECT permission.ID as `ID`, Permission_type.Name as `type`, pages.Name as `page`, permission.Created_at as `created` FROM `permission` LEFT JOIN Permission_type ON Permission_type.ID = permission.permission_type LEFT JOIN pages ON pages.ID = permission.page WHERE $delete_query $searchQuery $orderby LIMIT $row , $rowperpage");
 
 $data = [];
 if ($permission_list->num_rows > 0 ) {
