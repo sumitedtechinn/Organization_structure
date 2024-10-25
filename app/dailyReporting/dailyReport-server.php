@@ -9,7 +9,6 @@ $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
 $orderby = '';
 
-
 if (isset($_POST['order'])) {
     $columnIndex = $_POST['order'][0]['column']; // Column index
     $columnName = $_POST['columns'][$columnIndex]['data']; // Column name 

@@ -43,7 +43,12 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['user_email']) && isset($_REQUES
         if (is_null($path_name)) {
             $path_name = "/../../assets/images/sample_user.jpeg";
         }
-        $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,null,null,'$password','$address','$pin_code','$state','$city','$country','$path_name')");
+        if($_SESSION['role'] == '3') {
+            $organization_id = mysqli_real_escape_string($conn,$_SESSION['Organization_id']);
+            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,'$organization_id',null,'$password','$address','$pin_code','$state','$city','$country','$path_name')");
+        } else {
+            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,null,null,'$password','$address','$pin_code','$state','$city','$country','$path_name')");
+        }
         showResponse($insert_query,'inserted');
     }
 }

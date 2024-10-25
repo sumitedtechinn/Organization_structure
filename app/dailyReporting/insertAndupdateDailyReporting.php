@@ -80,7 +80,7 @@ if (isset($_REQUEST['report_id'])) {
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <label class="col-sm-12 col-form-label">Doc Close</label>
+                    <label class="col-sm-12 col-form-label">Deal Close</label>
                     <div class="col-sm-12">
                         <select type="text" class="form-control form-control-sm multiple-select select2" multiple="multiple" name="doc_close[]" id="doc_close">
                         </select>

@@ -203,9 +203,6 @@ function reloadTable(id) {
     }
 }
 
-OrgChart.scroll.chrome = { smooth: 12, speed: 120 }; // for scroll 
-OrgChart.scroll.firefox = { smooth: 12, speed: 120 }; // for scroll 
-
 async function fetchData() {
     try {
         var filter_data = {};
@@ -276,9 +273,9 @@ async function initializeChart() {
         var designation = data[x]['Code'];
         tag[designation] = {'template':designation};
     }
-    console.log(colors);
-    console.log(designations);
-    console.log(tag);
+    // console.log(colors);
+    // console.log(designations);
+    // console.log(tag);
     
     for (const key in nodeCount) {
         if (Object.prototype.hasOwnProperty.call(nodeCount, key)) {
@@ -329,6 +326,7 @@ async function initializeChart() {
     if (data) {
         var chart = new OrgChart("#tree", {
             enableSearch: true,
+            mouseScrool: OrgChart.action.scroll,
             tags: tag,  
             toolbar: {
                 zoom: true,

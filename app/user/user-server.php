@@ -99,7 +99,7 @@ if ($users->num_rows > 0) {
             $designation_inside = 'InsideDepartment';
         }
         $organization_info_assign = 'No';
-        if ($row['Branch_id'] != null || $row['Organization_id'] != null || $row['Designation_id'] != null || $row['Department_id'] != null) {
+        if ( $row['Designation_id'] != null ) {
             $organization_info_assign = 'Yes';
         }
         $designation_name = mysqli_fetch_column($designation_name);

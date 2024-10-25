@@ -51,7 +51,7 @@
                                 <th>No. Meetings</th>
                                 <th>Doc Prepare</th>
                                 <th>Doc Received</th>
-                                <th>Doc Closed</th>
+                                <th>Deal Closed</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
