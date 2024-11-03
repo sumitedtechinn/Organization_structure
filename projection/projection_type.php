@@ -24,44 +24,26 @@
                         <?php } ?>
                     </div>
                 </div>
+                <?php if($_SESSION['role'] != '2') { ?>
                 <div class="d-flex align-items-center justify-content-between gap-1 mt-3">
-                    <div class="col-sm-3" style="z-index:0!important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="applyfilter()">
-                            <option value="">Select Organization</option>
-                            <?php $organization = $conn->query("SELECT id , organization_name FROM `organization` WHERE Deleted_At IS NULL");
-                            while($row = mysqli_fetch_assoc($organization)) {
-                                echo '<option value = "'.$row['id'].'" >'.$row['organization_name'].'</option>';
-                            } ?>
+                    <div class="col-sm-3" style="z-index: 0 !important;">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
-                    <div class="col-sm-3" style="z-index:0!important;"> 
-                        <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="applyfilter()">
-                            <option value="">Select Branch</option>
-                            <?php $branch = $conn->query("SELECT ID , Branch_name FROM `Branch` WHERE Deleted_At IS NULL");
-                            while($row = mysqli_fetch_assoc($branch)) {
-                                echo '<option value = "'.$row['ID'].'" >'.$row['Branch_name'].'</option>';
-                            } ?>
+                    <div class="col-sm-3" style="z-index: 0 !important;">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
-                    <div class="col-sm-3" style="z-index:0!important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="applyfilter()">
-                            <option value="">Select Vertical</option>
-                            <?php $vertical = $conn->query("SELECT ID , Vertical_name FROM `Vertical` WHERE Deleted_At IS NULL");
-                            while($row = mysqli_fetch_assoc($vertical)) {
-                                echo '<option value = "'.$row['ID'].'" >'.$row['Vertical_name'].'</option>';
-                            } ?>
+                    <div class="col-sm-3" style="z-index: 0 !important;">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
-                    <div class="col-sm-3" style="z-index:0!important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="applyfilter()">
-                            <option value="">Select Department</option>
-                            <?php $vertical = $conn->query("SELECT id,department_name FROM `Department` WHERE Deleted_At IS NULL");
-                            while($row = mysqli_fetch_assoc($vertical)) {
-                                echo '<option value = "'.$row['id'].'" >'.$row['department_name'].'</option>';
-                            } ?>
+                    <div class="col-sm-3" style="z-index: 0 !important;">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
                 </div>
+                <?php } ?>
                 <div class="table-responsive mt-3">
                     <table class="table align-middle" id="projectionTypeTable">
                         <thead class="table-secondary">
@@ -187,10 +169,31 @@ var projectionTypeTrashSettings = {
     "aaSorting": []
 };
 
+function getFilterData() {
+    var filter_data_field = ['organization','branch','vertical','department'];
+    $.ajax({
+        url : "/app/common/getAllFilterData", 
+        type : "post",
+        contentType: 'json',  // Set the content type to JSON 
+        data: JSON.stringify(filter_data_field), 
+        dataType: 'json', 
+        success : function(data) {
+            for (const key in data) {
+                $("#"+key+"_filter").html(data[key]);
+            }
+        }   
+    })
+}
+
 $(document).ready(function() {
     $("#return_button").css('display','none');
     $('#projectionTypeTable').dataTable(projectionTypeSettings);
+    getFilterData();
 });
+
+function reloadTable() {
+    $('.table').DataTable().ajax.reload(null, false);
+}
 
 $("#trash_button").on('click',function(){
     $('#projectionTypeTable').dataTable(projectionTypeTrashSettings);
@@ -204,10 +207,6 @@ $("#return_button").on('click',function(){
     $("#return_button").css('display','none');
     $("#trash_button").css('display','block');
 });
-
-function applyfilter(){
-    $('#projectionTypeTable').DataTable().ajax.reload(null,false);
-}
 
 function addProjectionType() {
     $.ajax({

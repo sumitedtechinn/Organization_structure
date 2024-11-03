@@ -508,7 +508,7 @@ function getVacancyNode() {
             $department = $row['Department_id'];
             $numofVacancy = $row['NumOfVacanciesRaised'];
             $raisedby = $row['Raised_by'];
-            $vacancies_fill = $conn->query("SELECT COUNT(users.ID) as `allcount` FROM users where Vertical_id = '".$vertical."' AND Organization_id = '".$organization."' AND Department_id = '".$department."' AND  Designation_id = '".$designation_id."' AND Assinged_Person_id IS NOT NULL AND Deleted_At IS NULL");
+            $vacancies_fill = $conn->query("SELECT COUNT(users.ID) as `allcount` FROM users where Vertical_id = '".$vertical."' AND Organization_id = '".$organization."' AND Department_id = '".$department."' AND Branch_id = '$branch' AND  Designation_id = '".$designation_id."' AND Assinged_Person_id IS NOT NULL AND Deleted_At IS NULL");
             $numofvacanciesfill = mysqli_fetch_column($vacancies_fill);
             $numofVacancyVacanct = intval($numofVacancy - $numofvacanciesfill);
             while($numofVacancyVacanct > 0 ) {

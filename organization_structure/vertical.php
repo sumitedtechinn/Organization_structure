@@ -14,9 +14,11 @@ $node_color = mysqli_fetch_column($node_color);
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Verticals Details</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
-                    <div class="col-sm-2 ">
+                    <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
+                    <div class="col-sm-2">
                         <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Vertical')">
                     </div>
+                    <?php } ?>
                     <div class="col-sm-12" style="z-index: 0 !important;">
                         <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
                         </select>

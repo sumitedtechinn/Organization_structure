@@ -30,7 +30,10 @@ if (!empty($searchValue)) {
 
 if( isset($_SESSION['role']) &&  $_SESSION['role'] != 1 ) {
     if($_SESSION['role'] == 2) {
-        $searchQuery .= " AND users.ID IN (".implode(',',$_SESSION['allChildId']).") AND users.Organization_id = '".$_SESSION['Organization_id']."'";
+        $searchQuery .= " AND users.Organization_id = '".$_SESSION['Organization_id']."'";
+        $searchQuery .= " AND users.Branch_id = '".$_SESSION['Branch_id']."'";
+        $searchQuery .= " AND users.Vertical_id = '".$_SESSION['Vertical_id']."'";
+        $searchQuery .= " AND users.Department_id ='".$_SESSION['Department_id']."'";
     } elseif ($_SESSION['role'] == 3) {
         $searchQuery .= "AND users.Organization_id = '".$_SESSION['Organization_id']."'";
     }

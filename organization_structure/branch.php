@@ -14,14 +14,18 @@ $node_color = mysqli_fetch_column($node_color);
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Branch Details</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-6">
+                    <?php if($_SESSION['role'] == '3' || $_SESSION['role'] == '1') { ?>
                     <div class="row gap-2">
                         <div class="col-sm-2 ">
                             <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Branch')">
                         </div>
+                        <?php if($_SESSION['role'] == '1') { ?>
                         <div class="col-sm-9" style="z-index:0!important;">
                             <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter"></select>
                         </div>
+                        <?php } ?>
                     </div>
+                    <?php } ?>
                     <?php if(in_array('Branch Delete',$_SESSION['permission'])) { ?>
                     <div class="theme-icons sha dow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
                         <i class="bi bi-trash-fill"></i>

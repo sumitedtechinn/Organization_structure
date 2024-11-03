@@ -15,9 +15,11 @@ $node_color = mysqli_fetch_column($node_color);
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Vacancies Details</h5>
                 <div class="d-flex justify-content-end col-sm-3">
-                    <div class="col-sm-2 ">
+                    <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
+                    <div class="col-sm-2">
                         <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Vacancies')">
                     </div>
+                    <?php } ?>
                     <?php if( in_array('Vacancies Create',$_SESSION['permission'])) { ?>
                     <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add" onclick="addVacancies()" data-bs-toggle="tooltip">
                         <i class="bi bi-plus-circle-fill" id="add_vacancies"></i>
@@ -25,7 +27,8 @@ $node_color = mysqli_fetch_column($node_color);
                     <?php } ?>
                 </div> 
             </div>
-            <div class="d-flex align-items-center justify-content-between gap-1 mt-3">
+            <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
+            <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
                 <div class="col-sm-2" style="z-index: 0 !important;">
                     <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
                     </select>
@@ -38,7 +41,7 @@ $node_color = mysqli_fetch_column($node_color);
                     <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
+                <div class="col-sm-3" style="z-index: 0 !important;">
                     <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
@@ -47,6 +50,7 @@ $node_color = mysqli_fetch_column($node_color);
                     </select>
                 </div>
             </div>
+            <?php } ?>
             <div class="table-responsive mt-3">
                 <table class="table align-middle" id="vacanciesTable">
                     <thead class="table-secondary">

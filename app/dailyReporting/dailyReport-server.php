@@ -26,21 +26,51 @@ if(isset($_SESSION['allChildId'])) {
     $searchQuery .= "AND daily_reporting.user_id IN (".implode(',',$_SESSION['allChildId']).")";
 }
 
-if(isset($_POST['selected_user']) && !empty($_POST['selected_user'])) {
-    $searchQuery .= "AND daily_reporting.user_id = '".$_POST['selected_user']."'";
+$searchUserQuery = '';
+if ($_SESSION['role'] == '3') {
+    $searchUserQuery .= "AND users.organization_id= '".$_SESSION['Organization_id']."'";
 }
 
-if(!empty($_POST['selected_start_date']) && !empty($_POST['selected_end_date'])) {
-    $start_date = date_format(date_create($_POST['selected_start_date']),'Y-m-d');
-    $end_date = date_format(date_create($_POST['selected_end_date']),'Y-m-d');
-    $searchQuery .= "AND daily_reporting.date BETWEEN '$start_date' AND '$end_date'";
-} elseif (!empty($_POST['selected_start_date']) && empty($_POST['selected_end_date'])) {
-    $start_date = date_format(date_create($_POST['selected_start_date']),'Y-m-d');
-    $end_date = date("Y-m-d");
-    $searchQuery .= "AND daily_reporting.date BETWEEN '$start_date' AND '$end_date'";
-} elseif (empty($_POST['selected_start_date']) && !empty($_POST['selected_end_date'])) {
-    $end_date = date_format(date_create($_POST['selected_end_date']),'Y-m-d');
-    $searchQuery .= "AND daily_reporting.date  <= '$end_date'";
+if(isset($_POST['organizationFilter']) && !empty($_POST['organizationFilter'])) {
+    $searchUserQuery .= " AND users.organization_id= '".$_POST['organizationFilter']."'";
+}
+
+if(isset($_POST['branchFilter']) && !empty($_POST['branchFilter'])) {
+    $searchUserQuery .= " AND users.branch_id = '".$_POST['branchFilter']."'";
+}
+
+if(isset($_POST['verticalFilter']) && !empty($_POST['verticalFilter'])) {
+    $searchUserQuery .= " AND users.vertical_id = '".$_POST['verticalFilter']."'";
+}
+
+if(isset($_POST['departmentFilter']) && !empty($_POST['departmentFilter'])) {
+    $searchUserQuery .= " AND users.department_id = '".$_POST['departmentFilter']."'";
+}
+
+if(isset($_POST['selected_user']) && !empty($_POST['selected_user'])) {
+    $searchUserQuery .= " AND users.ID = '".$_POST['selected_user']."'";
+}
+
+if(!empty($searchUserQuery)) {
+    $user_id = [];
+    $users = $conn->query("SELECT users.ID as `id` FROM `users` WHERE users.Deleted_At IS NULL $searchUserQuery");
+    if($users->num_rows > 0 ) {
+        while($user = mysqli_fetch_assoc($users)) {
+            $user_id[] = $user['id'];
+        }
+    }
+    if(!empty($user_id)) {
+        $searchQuery .= " AND daily_reporting.user_id IN (".implode(',',$user_id).")";
+    } else {
+        $searchQuery .= " AND daily_reporting.user_id IS NULL";
+    }    
+}
+
+if(isset($_POST['selected_date']) && !empty($_POST['selected_date'])) {
+    $dates = explode('-',$_POST['selected_date']);
+    $start_date = date_format(date_create(trim($dates[0])),'Y-m-d');
+    $end_date = date_format(date_create(trim($dates[1])),'Y-m-d');
+    $searchQuery .= " AND (daily_reporting.date BETWEEN '$start_date' AND '$end_date')"; 
 }
 
 $delete_query = "";
@@ -60,7 +90,7 @@ $filter_count = $conn->query("SELECT COUNT(ID) as `filtered` FROM daily_reportin
 $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
-## Fetch Record
+## Fetch Record 
 $dailyReport = $conn->query("SELECT daily_reporting.* , users.Name as `user_name` , users.Photo as `user_image` , IF(users.Deleted_At IS NULL,'No','Yes') as `user_delete` FROM daily_reporting LEFT JOIN users ON users.ID = daily_reporting.user_id WHERE $delete_query $searchQuery $orderby LIMIT $row , $rowperpage");
 
 $data = [];

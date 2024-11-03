@@ -17,24 +17,32 @@ if (isset($_REQUEST['id'])) {
         }
     }
 } else {
-    if (isset($_REQUEST['projection_type']) && isset($_REQUEST['user']) && isset($_REQUEST['numOfClosure']) && isset($_REQUEST['month'])) {
+    if (isset($_REQUEST['projection_type']) && isset($_REQUEST['user']) && isset($_REQUEST['numOfClosure']) && isset($_REQUEST['month']) && isset($_REQUEST['year'])) {
     
         $projection_type = mysqli_real_escape_string($conn,$_REQUEST['projection_type']);
         $user = mysqli_real_escape_string($conn,$_REQUEST['user']);
         $numOfClosure = mysqli_real_escape_string($conn,$_REQUEST['numOfClosure']);
         $month = mysqli_real_escape_string($conn,$_REQUEST['month']);
+        $year = mysqli_real_escape_string($conn,$_REQUEST['year']);
 
+        $current_year = date("Y");
+        $current_month = date("n");
+
+        if ( $current_year > $year || $current_month > $month) {
+            showResponse(false,"Past month projection not allowed");
+            die;
+        }
         $projection_type_details = $conn->query("SELECT * FROM `Projection_type` WHERE ID = '$projection_type'");
         $projection_type_details = mysqli_fetch_assoc($projection_type_details);
 
         $designation_id = $conn->query("SELECT Designation_id FROM users WHERE ID = '$user'");
         $designation_id = mysqli_fetch_column($designation_id);
 
-        $check = $conn->query("SELECT COUNT(ID) FROM Projection WHERE projectionType = '$projection_type' AND user_id = '$user' AND month = '$month'");
+        $check = $conn->query("SELECT COUNT(ID) FROM Projection WHERE projectionType = '$projection_type' AND user_id = '$user' AND month = '$month' AND year = '$year'");
         $check_duplicate = mysqli_fetch_column($check);
 
         if($check_duplicate == 0 ) {
-            $insert_query = $conn->query("INSERT INTO `Projection`(`projectionType`,`organization_id`,`branch_id`,`vertical_id`, `department_id`,`designation_id`,`user_id`,`numOfClosure`,`month`) VALUES ('$projection_type','".$projection_type_details['organization_id']."','".$projection_type_details['branch_id']."','".$projection_type_details['vertical_id']."','".$projection_type_details['department_id']."','$designation_id','$user','$numOfClosure','$month')");
+            $insert_query = $conn->query("INSERT INTO `Projection`(`projectionType`,`organization_id`,`branch_id`,`vertical_id`, `department_id`,`designation_id`,`user_id`,`numOfClosure`,`month`, `year`) VALUES ('$projection_type','".$projection_type_details['organization_id']."','".$projection_type_details['branch_id']."','".$projection_type_details['vertical_id']."','".$projection_type_details['department_id']."','$designation_id','$user','$numOfClosure','$month','$year')");
             showResponse($insert_query,'inserted');
         } else {
             showResponse(false,"Duplicate");

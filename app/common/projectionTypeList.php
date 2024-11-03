@@ -21,6 +21,21 @@ if (isset($_REQUEST['projection_type'])) {
         }
     }
     echo $option;
+} elseif (isset($_REQUEST['organization_id']) && isset($_REQUEST['branch_id']) && isset($_REQUEST['vertical_id']) && isset($_REQUEST    ['department_id'])) {
+
+    $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
+    $branch_id = mysqli_real_escape_string($conn,$_REQUEST['branch_id']);
+    $vertical_id = mysqli_real_escape_string($conn,$_REQUEST['vertical_id']);
+    $department_id = mysqli_real_escape_string($conn,$_REQUEST['department_id']);
+
+    $option = '<option value = "">Select Projection Type</option>';
+    $projection_type = $conn->query("SELECT ID,Name FROM `Projection_type` WHERE organization_id = '$organization_id' AND branch_id = '$branch_id' AND vertical_id = '$vertical_id' AND department_id = '$department_id' AND Deleted_At IS NULL");
+    if($projection_type->num_rows > 0) {
+        while($row = mysqli_fetch_assoc($projection_type)) {
+            $option .= '<option value = "'.$row['ID'].'">'.$row['Name'].'</option>';
+        }
+    }
+    echo $option;
 }
 
 ?>

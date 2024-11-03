@@ -81,6 +81,8 @@
 <script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 <script src="/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 <script src="/assets/js/table-datatable.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
 
 function getVerticalList(vertical_id=null) {

@@ -73,38 +73,26 @@
 <?php } ?>
 <div id="legent-content" style="display: none;">
     <div class="row d-flex flex-row text-white" id = "organization_box" style="display: none !important;">
-        <div class="col-sm-2 mt-1" style="width: 16px;height:16px; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Organization</div>
         <div class="col-sm-2" style="width: 6%;" id="organization"></div> 
     </div>
     <div class="row d-flex flex-row text-white" id = "branch_box" style="display: none !important;">
-        <div class="col-md-2 mt-1" style="width: 16px;height:16px; background-color:#F57C00; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Branch</div>
         <div class="col-sm-2" style="width: 6%;" id="branch"></div>
     </div>
     <div class="row d-flex flex-row text-white" id = "vertical_box" style="display: none !important;">
-        <div class="col-md-2 mt-1" style="width: 16px;height:16px; background-color:#FFCA28; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Vertical</div>
         <div class="col-sm-2" style="width: 6%;" id="vertical"></div>
     </div>
     <div class="row d-flex flex-row text-white" id= "department_box" style="display: none !important;">
-        <div class="col-md-2 mt-1" style="width: 16px;height:16px; background-color:#FFCA28; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Department</div>
         <div class="col-sm-2" style="width: 6%;" id="department"></div>
     </div>
     <div class="row d-flex flex-row text-white" id = "user_box" style="display: none !important;"> 
-        <div class="col-md-2 mt-1" style="width: 16px;height:16px; background-color:#FFCA28; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Employee</div>
         <div class="col-sm-2" style="width: 6%;" id="user"></div>
     </div>
     <div class="row d-flex flex-row text-white" id = "vacancy_box" style="display: none !important;">
-        <div class="col-md-2 mt-1" style="width: 16px;height:16px; background-color:#FFCA28; display: inline-block; border-radius: 15px;">
-        </div>
         <div class="col-sm-2" style="width: 65%;">Vacancy</div>
         <div class="col-sm-2" style="width: 6%;" id="vacancy"></div>
     </div>
@@ -253,7 +241,7 @@ function incrementNodeCount(variableName,color) {
 
 async function initializeChart() {
     const data = await fetchData();
-    var tag = {}; var colors = []; var designations = [];
+    var tag = {}; var colors = []; var designations = {};
     nodeCount.organization.counting = 0;
     nodeCount.branch.counting = 0;
     nodeCount.vertical.counting = 0;
@@ -264,62 +252,72 @@ async function initializeChart() {
         let counting = (data[x]['id'].split("_"))[0];
         let color = data[x]['color'];
         incrementNodeCount(counting,color);
-        if(!colors.includes(data[x]['color'])) {
-            colors.push(data[x]['color']);    
-        }
-        if(!designations.includes(data[x]['Code'])) {
-            designations.push(data[x]['Code']);    
+        if(addDesignation(data[x]['Code'],data[x]['color'])) {
+            const newIndex = Object.keys(designations).length; // Get the next index
+            designations[newIndex] = {
+                designation: data[x]['Code'],
+                color: data[x]['color']
+            };
         }
         var designation = data[x]['Code'];
         tag[designation] = {'template':designation};
     }
-    // console.log(colors);
-    // console.log(designations);
-    // console.log(tag);
+    // console.log(nodeCount);
+    //console.log(designations);
+    //console.log(tag);
     
+    function addDesignation(newDesignation, newColor) {
+        for (let key in designations) {
+            if (designations[key].designation === newDesignation) {
+                return false; // Exit if designation is found
+            } 
+        } 
+        return true;
+    }
+
     for (const key in nodeCount) {
         if (Object.prototype.hasOwnProperty.call(nodeCount, key)) {
             const element = nodeCount[key]['counting'];
             if (element > 0) {
                 if (key == 'user') {
-                    $("#"+key+"_box").css({'display':'block'});
+                    $("#"+key+"_box").css({'display':'block',"background-color":'#859F3D'});
                 } else {
                     $("#"+key+"_box").css({'display':'block',"background-color":nodeCount[key]['color']});
                 }
                 $("#"+key).html(element);
             } else {
-                $("#"+key+"_box").css("display","none");
+                $("#"+key+"_box").css("display","none !important");
                 $("#"+key).html(element);
             }
         }
     }
 
-    for (let i = 0; i < designations.length; i++) {
-        if ( designations[i] == 'organization' || designations[i] == 'branch' || designations[i] == 'vertical' || designations[i] == 'department' ) {
-            OrgChart.templates[designations[i]] = Object.assign({}, OrgChart.templates.ana);
-            OrgChart.templates[designations[i]].size = [200, 170];
-            OrgChart.templates[designations[i]].node = 
-                '<rect x="0" y="80" height="90" width="200" fill="'+colors[i]+'"></rect><circle cx="100" cy="50" fill="#ffffff" r="50" stroke="#145DA0" stroke-width="2"></circle>';
+    for (let key in designations) {
+        if ( designations[key].designation == 'organization' || designations[key].designation == 'branch' || designations[key].designation == 'vertical' || designations[key].designation == 'department' ) {
+            OrgChart.templates[designations[key].designation] = Object.assign({}, OrgChart.templates.ana);
+            OrgChart.templates[designations[key].designation].size = [200, 170];
+            OrgChart.templates[designations[key].designation].node = 
+                '<rect x="0" y="80" height="90" width="200" fill="'+designations[key].color+'"></rect><circle cx="100" cy="50" fill="#ffffff" r="50" stroke="#145DA0" stroke-width="2"></circle>';
 
-            OrgChart.templates[designations[i]].img_0 = 
+            OrgChart.templates[designations[key].designation].img_0 = 
                 `<clipPath id="{randId}"><circle cx="100" cy="50" r="45"></circle></clipPath>
                 <image preserveAspectRatio="xMidYMid slice" clip-path="url(#{randId})" xlink:href="{val}" x="50" y="0" width="100" height="100"></image>`;
 
-            OrgChart.templates[designations[i]].field_0 = 
+            OrgChart.templates[designations[key].designation].field_0 = 
                 `<text data-width="185" style="font-size: 18px;" fill="#ffffff" x="100" y="125" text-anchor="middle">{val}</text>`;
-            OrgChart.templates[designations[i]].field_1 = 
+            OrgChart.templates[designations[key].designation].field_1 = 
                 `<text data-width="185" style="font-size: 14px;" fill="#ffffff" x="100" y="145" text-anchor="middle">{val}</text>`;
 
-            OrgChart.templates[designations[i]].editFormHeaderColor = colors[i]; // for edit form color
+            OrgChart.templates[designations[key].designation].editFormHeaderColor = designations[key].color; // for edit form color
         } else {
-            OrgChart.templates[designations[i]] = Object.assign({}, OrgChart.templates.ana);
-            OrgChart.templates[designations[i]].size = [250, 120];
+            OrgChart.templates[designations[key].designation] = Object.assign({}, OrgChart.templates.ana);
+            OrgChart.templates[designations[key].designation].size = [250, 120];
 
-            OrgChart.templates[designations[i]].node = 
-                '<rect x="0" y="0" height="{h}" width="{w}" fill="'+colors[i]+'" stroke-width="1" stroke="#aeaeae" rx="7" ry="7"></rect>';
+            OrgChart.templates[designations[key].designation].node = 
+                '<rect x="0" y="0" height="{h}" width="{w}" fill="'+designations[key].color+'" stroke-width="1" stroke="#aeaeae" rx="7" ry="7"></rect>';
 
-            OrgChart.templates[designations[i]].padding = [50, 20, 35, 20];
-            OrgChart.templates[designations[i]].editFormHeaderColor = colors[i]; // for edit form color
+            OrgChart.templates[designations[key].designation].padding = [50, 20, 35, 20];
+            OrgChart.templates[designations[key].designation].editFormHeaderColor = designations[key].color; // for edit form color
         }
     }
     
@@ -344,11 +342,7 @@ async function initializeChart() {
                     { type: 'textbox', label: 'Duration', binding: 'Duration' },
                     { type: 'textbox', label: 'Address', binding: 'Address' }     
                 ]
-            },
-            // collapse: {
-            //     level: 1,
-            //     allChildren: true
-            // }, 
+            }, 
             nodeBinding: {  
                 field_0: "Name",
                 field_1: "Designation",

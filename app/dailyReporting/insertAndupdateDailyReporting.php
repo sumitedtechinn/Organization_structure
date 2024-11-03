@@ -270,9 +270,9 @@ $("#form-dailyReporting").on('submit',function(e){
                         toastr.success(data.message);
                     } else if (data.type == 'warning') {
                         Swal.fire({
-                            text: data.message,
+                            html : data.message,
                             title : "Daily report inserted",
-                            icon: data.type,
+                            icon : data.type,
                         });
                     }
                     $('.modal').modal('hide');
@@ -287,7 +287,7 @@ $("#form-dailyReporting").on('submit',function(e){
                         });
                     } else if (data.type == 'warning') {
                         Swal.fire({
-                            text: data.message,
+                            html : data.message,
                             title : "Daily report inserted",
                             icon: data.type,
                         });

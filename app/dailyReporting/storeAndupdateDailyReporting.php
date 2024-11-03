@@ -37,32 +37,49 @@ function insertDailyReport() {
             unset($_REQUEST['numofmeeting']);
         }
 
+        /**
+         * Get the updated projection ids
+         * And after that update projection and doc_received time stamp
+         */
         $doc_received_ids = null;
+        $projectionNotPresetnforDocReceivedId = [];
         if(isset($_REQUEST['doc_received'])) {
             $doc_received = $_REQUEST['doc_received'];
             unset($_REQUEST['doc_received']);
-            $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP WHERE id IN (".implode(',',$doc_received).")");
-            if($updateDocPrepareStatus) {
+            $docReceivedAndProjection = getProjectionId($doc_received,$date);
+            foreach($docReceivedAndProjection as $key=>$value) {
+                if ($value != 'projection not generated') {
+                    $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");        
+                } else {
+                    $unset_key = array_search($key,$doc_received);
+                    unset($doc_received[$unset_key]);
+                    $projectionNotPresetnforDocReceivedId[] = $key;
+                }    
+            }
+            if(!empty($doc_received)) {
                 $doc_received_ids = json_encode($doc_received);
-            } else {
-                showResponse(false,"Doc received status not updated",'error');
-                die;
             }
         }
         
         $doc_closed_ids = null;
+        $projectionNotPresetnforDocCloseId = [];
         if(isset($_REQUEST['doc_close'])) {
             $doc_closed = $_REQUEST['doc_close'];
             unset($_REQUEST['doc_close']);
-            $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP WHERE id IN (".implode(',',$doc_closed).")");
-            if($updateDocreceivedStatus) {
+            $docCloseAndProjection = getProjectionId($doc_closed,$date);
+            foreach ($docCloseAndProjection as $key => $value) {
+                if($value != 'projection not generated') {
+                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                } else {
+                    $unset_key = array_search($key,$doc_closed);
+                    unset($doc_closed[$unset_key]);
+                    $projectionNotPresetnforDocCloseId[] = $key;
+                }
+            }  
+            if(!empty($doc_closed)) {
                 $doc_closed_ids = json_encode($doc_closed);
-            } else {
-                showResponse(false,"Doc closed status not updated",'error');
-                die;
-            }
+            } 
         }
-        
         $doc_prepare_ids = null;
         if (!empty($_REQUEST)) {
             foreach ($_REQUEST as $centerkey => $centervalue) {
@@ -81,13 +98,13 @@ function insertDailyReport() {
 
             $date = date_create($report_date);
             $month = date_format($date,"n");
+            $year = date_format($date,'Y');
 
             $insert_query = "INSERT INTO `Closure_details`(`center_name`, `center_email` , `contact`, `country_code`, `projectionType`, `projection_id`, `user_id`, `doc_prepare`) VALUES ";
             $insert_query_arr = [];
             $projectionTypeName = [];
-            $timestamp = date('Y-m-d h:i:s');
             foreach ($doc_prepare as $key=>$value) {
-                $checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
+                $checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND year = '$year' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
                 if ($checkProjectionOnParticularProjectionType->num_rows > 0 ) {
                     $projection_id = mysqli_fetch_column($checkProjectionOnParticularProjectionType);
                     $insert_query_arr[] = "('".$value['center_name']."','".$value['center_email']."','".$value['contact_number']."','".$value['country_code']."','".$value['projection_type']."','$projection_id','".$_SESSION['ID']."',CURRENT_TIMESTAMP)";
@@ -113,11 +130,22 @@ function insertDailyReport() {
         }
 
         $insertDailyStatus = $conn->query("INSERT INTO `daily_reporting`(`user_id`, `total_call`, `new_call`, `doc_prepare`, `doc_received`, `doc_close`,`numofmeeting`,`date`) VALUES ('".$_SESSION['ID']."','$total_call','$new_call','$doc_prepare_ids','$doc_received_ids','$doc_closed_ids','$numofmeeting','$report_date')");
-        if(empty($projectionTypeName)) {
-            showResponse($insertDailyStatus,"inserted",'success');
+        if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId)) {
+           showResponse($insertDailyStatus,"inserted",'success');
         } else {
-            $message = implode(',',$projectionTypeName);
-            showResponse(false,"Daily report inserted ,($message) projection type closure doc not inserted as projection is not generated",'warning');
+            $message = '<ul class="text-sm-left">';
+            if(!empty($projectionNotPresetnforDocReceivedId)) {
+                $message .= createMessage($projectionNotPresetnforDocReceivedId);
+            }
+            if(!empty($projectionNotPresetnforDocCloseId)) {
+                $message .= createMessage($projectionNotPresetnforDocCloseId);
+            }
+            if(!empty($projectionTypeName)) {
+                $text = implode(',',$projectionTypeName);
+                $message .= "<li class='text-start fs-6'>($text) Center details not inserted as projection not assign to user for thise projection type on current month</li>";    
+            }
+            $message .= '</ul>';
+            showResponse(false,$message,'warning');
         }
     } else {
         showResponse(false,"Duplicate entry found",'error');
@@ -136,6 +164,8 @@ function updateDailyReport() {
     $total_call = mysqli_real_escape_string($conn,$_REQUEST['total_call']);
     $new_call = mysqli_real_escape_string($conn,$_REQUEST['new_call']);
     $report_date = $report_details['date'];
+    $date = date_create($report_date);
+    $date = date_format($date,'Y-m-d');
     $country_code_arr = [];
     if(isset($_REQUEST['country_code']) && !empty($_REQUEST['country_code'])) {
         $country_code = mysqli_real_escape_string($conn,$_REQUEST['country_code']);
@@ -186,9 +216,10 @@ function updateDailyReport() {
      * check for doc received ids
      */
     $doc_received_ids = '';
+    $projectionNotPresetnforDocReceivedId = [];
     if(isset($_REQUEST['doc_received'])) {
         $doc_received = $_REQUEST['doc_received'];
-        $doc_received_ids = json_encode($_REQUEST['doc_received']);
+        $doc_received_id_duplicate = $doc_received;
         unset($_REQUEST['doc_received']);
         $db_doc_received = json_decode($report_details['doc_received'],true);
         if(!empty($db_doc_received)) {
@@ -204,14 +235,38 @@ function updateDailyReport() {
                     $updateReceivedCenterStatus = $conn->query("UPDATE Closure_details SET doc_received = null , doc_closed = null WHERE id = '$value'");
                 }
             }
-            if(!empty($doc_received)) {
-                foreach ($doc_received as $value) {
-                    $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP WHERE id = '$value'");        
+            $newId_addedInDocReceived = $doc_received;
+            $newId_addedInDocReceived = array_values($newId_addedInDocReceived);
+            $doc_received = [];
+            $previousAdded_docReceivedIds = array_diff($doc_received_id_duplicate,$newId_addedInDocReceived);
+            if(!empty($newId_addedInDocReceived)) {
+                $docReceivedAndProjection = getProjectionId($newId_addedInDocReceived,$date);
+                foreach($docReceivedAndProjection as $key=>$value) {
+                    if ($value != 'projection not generated') {
+                        $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");        
+                    } else {
+                        $unset_key = array_search($key,$newId_addedInDocReceived);
+                        unset($newId_addedInDocReceived[$unset_key]);
+                        $projectionNotPresetnforDocReceivedId[] = $key;
+                    }    
                 }
             }
+            $doc_received = array_merge($previousAdded_docReceivedIds,$newId_addedInDocReceived);
         } else {
-            $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP WHERE id IN (".implode(',',$doc_received).")");    
+            $docReceivedAndProjection = getProjectionId($doc_received,$date);
+            foreach($docReceivedAndProjection as $key=>$value) {
+                if ($value != 'projection not generated') {
+                    $updateDocPrepareStatus = $conn->query("UPDATE Closure_details SET doc_received = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");        
+                } else {
+                    $unset_key = array_search($key,$doc_received);
+                    unset($doc_received[$unset_key]);
+                    $projectionNotPresetnforDocReceivedId[] = $key;
+                }    
+            }
         }
+        if(!empty($doc_received)) {
+            $doc_received_ids = json_encode($doc_received);
+        } 
     } elseif (!isset($_REQUEST['doc_received']) && !empty($report_details['doc_received'])) {
         unset($_REQUEST['doc_received']);
         $db_doc_received = json_decode($report_details['doc_received'],true);
@@ -224,9 +279,10 @@ function updateDailyReport() {
      * check for doc closed ids
      */
     $doc_closed_ids = '';
+    $projectionNotPresetnforDocCloseId = [];
     if(isset($_REQUEST['doc_close'])) {
         $doc_closed = $_REQUEST['doc_close'];
-        $doc_closed_ids = json_encode($_REQUEST['doc_close']);
+        $doc_closed_ids_duplicate = $doc_closed;
         unset($_REQUEST['doc_close']);
         $db_doc_closed = json_decode($report_details['doc_close'],true);
         if(!empty($db_doc_closed)) {
@@ -242,13 +298,37 @@ function updateDailyReport() {
                     $updateClosedCenterStatus = $conn->query("UPDATE Closure_details SET doc_closed = null WHERE id = '$value'");
                 }
             }
-            if(!empty($doc_closed)) {
-                foreach ($doc_closed as $value) {
-                    $updateDocReceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP WHERE id = '$value'");        
+            $newId_addedInDocClosed = $doc_closed;
+            $newId_addedInDocClosed = array_values($newId_addedInDocClosed);
+            $doc_closed = [];
+            $previousAdded_docClosedIds = array_diff($doc_closed_ids_duplicate,$newId_addedInDocClosed);
+            if(!empty($newId_addedInDocClosed)) {
+                $docCloseAndProjection = getProjectionId($newId_addedInDocClosed,$date);
+                foreach ($docCloseAndProjection as $key => $value) {
+                    if($value != 'projection not generated') {
+                        $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                    } else {
+                        $unset_key = array_search($key,$newId_addedInDocClosed);
+                        unset($newId_addedInDocClosed[$unset_key]);
+                        $projectionNotPresetnforDocCloseId[] = $key;
+                    }
                 }
             }
+            $doc_closed = array_merge($previousAdded_docClosedIds,$newId_addedInDocClosed);
         } else {
-            $updateDocReceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP WHERE id IN (".implode(',',$doc_closed).")");    
+            $docCloseAndProjection = getProjectionId($doc_closed,$date);
+            foreach ($docCloseAndProjection as $key => $value) {
+                if($value != 'projection not generated') {
+                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                } else {
+                    $unset_key = array_search($key,$doc_closed);
+                    unset($doc_closed[$unset_key]);
+                    $projectionNotPresetnforDocCloseId[] = $key;
+                }
+            }
+        }
+        if(!empty($doc_closed)) {
+            $doc_closed_ids = json_encode($doc_closed);   
         }
     } elseif(!isset($_REQUEST['doc_close']) && !empty($report_details['doc_close'])) {
         unset($_REQUEST['doc_close']);
@@ -277,15 +357,14 @@ function updateDailyReport() {
             $i++;
         }
 
-        $date = date_create($report_date);
-        $month = date_format($date,"n");
-
+        $month = date("n",strtotime($date));
+        $year = date("Y",strtotime($date));
         $insert_query = "INSERT INTO `Closure_details`(`center_name`, `center_email` , `contact`, `country_code`, `projectionType`, `projection_id`, `user_id`, `doc_prepare`) VALUES ";
         $insert_query_arr = [];
         $projectionTypeName = [];
         $timestamp = date('Y-m-d h:i:s');
         foreach ($doc_prepare as $key=>$value) {
-            $checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
+            $checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND year = '$year' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
             if ($checkProjectionOnParticularProjectionType->num_rows > 0 ) {
                 $projection_id = mysqli_fetch_column($checkProjectionOnParticularProjectionType);
                 $insert_query_arr[] = "('".$value['center_name']."','".$value['center_email']."','".$value['contact_number']."','".$value['country_code']."','".$value['projection_type']."','$projection_id','".$_SESSION['ID']."',CURRENT_TIMESTAMP)";
@@ -304,9 +383,6 @@ function updateDailyReport() {
                 $first_inserted_id = $conn->insert_id;
                 $doc_prepare_ids = [$first_inserted_id];
             }
-        } else {
-            showResponse(false,"Projection not generated for Projection type (".implode(',',$projectionTypeName).")",'error');
-            die;
         }
     }
     $doc_updated_prepare_ids = array_merge($update_doc_prepare,$doc_prepare_ids);
@@ -316,11 +392,22 @@ function updateDailyReport() {
         $doc_updated_prepare_ids = '';
     }
     $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`doc_prepare`='$doc_updated_prepare_ids',`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
-    if(empty($projectionTypeName)) {
+    if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId)) {
         showResponse($updateDailyReport,'updated','success');
     } else {
-        $message = implode(',',$projectionTypeName);
-        showResponse(false,"Daily report updated , But center of projection type ($message) not inserted as projections not assign",'warning');
+        $message = '<ul class="text-sm-left">';
+        if(!empty($projectionNotPresetnforDocReceivedId)) {
+            $message .= createMessage($projectionNotPresetnforDocReceivedId);
+        }
+        if(!empty($projectionNotPresetnforDocCloseId)) {
+            $message .= createMessage($projectionNotPresetnforDocCloseId);
+        }
+        if(!empty($projectionTypeName)) {
+            $text = implode(',',$projectionTypeName);
+            $message .= "<li class='text-start fs-6'>($text) Center details not inserted as projection not assign to user for thise projection type on current month</li>";    
+        }
+        $message .= '</ul>';
+        showResponse(false,$message,'warning');
     }
 }
 
@@ -345,4 +432,44 @@ function showResponse($response, $message = "Something went wrong!",$type) {
     }
 }
 
+/**
+ * Step-1 : Get the projection type id of each closure/center 
+ * Step-2 : After getting the projection type search that if on this month on that projection type projection generated for user or not
+ * step-2 : if genrated then pass all projection id from this closure
+ */
+function getProjectionId($doc_ids,$report_date) {
+
+    global $conn; 
+    $report_date = strtotime($report_date);
+    $month = date("n",$report_date);
+    $year = date("Y",$report_date);
+    $user_id = mysqli_real_escape_string($conn,$_SESSION['ID']);
+    $docIdsAndprojection = []; 
+    $projection_type = $conn->query("SELECT projectionType FROM `Closure_details` WHERE id IN (".implode(',',$doc_ids).")");
+    $i = 0;
+    while ($id = mysqli_fetch_assoc($projection_type)) {
+        $projection = $conn->query("SELECT ID FROM `Projection` WHERE projectionType = '".$id['projectionType']."' AND user_id = '$user_id' AND month = '$month' AND year = '$year' AND Deleted_At IS NULL");
+        if ($projection->num_rows > 0) {
+            $docIdsAndprojection[$doc_ids[$i]] = mysqli_fetch_column($projection);
+        } else {
+            $docIdsAndprojection[$doc_ids[$i]] = "projection not generated";
+        }
+        $i++;
+    }
+    return $docIdsAndprojection;
+}
+
+/**
+ * Create messeage for those doc ids for which projection not create on this month
+ */
+function createMessage($doc_ids) {
+    global $conn;
+    $message = '';
+    foreach ($doc_ids as $value) {
+        $getProjectionTypeName =  $conn->query("SELECT Closure_details.center_name as `center` , Projection_type.Name as `projection_type` FROM Closure_details LEFT JOIN Projection_type ON Projection_type.ID = Closure_details.projectionType WHERE Closure_details.id = '$value'");
+        $getProjectionTypeName = mysqli_fetch_assoc($getProjectionTypeName);
+        $message .= "<li class='text-start fs-6'>Status not updated for <b>".$getProjectionTypeName['center']."</b>,projection not assigned on current month for the <b>".$getProjectionTypeName['projection_type']."</b> type.</li>";
+    }
+    return $message;
+}
 ?>

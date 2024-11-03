@@ -23,6 +23,14 @@ if (isset($columnSortOrder)) {
 
 $searchQuery = "";
 
+if (isset($_POST['selectOrganization']) && !empty($_POST['selectOrganization'])) {
+    $searchQuery .= "AND Vacancies.Organization_id ='".$_POST['selectOrganization']."'";
+}
+
+if($_SESSION['role'] == '3') {
+    $searchQuery .= "AND Vacancies.Organization_id = '".$_SESSION['Organization_id']."'";
+}
+
 if (isset($_POST['selectBranch']) && !empty($_POST['selectBranch'])) {
     $searchQuery .= " AND Vacancies.Branch_id = '".$_POST['selectBranch']."'";
 }
@@ -31,21 +39,20 @@ if (isset($_POST['selectVertical']) && !empty($_POST['selectVertical'])) {
     $searchQuery .= "AND Vacancies.Vertical_id = '".$_POST['selectVertical']."'";
 }
 
-if (isset($_POST['selectOrganization']) && !empty($_POST['selectOrganization'])) {
-    $searchQuery .= "AND Vacancies.Organization_id ='".$_POST['selectOrganization']."'";
+if (isset($_POST['selectDepartment']) && !empty($_POST['selectDepartment'])) {
+    $searchQuery .= "AND Vacancies.Department_id ='".$_POST['selectDepartment']."'";
+}
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
+    $searchQuery .= "AND Vacancies.Organization_id = '".$_SESSION['Organization_id']."'";
+    $searchQuery .= " AND Vacancies.Branch_id = '".$_SESSION['Branch_id']."'";
+    $searchQuery .= "AND Vacancies.Vertical_id = '".$_SESSION['Vertical_id']."'";
+    $searchQuery .= "AND Vacancies.Department_id ='".$_SESSION['Department_id']."'";
 }
 
 if (isset($_POST['selectDesignation']) && !empty($_POST['selectDesignation'])) {
     $searchQuery .= "AND Vacancies.Designation_id ='".$_POST['selectDesignation']."'";
 }
-
-if (isset($_POST['selectDepartment']) && !empty($_POST['selectDepartment'])) {
-    $searchQuery .= "AND Vacancies.Department_id ='".$_POST['selectDepartment']."'";
-}
-
-if($_SESSION['role'] == '2' || $_SESSION[''] == '3') {
-    $searchQuery .= "AND Vacancies.Organization_id = '".$_SESSION['Organization_id']."'";
-} 
 
 ## Total number of records without filtering
 $all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM Vacancies WHERE Deleted_At IS NULL $searchQuery");

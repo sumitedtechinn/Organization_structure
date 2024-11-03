@@ -53,7 +53,7 @@ if (isset($_REQUEST['projection_id'])) {
             if($doc_received_status) {
                 $doc_colse_status = is_null($row['doc_closed']) ? false : true;
                 if($doc_colse_status) {
-                    $status = "Doc Closed";
+                    $status = "Deal Closed";
                     $last_updated_date = $row['doc_closed'];
                 } else {
                     $status = "Doc Received";

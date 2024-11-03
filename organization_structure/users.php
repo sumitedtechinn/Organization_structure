@@ -22,6 +22,7 @@
                     <?php } ?>
                 </div>
             </div>
+            <?php if($_SESSION['role'] != '2') { ?>
             <div class="d-flex align-items-center justify-content-between gap-1 mt-3">
                 <div class="col-sm-2" style="z-index: 0 !important;">
                     <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
@@ -35,7 +36,7 @@
                     <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
+                <div class="col-sm-3" style="z-index: 0 !important;">
                     <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
@@ -44,6 +45,7 @@
                     </select>
                 </div>
             </div>
+            <?php } ?>
             <div class="table-responsive mt-3">
                 <table class="table align-middle" id="userTable">
                     <thead class="table-secondary">
@@ -139,7 +141,7 @@ var UserSettings = {
         },{
             data: "password" ,
             render : function(data,type,row) {
-                var pass = '<div class="row" style = "width:250px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye" onclick="showPassword('+ row.ID +')" ></i></div></div>';
+                var pass = '<div class="row" style = "width:250px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye " onclick="showPassword('+ row.ID +')" ></i></div></div>';
                 return pass;
             }
         },{
@@ -170,14 +172,22 @@ var UserSettings = {
         },{
             data: "Status",
             render : function(data,type,row) {
-                var assigned_person = (row.assinged_person === null) ? '<button style="font-size:smaller" class="btn btn-danger btn-sm" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Not Assigned</button>': '<button style="font-size:smaller" class="btn btn-success btn-sm" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Assigned</button>';
+                var check_user = '';
+                <?php if($_SESSION['role'] == '2') { ?>
+                    check_user = 'disabled';
+                <?php } ?>
+                var assigned_person = (row.assinged_person === null) ? '<button style="font-size:smaller" class="btn btn-danger btn-sm '+check_user+'" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Not Assigned</button>': '<button style="font-size:smaller" class="btn btn-success btn-sm '+check_user+'" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Assigned</button>';
                 return '<div style="font-size:small;"><p class = "mb-1" ><b>Reporting : </b>'+assigned_person+'</p></div>';
             } 
         },{
             data : "Assign" , 
             render : function(data,type,row) {
                 var role_name = row.role_name;
-                var assign = '<div class="col"><button type="button" class="btn btn-info" style="font-size:small;color:white;" onclick = "assingOrganizationInfo('+row.ID+',&#39;'+role_name+'&#39;,&#39;'+row.organization_info_assign+'&#39;,&#39;'+row.designation_inside+'&#39;)">Assign</button></div>';
+                var check_user = '';
+                <?php if($_SESSION['role'] == '2') { ?>
+                    check_user = 'disabled';
+                <?php } ?>
+                var assign = '<div class="col"><button type="button" class="btn btn-info '+check_user+'" style="font-size:small;color:white;" onclick = "assingOrganizationInfo('+row.ID+',&#39;'+role_name+'&#39;,&#39;'+row.organization_info_assign+'&#39;,&#39;'+row.designation_inside+'&#39;)">Assign</button></div>';
                 return assign;
             }
         },{         
@@ -211,6 +221,9 @@ $(document).ready(function() {
 });
 
 function showPassword(id) {
+    <?php if($_SESSION['role'] == '2') { ?>
+        return;
+    <?php } ?>
     var x = document.getElementById("myInput".concat(id));
     if (x.type === "password") {
         x.type = "text";

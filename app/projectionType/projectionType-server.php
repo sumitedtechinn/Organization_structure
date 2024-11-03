@@ -28,6 +28,9 @@ if (!empty($searchValue)) {
     $searchQuery = "AND Name LIKE '%$searchValue%'"; 
 }
 
+if (isset($_POST['selectOrganization']) && !empty($_POST['selectOrganization'])) {
+    $searchQuery .= "AND Projection_type.Organization_id ='".$_POST['selectOrganization']."'";
+}
 
 if (isset($_POST['selectBranch']) && !empty($_POST['selectBranch'])) {
     $searchQuery .= " AND Projection_type.Branch_id = '".$_POST['selectBranch']."'";
@@ -37,14 +40,16 @@ if (isset($_POST['selectVertical']) && !empty($_POST['selectVertical'])) {
     $searchQuery .= "AND Projection_type.Vertical_id = '".$_POST['selectVertical']."'";
 }
 
-if (isset($_POST['selectOrganization']) && !empty($_POST['selectOrganization'])) {
-    $searchQuery .= "AND Projection_type.Organization_id ='".$_POST['selectOrganization']."'";
-}
-
 if (isset($_POST['selectDepartment']) && !empty($_POST['selectDepartment'])) {
     $searchQuery .= "AND Projection_type.Department_id ='".$_POST['selectDepartment']."'";
 }
 
+if (isset($_SESSION['role']) && $_SESSION['role'] == '2') {
+    $searchQuery .= "AND Projection_type.Organization_id = '".$_SESSION['Organization_id']."'";
+    $searchQuery .= " AND Projection_type.Branch_id = '".$_SESSION['Branch_id']."'";
+    $searchQuery .= "AND Projection_type.Vertical_id = '".$_SESSION['Vertical_id']."'";
+    $searchQuery .= "AND Projection_type.Department_id ='".$_SESSION['Department_id']."'";
+}
 
 $delete_query = '';
 if (isset($_POST['projectionType'])) {
@@ -54,7 +59,7 @@ if (isset($_POST['projectionType'])) {
 }
 
 ## Total number of records without filtering
-$all_count = $conn->query("SELECT COUNT(Projection_type.ID) as `allcount` FROM Projection_type WHERE $delete_query");
+$all_count = $conn->query("SELECT COUNT(Projection_type.ID) as `allcount` FROM Projection_type WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($all_count);
 $totalRecords = $records['allcount'];
 

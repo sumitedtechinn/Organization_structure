@@ -9,7 +9,6 @@ $row = $_POST['start'];
 $rowperpage = $_POST['length']; // Rows display per page
 $orderby = '';
 
-
 if (isset($_POST['order'])) {
     $columnIndex = $_POST['order'][0]['column']; // Column index
     $columnName = $_POST['columns'][$columnIndex]['data']; // Column name 
@@ -23,18 +22,40 @@ if (isset($columnSortOrder)) {
 }
 
 $searchQuery = "";
-
+// On user login there down the line hierarchy all user projection will show
 if ($_SESSION['role'] == 2) {
-    $vertical = json_decode($_SESSION['Vertical_id'],true);
+    //$vertical = json_decode($_SESSION['Vertical_id'],true);
     $searchQuery .= " AND Projection.user_id IN (".implode(',',$_SESSION['allChildId']).")";
+}
+
+if ($_SESSION['role'] == '3') {
+    $searchQuery .= "AND Projection.organization_id= '".$_SESSION['Organization_id']."'";
+}
+
+if(isset($_POST['organizationFilter']) && !empty($_POST['organizationFilter'])) {
+    $searchQuery .= "AND Projection.organization_id= '".$_POST['organizationFilter']."'";
+}
+
+if(isset($_POST['branchFilter']) && !empty($_POST['branchFilter'])) {
+    $searchQuery .= "AND Projection.branch_id = '".$_POST['branchFilter']."'";
+}
+
+if(isset($_POST['verticalFilter']) && !empty($_POST['verticalFilter'])) {
+    $searchQuery .= "AND Projection.vertical_id = '".$_POST['verticalFilter']."'";
+}
+
+if(isset($_POST['departmentFilter']) && !empty($_POST['departmentFilter'])) {
+    $searchQuery .= "AND Projection.department_id = '".$_POST['departmentFilter']."'";
+}
+
+if(isset($_POST['selected_year']) && !empty($_POST['selected_year'])) {
+    $searchQuery .= "AND Projection.year = '".$_POST['selected_year']."'";
 }
 
 if (isset($_POST['selected_month']) && !empty($_POST['selected_month'])) {
     if ($_POST['selected_month'] != 13) {
         $searchQuery .= " AND Projection.month = " . $_POST['selected_month'];
     }
-} else {
-    $searchQuery .= " AND Projection.month = MONTH(CURRENT_TIMESTAMP)";
 }
 
 if (isset($_POST['selected_user']) && !empty($_POST['selected_user'])) {
@@ -100,7 +121,8 @@ if ($projection->num_rows > 0 ) {
             'numOfClosure' => $row['numOfClosure'],
             'numOfClosureComplete' => $numOfClosureComplete,
             'numOfClosurePending' => $numOfClosurePending,
-            'month' => $month 
+            'month' => $month ,
+            'year' => $row['year']
         );
     }
 }

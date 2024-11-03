@@ -22,7 +22,11 @@ function getOrganization() {
     $option = '<option value="">Select Organization</option>'; 
     $organization = $conn->query("SELECT id , organization_name FROM `organization` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($organization)) {
-        $option .= '<option value = "'.$row['id'].'" >'.$row['organization_name'].'</option>';
+        if($_SESSION['role'] == '3' && $_SESSION['Organization_id'] == $row['id']) {
+            $option .= '<option value = "'.$row['id'].'" selected>'.$row['organization_name'].'</option>';
+        } else {
+            $option .= '<option value = "'.$row['id'].'" >'.$row['organization_name'].'</option>';    
+        }
     }
     return $option;
 }
@@ -134,33 +138,5 @@ function getProjectionType() {
         $option .= '<option value = "'.$row['id'].'">'.$row['name']."(".$row['department'].")".'</option>';
     }
     return $option;
-}
-
-/**
- * On Super Admin Login 
- * -- Get all the user list for those daily report are generated
- * On Admin login
- * -- Get all the user list for those daily report are genrated and belong to there organization
- * On User login
- * -- Get user list for those daily report are genrated and came under him.
- */
-
-function getDailyReportUser() {
-    global $conn;
-    $searchQuery = '';
-    if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
-        $searchQuery .= "AND users.Organization_id = '".$_SESSION['Organization_id']."'";
-    }
-    if(isset($_SESSION['allChildId'])) {
-        $searchQuery .= "AND users.ID IN (".implode(',',$_SESSION['allChildId']).")";
-    }
-    $option = '<option value="">Select User</option>';
-    $delete_query = "users.Deleted_At IS NULL";
-    $dailyreport_user = $conn->query("SELECT DISTINCT users.Name as `name`,users.ID as `id` FROM users JOIN daily_reporting ON users.ID = daily_reporting.user_id WHERE $delete_query $searchQuery");
-    while ($row = mysqli_fetch_assoc($dailyreport_user)) {
-        $option .= '<option value = "'.$row['id'].'">'.$row['name'].'</option>';
-    }
-    return $option;
-
 }
 ?>

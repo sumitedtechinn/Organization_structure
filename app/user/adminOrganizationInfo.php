@@ -214,6 +214,7 @@ function getBranchDesignation(branch_id){
             branch_id,
             organization_id,
             designation_id,
+            "type" : "adminDesignation"
         },
         success : function(data) {
             $("#designation").html(data);

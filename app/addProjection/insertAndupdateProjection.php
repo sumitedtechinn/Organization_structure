@@ -9,6 +9,45 @@ if (isset($_REQUEST['projection_id'])) {
     $projection_details = mysqli_fetch_assoc($projection);
 }
 
+$optionTagForYear = getYear($projection_details);
+$optionTagForMonth = getMonth($projection_details);
+
+function getYear($projection_details) {
+    $year = date("Y");
+    $option = '<option value ="">Select Year</option>'; 
+    $i = 0;
+    while($i < 2) {
+        if(!empty($projection_details)) {
+            if ($projection_details['year'] == $year) {
+                $option .= "<option value='$year' selected >".$year."</option>";
+            } else {
+                $option .= "<option value='$year'>".$year."</option>";
+            }
+        } else {
+            if($i == 0) {
+                $option .= "<option value='$year' selected >".$year."</option>";
+            } else {
+                $option .= "<option value='$year'>".$year."</option>";
+            }
+        }
+        $year++;$i++;
+    }
+    return $option;
+}
+
+function getMonth($projection_details) {
+    $option = '<option value="">Select</option>';
+    $months_arr = ['1'=>'Jan','2'=>'Feb','3'=>'Mar','4'=>'Apr','5'=>'May','6'=>'Jun','7'=>'Jul','8'=>'Aug','9'=>'Sep','10'=>'Oct','11'=>'Nov','12'=>'Dec'];
+    foreach ($months_arr as $key => $value) {
+        if(!empty($projection_details) && $projection_details['month'] == $key ) {
+            $option .= '<option value="'.$key.'" selected>'.$value.'</option>';
+        } else {
+            $option .= '<option value="'.$key.'">'.$value.'</option>';
+        }
+    }
+    return $option;
+}
+
 ?>
 <style>
     .select2-container {
@@ -58,26 +97,22 @@ if (isset($_REQUEST['projection_id'])) {
                         <input type="text" class="form-control" name="numOfClosure" id = "numOfClosure" value="<?php echo !empty($projection_details) ? $projection_details['numOfClosure'] : '' ?>">
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     <label class="col-sm-12 col-form-label">Month</label>
                     <div class="col-sm-12">
                         <select type="text" class="form-control form-control-sm single-select select2" name="month" id="month" <?php if(!empty($projection_details)) { ?> disabled <?php } ?>>
-                            <option value="">Select</option>
-                            <option value="1" <?php if(!empty($projection_details) && $projection_details['month'] == "1") { ?> selected <?php } ?> >Jan</option>
-                            <option value="3" <?php if(!empty($projection_details) && $projection_details['month'] == "2") { ?> selected <?php } ?>>Mar</option>
-                            <option value="2" <?php if(!empty($projection_details) && $projection_details['month'] == "3") { ?> selected <?php } ?>>Feb</option>
-                            <option value="4" <?php if(!empty($projection_details) && $projection_details['month'] == "4") { ?> selected <?php } ?>>Apr</option>
-                            <option value="5" <?php if(!empty($projection_details) && $projection_details['month'] == "5") { ?> selected <?php } ?>>May</option>
-                            <option value="6" <?php if(!empty($projection_details) && $projection_details['month'] == "6") { ?> selected <?php } ?>>Jun</option>
-                            <option value="7" <?php if(!empty($projection_details) && $projection_details['month'] == "7") { ?> selected <?php } ?>>Jul</option>
-                            <option value="8" <?php if(!empty($projection_details) && $projection_details['month'] == "8") { ?> selected <?php } ?>>Aug</option>
-                            <option value="9" <?php if(!empty($projection_details) && $projection_details['month'] == "9") { ?> selected <?php } ?>>Sep</option>
-                            <option value="10" <?php if(!empty($projection_details) && $projection_details['month'] == "10") { ?> selected <?php } ?>>Oct</option>
-                            <option value="11" <?php if(!empty($projection_details) && $projection_details['month'] == "11") { ?> selected <?php } ?>>Nov</option>
-                            <option value="12" <?php if(!empty($projection_details) && $projection_details['month'] == "12") { ?> selected <?php } ?>>Dec</option>
+                            <?=$optionTagForMonth?>
                         </select>
                     </div>
                 </div>
+                <div class="col-sm-3">
+                    <label class="col-sm-12 col-form-label">Year</label>
+                    <div class="col-sm-12">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="year" id="year" <?php if(!empty($projection_details)) { ?> disabled <?php } ?>>
+                            <?=$optionTagForYear?>
+                        </select>
+                    </div>
+                </div>  
             </div>
             <hr/>
             <div class="row mb-2">
@@ -108,6 +143,7 @@ $(function(){
         user : {required:true} ,
         numOfClosure : {required:true},
         month : {required:true} , 
+        year : {required:true}
     },
     highlight: function (element) {
         $(element).addClass('error');
@@ -199,7 +235,13 @@ $("#form-projection").on('submit',function(e){
                             text: "More then this center is inserted",
                             icon: 'error',
                         });
-                    }
+                    } else if ( data.message == 'Past month projection not allowed') {
+                        Swal.fire({
+                            title : "Past Month Projection" , 
+                            text: data.message,
+                            icon: 'error',
+                        });
+                    } 
                 }
             }
         });

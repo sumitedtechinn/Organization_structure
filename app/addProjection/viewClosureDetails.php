@@ -1,12 +1,8 @@
-<?php
-session_start();
-?>
-
+<?php session_start(); ?>
 <style>
     .select2-container {
         z-index: 999999 !important;
     }
-
     .error {
         color: red;
         font-size: small;
@@ -14,7 +10,6 @@ session_start();
 </style>
 
 <!-- Modal -->
-
 <div class="card-body">
     <div class="border p-4 rounded">
         <div class="card-title d-flex align-items-center justify-content-between">
@@ -106,7 +101,6 @@ $(document).ready(function() {
     $('#viewClosureTable').DataTable(viewClosureSettings);
 });
 
-
 $('#hide-modal-view').click(function() {
     $('.modal').modal('hide');
 });
@@ -116,7 +110,7 @@ function updateClosureDetails(closure_id,projection_id) {
     setTimeout(function(){
         $.ajax({
             url : "/app/addProjection/insertAndUpdateClosure",
-            type : 'post' , 
+            type : 'post', 
             data : {
                 closure_id,
                 projection_id
@@ -160,9 +154,9 @@ function deleteClosureDetails(id,table) {
                     }
                 }
             });
-          } else {
+        } else {
             $('#viewClosureTable').DataTable().ajax.reload(null, false);
-          }
+        }
     });  
 }
 
