@@ -4,19 +4,21 @@ require '../../includes/db-config.php';
 session_start();
 
 $optionTag = '';
-if(isset($_REQUEST['organization_id']) && isset($_REQUEST['branch_id']) && isset($_REQUEST['vertical_id']) && isset($_REQUEST['department_id'])) {
+if($_SESSION['role'] != '2') {
 
-    $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
-    $branch_id = mysqli_real_escape_string($conn,$_REQUEST['branch_id']);
-    $vertical_id = mysqli_real_escape_string($conn,$_REQUEST['vertical_id']);
-    $department_id = mysqli_real_escape_string($conn,$_REQUEST['department_id']);
-    
-    $searchQuery = "AND users.Organization_id = '$organization_id' AND users.Branch_id = '$branch_id' AND users.Vertical_id = '$vertical_id' AND users.Department_id = '$department_id' AND users.Assinged_Person_id IS NOT NULL";
+    if (isset($_REQUEST['organization_id']) && isset($_REQUEST['branch_id']) && isset($_REQUEST['vertical_id']) && isset($_REQUEST['department_id'])) {
+        $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
+        $branch_id = mysqli_real_escape_string($conn,$_REQUEST['branch_id']);
+        $vertical_id = mysqli_real_escape_string($conn,$_REQUEST['vertical_id']);
+        $department_id = mysqli_real_escape_string($conn,$_REQUEST['department_id']);
+        
+        $searchQuery = "AND users.Organization_id = '$organization_id' AND users.Branch_id = '$branch_id' AND users.Vertical_id = '$vertical_id' AND users.Department_id = '$department_id' AND users.Assinged_Person_id IS NOT NULL";
 
-    $optionTag = getUser($searchQuery);
+        $optionTag = getUser($searchQuery);
+    }
 
 } elseif ($_SESSION['role'] == '2') {
-    $searchQuery = "AND users.Organization_id = '".$_SESSION['Organization_id']."' AND users.Branch_id = '".$_SESSION['Branch_id']."' AND users.Vertical_id = '".$_SESSION['Vertical_id']."' AND users.Department_id = '".$_SESSION['Department_id']."' AND users.Assinged_Person_id IS NOT NULL";
+    $searchQuery .= " AND users.ID IN (".implode(',',$_SESSION['allChildId']).") AND users.Assinged_Person_id IS NOT NULL";
     $optionTag = getUser($searchQuery);
 }
 

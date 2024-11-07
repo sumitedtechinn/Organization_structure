@@ -2,6 +2,9 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
+<?php 
+$col_length = ($_SESSION['role'] == '3') ? 'col-sm-4' : 'col-sm-3';
+?>
 
 <style>
 
@@ -49,22 +52,24 @@
 <main class="page-content position-relative">
 <?php if($_SESSION['role'] != '2') {?>
 <div class="container-fluid d-flex justify-content-center align-items-center mt-3 gap-1">
+    <?php if($_SESSION['role'] == '1') { ?>
     <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
         <label class="col-form-label">Organization</label>
         <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
         </select>
     </div>
-    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+    <?php } ?>
+    <div class="<?=$col_length?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
         <label class="col-form-label">Branch</label>
         <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
         </select>
     </div>
-    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+    <div class="<?=$col_length?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
         <label class="col-form-label">Vertical</label>
         <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
         </select>
     </div>
-    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+    <div class="<?=$col_length?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
         <label class="col-form-label">Department</label>
         <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
         </select>
@@ -113,20 +118,38 @@
 <?php } ?>
 
 $(document).ready(function(){
-    var filter_data_field = ['organization'];
-    $.ajax({
-        url : "/app/common/getAllFilterData", 
-        type : "post",
-        contentType: 'json',  // Set the content type to JSON 
-        data: JSON.stringify(filter_data_field), 
-        dataType: 'json', 
-        success : function(data) {
-            for (const key in data) {
-                $("#"+key+"_filter").html(data[key]);
-            }
-        }   
-    })
+    getFilterData();    
 });
+
+function getFilterData() {
+    <?php if($_SESSION['role'] == '1') { ?>
+        var filter_data_field = ['organization'];
+        $.ajax({
+            url : "/app/common/getAllFilterData", 
+            type : "post",
+            contentType: 'json',  // Set the content type to JSON 
+            data: JSON.stringify(filter_data_field), 
+            dataType: 'json', 
+            success : function(data) {
+                for (const key in data) {
+                    $("#"+key+"_filter").html(data[key]);
+                }
+            }   
+        });
+    <?php } elseif ($_SESSION['role'] == '3') { ?>
+        var organization_id = '<?=$_SESSION['Organization_id']?>';
+        $.ajax({
+            url : "/app/common/branchList",
+            type : "post", 
+            data: {
+                organization_id
+            },  
+            success : function(data) {
+                $("#branch_filter").html(data);
+            }   
+        });
+    <?php } ?>
+}
 
 function reloadTable(id) {
     if(id == 'organization_filter') {
@@ -151,7 +174,12 @@ function reloadTable(id) {
             }   
         });  
     } else if (id == 'branch_filter' && $("#branch_filter").val().length > 0) {
-        var organization_id = $("#organization_filter").val();
+        var organization_id = '';
+        <?php if ($_SESSION['role'] == '3') { ?>
+            organization_id = '<?=$_SESSION['Organization_id']?>';
+        <?php } else { ?>
+            organization_id = $("#organization_filter").val();
+        <?php } ?>
         var branch = $("#branch_filter").val();
         $.ajax({
             url : "/app/common/verticalList",
@@ -170,7 +198,12 @@ function reloadTable(id) {
             }   
         });  
     } else if(id == 'vertical_filter' && $("#vertical_filter").val().length > 0){
-        var organization_id = $("#organization_filter").val();
+        var organization_id = '';
+        <?php if ($_SESSION['role'] == '3') { ?>
+            organization_id = '<?=$_SESSION['Organization_id']?>';
+        <?php } else { ?>
+            organization_id = $("#organization_filter").val();
+        <?php } ?>
         var branch_id = $("#branch_filter").val();
         var vertical_id = $("#vertical_filter").val();
         $.ajax({
@@ -195,7 +228,11 @@ async function fetchData() {
     try {
         var filter_data = {};
         filter_data.department_id =  ($('#department_filter option').length > 0 && $('#department_filter').val().length > 0 ) ? $('#department_filter').val() : '';
-        filter_data.organization_id = ($('#organization_filter option').length > 0 && $('#organization_filter').val().length > 0 ) ? $('#organization_filter').val() : '';
+        <?php if ($_SESSION['role'] == '3') { ?>
+            filter_data.organization_id = '<?=$_SESSION['Organization_id']?>';
+        <?php } else { ?>
+            filter_data.organization_id = ($('#organization_filter option').length > 0 && $('#organization_filter').val().length > 0 ) ? $('#organization_filter').val() : '';
+        <?php } ?>
         filter_data.branch_id = ($('#branch_filter option').length > 0 && $('#branch_filter').val().length > 0) ? $('#branch_filter').val() : '';
         filter_data.vertical_id = ($('#vertical_filter option').length > 0 && $('#vertical_filter').val().length > 0)? $("#vertical_filter").val() : '';
         const response = await fetch('/app/organization_layout/layout-server' , {

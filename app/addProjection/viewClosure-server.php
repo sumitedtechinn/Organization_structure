@@ -29,7 +29,7 @@ if (isset($_REQUEST['projection_id'])) {
 
     $searchQuery = "";
     if (!empty($searchValue)) {
-        $searchQuery = "AND (Closure_details.Name LIKE '%$searchValue%' OR Closure_details.Email LIKE '%$searchValue%' OR Closure_details.Contact LIKE '%$searchValue%' OR Closure_details.Closing_date LIKE '%$searchValue%')"; 
+        $searchQuery = "AND (Closure_details.center_name LIKE '%$searchValue%' OR Closure_details.center_email LIKE '%$searchValue%')"; 
     }
 
     ## Total number of records without filtering

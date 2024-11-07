@@ -152,13 +152,15 @@ var UserSettings = {
                     var organization = '<span>'+row.organization_name+'</span>';
                     var vertical = '<span>All</span>';
                     var branch = (row.branch_name == null) ? '<span>All</span>': '<span>'+row.branch_name+'</span>';
+                    var role_name = row.role_name.toUpperCase();
                 } else {
                     var department = (row.department == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.department+'</span>';
                     var organization = (row.organization_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.organization_name+'</span>';
                     var vertical = (row.vertical_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.vertical_name+'</span>';
                     var branch = (row.branch_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.branch_name+'</span>';
+                    var role_name = row.role_name.toUpperCase();
                 }
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b> '+organization+'</p><p class = "mb-1"><b>Branch : </b> '+branch+'</p><p class = "mb-1"><b>Vertical : </b> '+vertical+'</p><p class = "mb-1"><b>Department : </b> '+department+'</p></div>';
+                return '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b> '+organization+'</p><p class = "mb-1"><b>Branch : </b> '+branch+'</p><p class = "mb-1"><b>Vertical : </b> '+vertical+'</p><p class = "mb-1"><b>Department : </b> '+department+'</p><p class = "mb-1 text-wrap" style = "width:200px;"><b>Role : </b>'+role_name+'</p></div>';
             } 
         },{
             data: "Address" ,

@@ -24,7 +24,6 @@ if (isset($columnSortOrder)) {
 $searchQuery = "";
 // On user login there down the line hierarchy all user projection will show
 if ($_SESSION['role'] == 2) {
-    //$vertical = json_decode($_SESSION['Vertical_id'],true);
     $searchQuery .= " AND Projection.user_id IN (".implode(',',$_SESSION['allChildId']).")";
 }
 

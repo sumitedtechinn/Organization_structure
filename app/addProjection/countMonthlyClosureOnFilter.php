@@ -26,10 +26,7 @@ if(isset($_POST['department']) && !empty($_POST['department']) && $_POST['depart
 }
 
 if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
-    $projectionSearchQuery .= " AND organization_id = '".$_SESSION['Organization_id']."'";
-    $projectionSearchQuery .= " AND branch_id = '".$_SESSION['Branch_id']."'";
-    $projectionSearchQuery .= " AND vertical_id = '".$_SESSION['Vertical_id']."'";
-    $projectionSearchQuery .= " AND department_id = '".$_SESSION['Department_id']."'";
+    $projectionSearchQuery .= " AND user_id IN (".implode(',',$_SESSION['allChildId']).")";
 }
 
 if(isset($_POST['projectionType']) && !empty($_POST['projectionType']) && $_POST['projectionType'] != 'None') {

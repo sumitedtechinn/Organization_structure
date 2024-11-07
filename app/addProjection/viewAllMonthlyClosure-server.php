@@ -26,7 +26,7 @@ $searchValue = mysqli_real_escape_string($conn, $_POST['search']['value']); // S
 
 $searchQuery = "";
 if (!empty($searchValue)) {
-    $searchQuery = "AND (Closure_details.Name LIKE '%$searchValue%' OR Closure_details.Email LIKE '%$searchValue%' OR Closure_details.Contact LIKE '%$searchValue%')"; 
+    $searchQuery = "AND (Closure_details.center_name LIKE '%$searchValue%' OR Closure_details.center_email LIKE '%$searchValue%')"; 
 }
 
 $projectionSearchQuery = '';
