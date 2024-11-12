@@ -50,11 +50,23 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     #organization_filter,#branch_filter,#vertical_filter,#department_filter,#projectionType_filter,#user_filter{
         background-color: #f2f2f2 !important;
     }
+
+    .page-content {
+        margin-top: 15px !important;
+        padding: 1rem 1rem 2rem 1rem;
+    }
+
+    #projection_summary {
+        padding-right: 1%;
+        gap: 1.2rem ;
+        margin-right: 0.6rem;
+    }
+
 </style>
 
 
 <!--start content-->
-<main class="page-content" style="margin-top: 15px !important;" >
+<main class="page-content">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
@@ -75,7 +87,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                     </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-start <?=$gap?> mt-2" style="padding-right: 1%;">
+            <div class="d-flex align-items-center justify-content-start <?=$gap?> mt-2 mb-2" style="padding-right: 1%;">
                 <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { 
                     if($_SESSION['role'] != '3') {
                 ?>
@@ -112,25 +124,48 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                     </select>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-start gap-2 m-2" style="padding-right: 1%;">
-                <div class="col-sm-4 card bg-light p-1 mb-1" style="z-index: 0 !important;" id = "organization_info">
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;" id = "total_projection">
-                    <div class="fw-bold text-center" style="font-size:larger;">Total Monthly Projection</div>
-                    <div class="text-center mt-4 fw-bold" id="total_projection_number" style="font-size: xx-large;"></div>
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;" id = "projection_completed">
-                    <div class="fw-bold text-center" style="font-size:medium;">Complete Monthly Projection</div>
-                    <div class="text-center mt-4 fw-bold" id="completed_projection_number" style="font-size: xx-large;">20</div>
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;" id = "projection_completed">
-                    <div class="fw-bold text-center" style="font-size:medium;">Pending Monthly Projection</div>
-                    <div class="text-center mt-4 fw-bold" id="pending_projection_number" style="font-size: xx-large;">20</div>
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;" id = "projection_completed">
-                    <div class="fw-bold text-center" style="font-size:medium;">View All Projection</div>
-                    <div class="text-center mt-4 fw-bold" id="pending_projection_number" style="font-size: xx-large;">
-                        <button type="button" class="btn btn-outline-info px-4" style="font-size:small" onclick="viewAllMonthlyClosureDetails()">View All</button>
+            <div class="d-flex align-items-center justify-content-start" id = "projection_summary">
+                <div class="col-sm-4 card bg-light mb-1" id="organization_info" style="padding: 1.2rem;"></div>
+                <div class="col-sm-8">
+                    <div class="row mb-1" id = "center_projection">
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_total_projection">
+                            <div class="fw-bold text-center">Total Center Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="center_total_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_completed">
+                            <div class="fw-bold text-center">Completed Center Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="center_completed_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_pending">
+                            <div class="fw-bold text-center">Pending Center Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="center_pending_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_view">
+                            <div class="fw-bold text-center">View All Center Projection</div>
+                            <div class="text-center mt-2 fw-bold" id="pending_projection_number">
+                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyClosureDetails('center')">View All</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id = "admission_projection">
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_total_projection">
+                            <div class="fw-bold text-center">Total Admission Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="admission_total_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_projection_completed">
+                            <div class="fw-bold text-center">Completed Admission Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="admission_completed_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_projection_pending">
+                            <div class="fw-bold text-center">Pending Admission Projection</div>
+                            <div class="text-center mt-3 fw-bold" id="admission_pending_projection_number"></div>
+                        </div>
+                        <div class="col-sm-3 card bg-light p-1 mb-1"  id = "admission_projection_view">
+                            <div class="fw-bold text-center">View All Admission Projection</div>
+                            <div class="text-center mt-2 fw-bold" id="pending_projection_number">
+                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyClosureDetails('admission')">View All</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -237,7 +272,7 @@ var projectionSettings = {
             }
         }
     ],
-    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     "destroy": true,
     "scrollCollapse": true,
     drawCallback: function(settings, json) {
@@ -283,7 +318,7 @@ function makeOrganizationInfoAndProjectionData() {
             }
         }
     <?php } ?>
-    var info = '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b>'+info_data.organization+'</p><p class = "mb-1"><b>Branch : </b>'+info_data.branch+'</p><p class = "mb-1"><b>Vertical : </b>'+info_data.vertical+'</p><p class = "mb-1"><b>Department : </b>'+info_data.department+'</p></div>';
+    var info = '<div style="font-size:small;"><p class = "mb-2"><b>Organization : </b>'+info_data.organization+'</p><p class = "mb-2"><b>Branch : </b>'+info_data.branch+'</p><p class = "mb-2"><b>Vertical : </b>'+info_data.vertical+'</p><p class = "mb-2"><b>Department : </b>'+info_data.department+'</p></div>';
     $("#organization_info").html(info);
 }
 
@@ -300,7 +335,8 @@ function reloadTable(id) {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
+                $("#branch_filter").html(updateOptionTag(data));
+                $("#branch_filter").trigger('change');
                 filter_arr = ['vertical','department','projectionType','user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -326,7 +362,8 @@ function reloadTable(id) {
                 branch
             }, 
             success : function(data) {
-                $("#vertical_filter").html(data);
+                $("#vertical_filter").html(updateOptionTag(data));
+                $("#vertical_filter").trigger('change');
                 filter_arr = ['department','projectionType','user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -354,7 +391,8 @@ function reloadTable(id) {
                 vertical_id
             },  
             success : function(data) {
-                $("#department_filter").html(data);
+                $("#department_filter").html(updateOptionTag(data));
+                $("#department_filter").trigger('change');
                 filter_arr = ['projectionType','user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -420,6 +458,23 @@ function triggerChange(id) {
     isUpdating = false;
 }
 
+function updateOptionTag(strData) {
+    let options = strData.split('</option>');
+    options = options.filter((option) => (option != '') ? true : false);
+    let count = 1;
+    options = options.map((option) => {
+        option += '</option>';
+        if(count === 1) {
+            if (!option.includes('value=""')) {
+                option = option.replace('<option', '<option selected');
+                count++;
+            }
+        }
+        return option;
+    });
+    return options.join('');
+}
+
 function getFilterData() {
     <?php if($_SESSION['role'] == '1') { ?>
         var filter_data_field = ['organization'];
@@ -431,7 +486,8 @@ function getFilterData() {
             dataType: 'json', 
             success : function(data) {
                 for (const key in data) {
-                    $("#"+key+"_filter").html(data[key]);
+                    $("#"+key+"_filter").html(updateOptionTag(data[key]));
+                    $("#"+key+"_filter").trigger('change');
                 }
                 makeOrganizationInfoAndProjectionData();
                 showMonthlyClosureDetails();
@@ -446,7 +502,8 @@ function getFilterData() {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
+                $("#branch_filter").html(updateOptionTag(data[key]));
+                $("#branch_filter").trigger('change');
                 makeOrganizationInfoAndProjectionData();
                 showMonthlyClosureDetails();
             }   
@@ -528,8 +585,8 @@ function viewClosureDetailsProjectionBias(projection_id) {
     });
 } 
 
-function viewAllMonthlyClosureDetails() {
-    let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , projectionType : "" , user : "" , month : "" , year : ""};
+function viewAllMonthlyClosureDetails(type) {
+    let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , projectionType : "" , user : "" , month : "" , year : "", selected_projectiontype : type};
     var filter_arr = ['organization','branch','vertical','department','projectionType','user','month','year'];
     for (const value of filter_arr) {
         if($('#'+value+'_filter option').length > 0 && $('#'+value+'_filter').val().length > 0) {
@@ -565,9 +622,9 @@ function showMonthlyClosureDetails() {
         data : info_data,
         dataType : "json",
         success: function(data) {
-            $("#total_projection_number").text(data.total_projection);
-            $("#completed_projection_number").text(data.projection_complete);
-            $("#pending_projection_number").text(data.projection_pending);
+            for (const key in data) {
+                $("#"+key).text(data[key]);
+            }
         }
     });
 }

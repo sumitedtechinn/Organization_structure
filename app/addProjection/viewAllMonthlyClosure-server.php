@@ -32,23 +32,30 @@ if (!empty($searchValue)) {
 $projectionSearchQuery = '';
 
 if(isset($_POST['organization_id']) && !empty($_POST['organization_id']) && $_POST['organization_id'] != 'None') {
-    $projectionSearchQuery .= "AND organization_id = '".$_POST['organization_id']."'";
+    $projectionSearchQuery .= " AND organization_id = '".$_POST['organization_id']."'";
 }
 
 if(isset($_POST['branch_id']) && !empty($_POST['branch_id']) && $_POST['branch_id'] != 'None') {
-    $projectionSearchQuery .= "AND branch_id = '".$_POST['branch_id']."'";
+    $projectionSearchQuery .= " AND branch_id = '".$_POST['branch_id']."'";
 }
 
 if(isset($_POST['vertical_id']) && !empty($_POST['vertical_id']) && $_POST['vertical_id'] != 'None') {
-    $projectionSearchQuery .= "AND vertical_id = '".$_POST['vertical_id']."'";
+    $projectionSearchQuery .= " AND vertical_id = '".$_POST['vertical_id']."'";
 }
 
 if(isset($_POST['department_id']) && !empty($_POST['department_id']) && $_POST['department_id'] != 'None') {
-    $projectionSearchQuery .= "AND department_id = '".$_POST['department_id']."'";
+    $projectionSearchQuery .= " AND department_id = '".$_POST['department_id']."'";
 }
 
 if(isset($_POST['projectionType']) && !empty($_POST['projectionType']) && $_POST['projectionType'] != 'None') {
-    $projectionSearchQuery .= "AND projectionType = '".$_POST['projectionType']."'";
+    $projectionSearchQuery .= " AND projectionType = '".$_POST['projectionType']."'";
+}
+
+if(isset($_POST['selected_projectionType']) && !empty($_POST['selected_projectionType'])) {
+    $type = mysqli_real_escape_string($conn,$_POST['selected_projectionType']);
+    $projection_type = $conn->query("SELECT GROUP_CONCAT(ID) as `ids` FROM `Projection_type` WHERE Name LIKE '%".$type."%' OR Name LIKE '%".ucfirst($type)."%'");
+    $projection_type = mysqli_fetch_column($projection_type);
+    $projectionSearchQuery .= " AND projectionType IN ($projection_type)";
 }
 
 if(isset($_POST['user']) && !empty($_POST['user']) && $_POST['user'] != 'None') {

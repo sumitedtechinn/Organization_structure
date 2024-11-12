@@ -54,6 +54,7 @@ var viewAllClosureSettings = {
             d.user = '<?=$_REQUEST['user']?>';
             d.month = '<?=$_REQUEST['month']?>';
             d.year = '<?=$_REQUEST['year']?>';
+            d.selected_projectionType = '<?=$_REQUEST['selected_projectiontype']?>';
         }
     },
     'columns': [{

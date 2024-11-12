@@ -8,6 +8,23 @@ $col_size = ($_SESSION['role'] == '3') ? "col-sm-3" : "col-sm-2";
 $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
 ?>
 
+<style>
+
+#total_summary_report{
+    z-index: 4;
+    position: fixed;
+    bottom: 0px;
+    width:93.6%;
+}
+
+#total_report_box,#total_call_box,#total_new_call_box,#total_meeting_box,#total_doc_prepare_box,#total_doc_received_box,#total_deal_close_box {
+    z-index: 0 !important;
+    background-color: #f2f2f2 !important;
+    color: #434746 !important;
+    font-size: 13px;
+}
+
+</style>
 <!--start content-->
 <main class="page-content">
     <div class="row justify-content-center">
@@ -56,7 +73,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                     </div>
                     <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
                         <label class="col-form-label" style="font-size: small;">Date Range</label>   
-                        <input type="text" name="daterange" id="daterange" class="form-control" onchange="reloadTable(this.id)"/>
+                        <input type="text" name="daterange_filter" id="daterange_filter" class="form-control" onchange="reloadTable(this.id)"/>
                     </div>
                 </div>
                 <div class="table-responsive mt-3">
@@ -76,6 +93,39 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                             </tr>
                         </thead>
                     </table>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="card" style="margin-bottom: 0px !important;" id = "total_summary_report">
+            <div class="d-flex align-items-center justify-content-start gap-1 m-2" style="padding-right: 1%;">
+                <div class="col-3 col-sm-3 card p-3 mb-1" id = "total_report_box">
+                    <div class="fw-bold text-center">Total Daily Report Status</div>
+                </div>
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_call_box">
+                    <div class="fw-bold text-center">Total Call</div>
+                    <div class="text-center fw-bold" id="total_call" ></div>
+                </div>
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_new_call_box">
+                    <div class="fw-bold text-center">New Call</div>
+                    <div class="text-center fw-bold" id="total_new_call" ></div>
+                </div>
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_meeting_box">
+                    <div class="fw-bold text-center">No. Meetings</div>
+                    <div class="text-center fw-bold" id="total_meeting" ></div>
+                </div>
+                <div class="col-2 col-sm-2 card p-2 mb-1" id = "total_doc_prepare_box">
+                    <div class="fw-bold text-center">Doc Preapre</div>
+                    <div class="text-center fw-bold" id="total_doc_prepare" ></div>
+                </div>
+                <div class="col-2 col-sm-2 card p-2 mb-1" id = "total_doc_received_box">
+                    <div class="fw-bold text-center">Doc Received</div>
+                    <div class="text-center fw-bold" id="total_doc_received" ></div>
+                </div>
+                <div class="col-sm-2 card p-2 mb-1" id = "total_deal_close_box">
+                    <div class="fw-bold text-center">Deal Close</div>
+                    <div class="text-center fw-bold" id="total_deal_close" ></div>
                 </div>
             </div>
         </div>
@@ -91,6 +141,7 @@ var dailyReportSettings = {
     'processing': true,
     'serverSide': true,
     'serverMethod': 'post',
+    "searching": false ,
     'ajax': {
         'url': '/app/dailyReporting/dailyReport-server',
         'type': 'POST',
@@ -100,7 +151,7 @@ var dailyReportSettings = {
             d.verticalFilter = $("#vertical_filter").val();
             d.departmentFilter = $("#department_filter").val(); 
             d.selected_user = $("#user_filter").val();
-            d.selected_date = $("#daterange").val();
+            d.selected_date = $("#daterange_filter").val();
         }
     },
     'columns': [{
@@ -113,93 +164,86 @@ var dailyReportSettings = {
             }
             return '<div class = "d-flex align-items-center gap-3 fs-6">' + image + '</div>';
         }
-    }, {
+    },{
         data: "user_name",
         render: function(data, type, row) {
             var user = (row.user_delete == 'No') ? '<div class = "text-wrap" style = "width:150px;">' + data + '</div>' : '<div class = "text-wrap text-danger" style = "width:150px;">' + data + '</div>'
             return user;
         }
-    }, {
+    },{
         data: "date",
-    }, {
+    },{
         data: "total_call",
         render: function(data, type, row) {
             return '<div><i class="bi bi-telephone"></i><b> ' + data + '</b></div>';
         }
-    }, {
+    },{
         data: "new_call",
         render: function(data, type, row) {
             return '<div><i class="bi bi-telephone"></i><b> ' + data + '</b></div>';
         }
-    }, {
+    },{
         data: "numofmeeting",
         render: function(data, type, row) {
-            return '<div><i class="bi bi-calendar-event"></i><b> ' + data + '</b></div>';
+            if (data === 'None' || data === '') {
+                return '<div><i class="bi bi-calendar-event"></i><b> 0 </b></div>';    
+            } else {
+                return '<div><i class="bi bi-calendar-event"></i><b> ' + data + '</b></div>';
+            }
+            
         }
-    }, {
+    },{
         data: "doc_prepare",
         render: function(data, type, row) {
             if (Array.isArray(data)) {
-                let centers = '';
-                let i = 0;
-                for (let key in data) {
-                    i++;
-                    if (data[key]['center_delete'] == 'Yes') {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                var ids = '';
+                for(let i = 0 ; i < data.length ; i++) {
+                    if(i != data.length-1) {
+                        ids += data[i];
+                        ids += ',';
                     } else {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
-                    }
-                    if (i % 2 == 0) {
-                        centers += '<br>';
+                        ids += data[i];
                     }
                 }
-                return '<div>' + centers + '</div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div>' + data + '</div>';
+                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
         data: "doc_received",
         render: function(data, type, row) {
             if (Array.isArray(data)) {
-                let centers = '';
-                let i = 0;
-                for (let key in data) {
-                    i++;
-                    if (data[key]['center_delete'] == 'Yes') {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                var ids = '';
+                for(let i = 0 ; i < data.length ; i++) {
+                    if(i != data.length-1) {
+                        ids += data[i];
+                        ids += ',';
                     } else {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
-                    }
-                    if (i % 2 == 0) {
-                        centers += '<br>';
+                        ids += data[i];
                     }
                 }
-                return '<div>' + centers + '</div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div>' + data + '</div>';
+                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
         data: "doc_close",
         render: function(data, type, row) {
             if (Array.isArray(data)) {
-                let centers = '';
-                let i = 0;
-                for (let key in data) {
-                    i++;
-                    if (data[key]['center_delete'] == 'Yes') {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#e3382a !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
+                var ids = '';
+                for(let i = 0 ; i < data.length ; i++) {
+                    if(i != data.length-1) {
+                        ids += data[i];
+                        ids += ',';
                     } else {
-                        centers += '<span class="badge rounded-pill bg-info m-1" style="background-color:#1a2232 !important;font-weight:200!important;font-size:13px;">' + data[key]['center_name'] + '</span>';
-                    }
-                    if (i % 2 == 0) {
-                        centers += '<br>';
+                        ids += data[i];
                     }
                 }
-                return '<div>' + centers + '</div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div>' + data + '</div>';
+                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
@@ -212,7 +256,7 @@ var dailyReportSettings = {
             return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">'+edit+'</div>';
         }
     }],
-    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     "destroy": true,
     "scrollCollapse": true,
     drawCallback: function(settings, json) {
@@ -236,7 +280,8 @@ function reloadTable(id) {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
+                $("#branch_filter").html(updateOptionTag(data));
+                $("#branch_filter").trigger('change');
                 filter_arr = ['vertical','department','user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -262,7 +307,8 @@ function reloadTable(id) {
                 branch
             }, 
             success : function(data) {
-                $("#vertical_filter").html(data);
+                $("#vertical_filter").html(updateOptionTag(data));
+                $("#vertical_filter").trigger('change');
                 filter_arr = ['department','user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -290,7 +336,8 @@ function reloadTable(id) {
                 vertical_id
             },  
             success : function(data) {
-                $("#department_filter").html(data);
+                $("#department_filter").html(updateOptionTag(data));
+                $("#department_filter").trigger('change');
                 filter_arr = ['user'];
                 for (const key in filter_arr) {
                     if($('#'+filter_arr[key]+'_filter option').length > 0) {
@@ -331,6 +378,7 @@ function reloadTable(id) {
 
 function reloadTableAndOrganizationInfo() {
     $('.table').DataTable().ajax.reload(null, false);
+    showTotalDailyReportStatus();
 }
 
 function triggerChange(id) {
@@ -339,6 +387,64 @@ function triggerChange(id) {
     $("#"+id).val("");
     $("#"+id).trigger('change');
     isUpdating = false;
+}
+
+function seeCenterDetails(ids) {
+    $.ajax({
+        url : "/app/dailyReporting/viewCenter",  
+        type : "post", 
+        data : {
+            ids
+        },
+        success : function(data){
+            $('#lg-modal-content').html(data);
+            $('#lgmodal').modal('show');
+        }
+    });
+}
+
+function showTotalDailyReportStatus() {
+    let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , user : "" , daterange : ""};
+    var filter_arr = ['organization','branch','vertical','department','user','daterange'];
+    for (const value of filter_arr) {
+        if(value === 'daterange') {
+            info_data[value] = $('#'+value+'_filter').val();
+        } else {
+            if($('#'+value+'_filter option').length > 0 && $('#'+value+'_filter').val().length > 0) {
+                info_data[value] = $('#'+value+'_filter').val();
+            } else {
+                info_data[value] = "None";
+            }
+        }
+    }
+    $.ajax({
+        url: "/app/dailyReporting/getCompleteStatus",
+        type: 'post',
+        data : info_data,
+        dataType : "json",
+        success: function(data) {
+            for (const key in data) {
+                $("#"+key).text(data[key]);
+            }
+        }
+    });
+}
+
+function updateOptionTag(strData) {
+    let options = strData.split('</option>');
+    options = options.filter((option) => (option != '') ? true : false);
+    let count = 1;
+    options = options.map((option) => {
+        option += '</option>';
+        if(count === 1) {
+            if (!option.includes('value=""')) {
+                option = option.replace('<option', '<option selected');
+                count++;
+            }
+        }
+        return option;
+    });
+    return options.join('');
 }
 
 function getFilterData() {
@@ -352,11 +458,12 @@ function getFilterData() {
             dataType: 'json', 
             success : function(data) {
                 for (const key in data) {
-                    $("#"+key+"_filter").html(data[key]);
+                    $("#"+key+"_filter").html(updateOptionTag(data[key]));
+                    $("#"+key+"_filter").trigger('change'); 
                 }
             }   
         });
-        <?php }  elseif ($_SESSION['role'] == '3') { ?>
+        <?php } elseif ($_SESSION['role'] == '3') { ?>
         var organization_id = '<?=$_SESSION['Organization_id']?>';
         $.ajax({
             url : "/app/common/branchList",
@@ -365,10 +472,11 @@ function getFilterData() {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
+                $("#branch_filter").html(updateOptionTag(data[key]));
+                $("#branch_filter").trigger('change');
             }   
         });
-    <?php }  elseif ($_SESSION['role'] == '2') { ?>
+    <?php } elseif ($_SESSION['role'] == '2') { ?>
         var organization_id = '<?=$_SESSION['Organization_id']?>';
         var branch_id = '<?=$_SESSION['Branch_id']?>';
         var vertical_id = '<?=$_SESSION['Vertical_id']?>';
@@ -391,7 +499,7 @@ function getFilterData() {
 
 $(document).ready(function(){
     const dt_permission = $('#dailyReportTable').DataTable(dailyReportSettings);
-    $('#daterange').daterangepicker({
+    $('#daterange_filter').daterangepicker({
         startDate: new Date(new Date().getTime() - (10 * 24 * 60 * 60 * 1000)),
         endDate: new Date(),
         locale: {
