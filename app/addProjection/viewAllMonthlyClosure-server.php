@@ -35,6 +35,10 @@ if(isset($_POST['organization_id']) && !empty($_POST['organization_id']) && $_PO
     $projectionSearchQuery .= " AND organization_id = '".$_POST['organization_id']."'";
 }
 
+if(isset($_SESSION['role']) && $_SESSION['role'] == '3') {
+    $projectionSearchQuery .= " AND organization_id = '".$_SESSION['Organization_id']."'";
+}
+
 if(isset($_POST['branch_id']) && !empty($_POST['branch_id']) && $_POST['branch_id'] != 'None') {
     $projectionSearchQuery .= " AND branch_id = '".$_POST['branch_id']."'";
 }
@@ -60,6 +64,10 @@ if(isset($_POST['selected_projectionType']) && !empty($_POST['selected_projectio
 
 if(isset($_POST['user']) && !empty($_POST['user']) && $_POST['user'] != 'None') {
     $projectionSearchQuery .= "AND user_id = '".$_POST['user']."'";
+}
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
+    $projectionSearchQuery .= " AND user_id IN (".implode(',',$_SESSION['allChildId']).")";
 }
 
 if(isset($_POST['month']) && !empty($_POST['month']) && $_POST['month'] != 'None') {

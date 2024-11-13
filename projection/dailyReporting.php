@@ -522,6 +522,8 @@ function addDailyReport() {
 
 function updateDetails(report_id, creatDate) {
     const d = new Date(Date.now()).toLocaleString().split(',')[0];
+    // console.log(d);
+    // console.log(creatDate);
     <?php if ($_SESSION['role'] == '2') { ?>
         if (creatDate.localeCompare(d) == 0) {
             $.ajax({
