@@ -75,11 +75,13 @@ var phoneInput = intlTelInput(phoneInputField, {
 
 $(document).ready(function(){
     var projection_type = '';
+    var projectionType_form = 'center';
     $.ajax({
         url : "/app/common/projectionTypeList" ,
         type : "post" ,
         data : {
-            projection_type
+            projection_type,
+            projectionType_form
         },
         success : function(data) {
             $("#projection_type_<?=$_REQUEST['center_count']?>").html(data);

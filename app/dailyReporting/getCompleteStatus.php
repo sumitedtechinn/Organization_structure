@@ -57,14 +57,25 @@ if(!empty($selected_user_id)) {
 
 $closures = $conn->query("SELECT * FROM `daily_reporting` WHERE Deleted_At IS NULL $searchQuery");
 
-$closure_data = ['total_call'=> 0,'total_new_call'=> 0 ,'total_meeting'=> 0 ,'total_doc_prepare' => 0,'total_doc_received'=> 0 ,'total_deal_close'=> 0];
+$closure_data = ['total_call'=> 0,'total_new_call'=> 0 ,'total_meeting'=> 0 ,'total_doc_prepare' => 0,'total_doc_received'=> 0 ,'total_deal_close'=> 0,'total_admission' => 0];
 
 if($closures->num_rows > 0) {
     while($row = mysqli_fetch_assoc($closures)) {
         $closure_data['total_call'] += intval($row['total_call']);
         $closure_data['total_new_call'] += intval($row['new_call']);
         if(!empty($row['numofmeeting'])) {
-            $closure_data['total_meeting'] += intval($row['numofmeeting']);
+            if(is_numeric($row['numofmeeting'])) {
+                $closure_data['total_meeting'] += intval($row['numofmeeting']); 
+            } else {
+                $numofmeeting = json_decode($row['numofmeeting'],true);
+                $closure_data['total_meeting'] += count($numofmeeting);
+            }
+        }
+        if (!empty($row['admission_ids'])) {
+            $admission_ids = json_decode($row['admission_ids'],true);
+            $adm_query = $conn->query("SELECT SUM(numofadmission) FROM `admission_details` WHERE id IN (".implode(',',$admission_ids).")");
+            $admission_count = mysqli_fetch_column($adm_query);
+            $closure_data['total_admission'] += $admission_count;
         }
         if (!empty($row['doc_prepare'])) {
             $row['doc_prepare'] = json_decode($row['doc_prepare'],true);

@@ -18,6 +18,13 @@ if (isset($_REQUEST['branch']) && isset($_REQUEST['department']) && isset($_REQU
     $organization = $department_details['organization_id'];
     $vertical = $department_details['vertical_id'];
 
+    $checkVacancy = $conn->query("SELECT COUNT(ID) FROM `Vacancies` WHERE Organization_id = '$organization' AND Branch_id = '$branch' AND Vertical_id = '$vertical' AND Department_id = '$department' AND Designation_id = '$designation'");
+    $checkVacancy = mysqli_fetch_column($checkVacancy);
+    
+    if ($checkVacancy >= 1) {
+        showResponse(false,'Duplicate Entry Found','Vacancy already generated for this Designation');
+        die;
+    }
     $checkColorOfNode = $conn->query("SELECT color FROM `Department` WHERE color IS NOT NULL LIMIT 1");
     if ($checkColorOfNode->num_rows > 0) {
         $checkColorOfNode = mysqli_fetch_column($checkColorOfNode);
@@ -34,7 +41,7 @@ if (isset($_REQUEST['branch']) && isset($_REQUEST['department']) && isset($_REQU
     $vacacy_data = $conn->query("SELECT * FROM `Vacancies` WHERE ID = '".$_REQUEST['ID']."'");
     $vacacy_data = mysqli_fetch_assoc($vacacy_data);
 
-    $vacancies_fill = $conn->query("SELECT COUNT(users.ID) as `allcount` FROM users where Branch_id = '".$vacacy_data['Branch_id']."' AND Vertical_id = '".$vacacy_data['Vertical_id']."' AND Organization_id = '".$vacacy_data['Organization_id']."' AND Department_id = '".$vacacy_data['Department_id']."' AND  Designation_id = '".$vacacy_data['Designation_id']."' AND Deleted_At IS NULL");
+    $vacancies_fill = $conn->query("SELECT COUNT(users.ID) as `allcount` FROM users where Branch_id = '".$vacacy_data['Branch_id']."' AND Vertical_id = '".$vacacy_data['Vertical_id']."' AND Organization_id = '".$vacacy_data['Organization_id']."' AND Department_id = '".$vacacy_data['Department_id']."' AND  Designation_id = '".$vacacy_data['Designation_id']."' AND Assinged_Person_id IS NOT NULL AND Deleted_At IS NULL");
     $numofvacanciesfill = mysqli_fetch_column($vacancies_fill);
 
     $numofvacancies = mysqli_real_escape_string($conn,$_POST['numofvacancies']);
@@ -49,13 +56,16 @@ if (isset($_REQUEST['branch']) && isset($_REQUEST['department']) && isset($_REQU
     }
 }
 
-function showResponse($response, $message = "Something went wrong!") {
+function showResponse($response, $message = "Something went wrong!",$text = null) {
     if ($response) {
         echo json_encode(['status' => 200, 'message' => "Vacancies $message successfully!"]);
     } else {
-        echo json_encode(['status' => 400, 'message' => $message]);
+        if(is_null($text)) {
+            echo json_encode(['status' => 400, 'message' => $message]);
+        } else {
+            echo json_encode(['status' => 400, 'message' => $message, 'text' => $text]);
+        }
     }
 }
-
 
 ?>

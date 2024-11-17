@@ -277,7 +277,16 @@ $("#form-vacancies").on('submit',function(e){
                     toastr.success(data.message);
                     $('.table').DataTable().ajax.reload(null, false);
                 } else {
-                    toastr.error(data.message);
+                    if(data.message == 'Duplicate Entry Found') {
+                        Swal.fire({
+                            title: data.message,
+                            text: data.text, 
+                            icon: 'error',
+                        });
+                        $('.modal').modal('hide');
+                    } else {
+                        toastr.error(data.message);
+                    }
                 }
             }
         });

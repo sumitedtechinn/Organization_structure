@@ -97,55 +97,31 @@ $data = [];
 if($dailyReport->num_rows > 0) {
     while ($row = mysqli_fetch_assoc($dailyReport)) {
         $report_date = date_format(date_create($row["date"]),'d-M-Y');
-        $doc_preapre = [];
-        if(!empty($row['doc_prepare'])) {
-            $doc_preapre = json_decode($row['doc_prepare'],true);
-            $doc_prepare_ids = json_decode($row['doc_prepare'],true);
-            // $prepareDocCenterName = $conn->query("SELECT center_name , IF(Deleted_At IS NULL,'No','Yes') as `center_delete` FROM `Closure_details` WHERE id IN (".implode(',',$doc_prepare_ids).")");
-            // if($prepareDocCenterName->num_rows > 0) {
-            //     $i= 0;
-            //     while($name = mysqli_fetch_assoc($prepareDocCenterName)) {
-            //         $doc_preapre[$i]['center_name'] = $name['center_name'];
-            //         $doc_preapre[$i]['center_delete'] = $name['center_delete'];
-            //         $i++;
-            //     }
-            // }
+        $doc_preapre = !empty($row['doc_prepare']) ? json_decode($row['doc_prepare'],true) : 'None';
+        $doc_received = !empty($row['doc_received']) ? json_decode($row['doc_received'],true) : 'None';
+        $doc_closed = !empty($row['doc_close']) ? json_decode($row['doc_close'],true) : 'None';
+        $numofmeeting = '';
+        if(is_null($row['numofmeeting'])) {
+            $numofmeeting = 'None';
         } else {
-            $doc_preapre = "None";
+            $meeting = json_decode($row['numofmeeting'],true);
+            if(json_last_error() === JSON_ERROR_NONE) {
+                $numofmeeting = json_decode($row['numofmeeting'],true);
+            } else {
+                $numofmeeting = $row['numofmeeting'];
+            }
         }
-        $doc_received = [];
-        if (!empty($row['doc_received'])) {
-            $doc_received = json_decode($row['doc_received'],true);
-            // $doc_received_ids = json_decode($row['doc_received'],true);
-            // $receivedDocCenterName = $conn->query("SELECT center_name , IF(Deleted_At IS NULL,'No','Yes') as `center_delete` FROM `Closure_details` WHERE id IN (".implode(',',$doc_received_ids).")");
-            // if($receivedDocCenterName->num_rows > 0) {
-            //     $i = 0 ;
-            //     while($name = mysqli_fetch_assoc($receivedDocCenterName)) {
-            //         $doc_received[$i]['center_name'] = $name['center_name'];
-            //         $doc_received[$i]['center_delete'] = $name['center_delete'];
-            //         $i++;
-            //     }
-            // }
+        $admission_ids = '';
+        $admission_count = '';
+        if(!empty($row['admission_ids'])) {
+            $admission_ids = json_decode($row['admission_ids'],true);
+            $adm_query = $conn->query("SELECT SUM(numofadmission) FROM `admission_details` WHERE id IN (".implode(',',$admission_ids).")");
+            $admission_count = mysqli_fetch_column($adm_query);
         } else {
-            $doc_received = 'None';
+            $admission_ids = 'None';
+            $admission_count = "None";
         }
-        $doc_closed = [];
-        if(!empty($row['doc_close'])) {
-            $doc_closed = json_decode($row['doc_close'],true);
-            // $doc_closed_ids = json_decode($row['doc_close'],true);
-            // $closeDocCenterName = $conn->query("SELECT center_name , IF(Deleted_At IS NULL,'No','Yes') as `center_delete` FROM `Closure_details` WHERE id IN (".implode(',',$doc_closed_ids).")");
-            // if($closeDocCenterName->num_rows > 0) {
-            //     $i = 0 ;
-            //     while($name = mysqli_fetch_assoc($closeDocCenterName)) {
-            //         $doc_closed[$i]['center_name'] = $name['center_name'];
-            //         $doc_closed[$i]['center_delete'] = $name['center_delete'];
-            //         $i++;
-            //     }
-            // }
-        } else {
-            $doc_closed = 'None';
-        }
-        $numofmeeting =  is_null($row['numofmeeting']) ? "None" : $row['numofmeeting'];
+        $admission_ids = !empty($row['admission_ids']) ? json_decode($row['admission_ids'],true) : "None";
         $createDate = date_format(date_create($row['created_at']),'d/m/Y');
         $data[] = array(
             "id" => $row['id'] , 
@@ -160,7 +136,9 @@ if($dailyReport->num_rows > 0) {
             "doc_received" => $doc_received, 
             "doc_close" => $doc_closed, 
             "date" => $report_date, 
-            "createDate" => $createDate
+            "createDate" => $createDate , 
+            'admission_ids' => $admission_ids,
+            'admission_count' => $admission_count
         );
     }
 }

@@ -28,7 +28,8 @@ function getListOfAllDocPrepareCenter() : string {
             $option .= '<option value = "'.$row['id'].'" selected >'.$row['center_name'].'</option>';
         }   
     }
-    $user_id = mysqli_real_escape_string($conn,$_SESSION['ID']);
+    
+    $user_id = !empty($_REQUEST['user_id']) ?  mysqli_real_escape_string($conn,$_REQUEST['user_id']) : mysqli_real_escape_string($conn,$_SESSION['ID']);
     $docPrepareList = $conn->query("SELECT id , center_name FROM `Closure_details` WHERE user_id = '$user_id' and doc_received IS NULL AND doc_closed IS NULL AND Deleted_At IS NULL");
     if($docPrepareList->num_rows > 0) {
         while($row = mysqli_fetch_assoc($docPrepareList)) {
@@ -50,7 +51,7 @@ function getListOfAllDocReceived() : string {
             $option .= '<option value = "'.$row['id'].'" selected >'.$row['center_name'].'</option>';
         }   
     }
-    $user_id = mysqli_real_escape_string($conn,$_SESSION['ID']);
+    $user_id = !empty($_REQUEST['user_id']) ?  mysqli_real_escape_string($conn,$_REQUEST['user_id']) : mysqli_real_escape_string($conn,$_SESSION['ID']);
     $docClosed = $conn->query("SELECT id , center_name FROM `Closure_details` WHERE user_id = '$user_id' and doc_received IS NOT NULL AND doc_closed IS NULL AND Deleted_At IS NULL");
     if($docClosed->num_rows > 0) {
         while($row = mysqli_fetch_assoc($docClosed)) {

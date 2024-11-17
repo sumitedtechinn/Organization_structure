@@ -31,10 +31,71 @@ function insertDailyReport() {
         $doc_received = []; $doc_closed = []; $doc_prepare = [];
         unset($_REQUEST['total_call'],$_REQUEST['new_call'],$_REQUEST['report_date'],$_REQUEST['country_code']);
         
+        /**
+         * make numofmeeting data in json formate
+         */
         $numofmeeting = null;
         if (isset($_REQUEST['numofmeeting'])) {
             $numofmeeting = mysqli_real_escape_string($conn,$_REQUEST['numofmeeting']);
+            $numofmeeting_arr = [];
+            $count = 1;
+            while($count <= $numofmeeting) {
+                $numofmeeting_arr[] = $_REQUEST["client_$count"];
+                unset($_REQUEST["client_$count"]);
+                $count++;
+            }
             unset($_REQUEST['numofmeeting']);
+            $numofmeeting = json_encode($numofmeeting_arr);
+        }
+
+        /**
+         * 1) make an array for center admission
+         * 2)  Once the center admission array make then insert the details in admission table 
+        */
+ 
+        $word = 'admission_center';
+        $admission_insert_ids = null;
+        $projectionNotPresentForAdmission = [];
+        $admission_details = [];
+        $a = 0;
+        foreach ($_REQUEST as $key => $value) {
+            if (strpos($key, $word) !== false) {
+                $admkeycount = (explode('_',$key))[2];
+                $admission_details[$a]['adm_centerId'] = $_REQUEST["admission_center_".$admkeycount];
+                $admission_details[$a]['adm_projectionType'] = $_REQUEST["admission_projection_type_".$admkeycount];
+                $admission_details[$a]['numofadmission'] = $_REQUEST["numOfAdmission_".$admkeycount];
+                $admission_details[$a]['adm_amount'] = $_REQUEST["admission_amount_".$admkeycount];
+                unset($_REQUEST["admission_center_".$admkeycount],$_REQUEST["admission_projection_type_".$admkeycount],$_REQUEST["numOfAdmission_".$admkeycount],$_REQUEST["admission_amount_".$admkeycount]);
+                $a++;
+            }
+        }
+
+        // If admission_details array is not empty then any action will perform
+        if(!empty($admission_details)) {
+            $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`) VALUES";
+            $insert_admission_arr = [];
+            foreach ($admission_details as $key => $value) {
+                $projection_id = checkProjectionAssing($value['adm_projectionType'],$date);
+                if($projection_id) { 
+                    $insert_admission_arr[] = "('".$_SESSION['ID']."','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
+                } else {
+                    if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
+                        $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
+                    }
+                    unset($admission_details[$key]); 
+                }
+            }
+            if(!empty($insert_admission_arr)) {
+                $insert_admission_query = $conn->query($insert_admission . implode(',',$insert_admission_arr));
+                if(count($insert_admission_arr) > 1) {
+                    $first_inserted_id = $conn->insert_id;
+                    $last_inserted_id = $first_inserted_id + count($insert_admission_arr) - 1;
+                    $admission_insert_ids = json_encode(createAllInsertedIdsList($first_inserted_id,$last_inserted_id));
+                } else {
+                    $first_inserted_id = $conn->insert_id;
+                    $admission_insert_ids = json_encode([$first_inserted_id]);
+                }
+            }
         }
 
         /**
@@ -61,6 +122,11 @@ function insertDailyReport() {
             }
         }
         
+        /**
+         * Get the update proectionId
+         * And after that update projection and deal_close time stamp
+         * And insert the center one time submitted amount
+         */
         $doc_closed_ids = null;
         $projectionNotPresetnforDocCloseId = [];
         if(isset($_REQUEST['doc_close'])) {
@@ -69,10 +135,13 @@ function insertDailyReport() {
             $docCloseAndProjection = getProjectionId($doc_closed,$date);
             foreach ($docCloseAndProjection as $key => $value) {
                 if($value != 'projection not generated') {
-                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                    $amount = mysqli_real_escape_string($conn,$_REQUEST["center_create_amount_$key"]);
+                    unset($_REQUEST["center_create_amount_$key"]);
+                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , amount = '$amount' , projection_id = '$value' WHERE id = '$key'");
                 } else {
                     $unset_key = array_search($key,$doc_closed);
                     unset($doc_closed[$unset_key]);
+                    unset($_REQUEST["center_create_amount_$key"]);
                     $projectionNotPresetnforDocCloseId[] = $key;
                 }
             }  
@@ -80,6 +149,7 @@ function insertDailyReport() {
                 $doc_closed_ids = json_encode($doc_closed);
             } 
         }
+
         $doc_prepare_ids = null;
         if (!empty($_REQUEST)) {
             foreach ($_REQUEST as $centerkey => $centervalue) {
@@ -129,11 +199,14 @@ function insertDailyReport() {
             }
         }
 
-        $insertDailyStatus = $conn->query("INSERT INTO `daily_reporting`(`user_id`, `total_call`, `new_call`, `doc_prepare`, `doc_received`, `doc_close`,`numofmeeting`,`date`) VALUES ('".$_SESSION['ID']."','$total_call','$new_call','$doc_prepare_ids','$doc_received_ids','$doc_closed_ids','$numofmeeting','$report_date')");
-        if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId)) {
+        $insertDailyStatus = $conn->query("INSERT INTO `daily_reporting`(`user_id`, `total_call`, `new_call`,`admission_ids`,`doc_prepare`, `doc_received`, `doc_close`,`numofmeeting`,`date`) VALUES ('".$_SESSION['ID']."','$total_call','$new_call','$admission_insert_ids','$doc_prepare_ids','$doc_received_ids','$doc_closed_ids','$numofmeeting','$report_date')");
+        if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId) && empty($projectionNotPresentForAdmission)) {
            showResponse($insertDailyStatus,"inserted",'success');
         } else {
             $message = '<ul class="text-sm-left">';
+            if(!empty($projectionNotPresentForAdmission)) {
+                $message .= createMessageForAdmission($projectionNotPresentForAdmission);
+            }
             if(!empty($projectionNotPresetnforDocReceivedId)) {
                 $message .= createMessage($projectionNotPresetnforDocReceivedId);
             }
@@ -144,6 +217,7 @@ function insertDailyReport() {
                 $text = implode(',',$projectionTypeName);
                 $message .= "<li class='text-start fs-6'>($text) Center details not inserted as projection not assign to user for thise projection type on current month</li>";    
             }
+
             $message .= '</ul>';
             showResponse(false,$message,'warning');
         }
@@ -177,12 +251,83 @@ function updateDailyReport() {
     }
     unset($_REQUEST['total_call'],$_REQUEST['new_call']);
 
+    /**
+     * make numofmeeting data in json formate
+     */
     $numofmeeting = null;
     if (isset($_REQUEST['numofmeeting'])) {
         $numofmeeting = mysqli_real_escape_string($conn,$_REQUEST['numofmeeting']);
+        $numofmeeting_arr = [];
+        $count = 1;
+        while($count <= $numofmeeting) {
+            $numofmeeting_arr[] = $_REQUEST["client_$count"];
+            unset($_REQUEST["client_$count"]);
+            $count++;
+        }
         unset($_REQUEST['numofmeeting']);
+        $numofmeeting = json_encode($numofmeeting_arr);
+    }
+
+    /**
+     * 1) make an array for center admission
+     * 2)  Once the center admission array make then insert the details in admission table 
+    */
+
+    $word = 'admission_center';
+    $admission_insert_ids = null;
+    $projectionNotPresentForAdmission = [];
+    $admission_details = [];
+    $a = 0;
+    foreach ($_REQUEST as $key => $value) {
+        if (strpos($key, $word) !== false) {
+            $admkeycount = (explode('_',$key))[2];
+            $admission_details[$a]['adm_centerId'] = $_REQUEST["admission_center_".$admkeycount];
+            $admission_details[$a]['adm_projectionType'] = $_REQUEST["admission_projection_type_".$admkeycount];
+            $admission_details[$a]['numofadmission'] = $_REQUEST["numOfAdmission_".$admkeycount];
+            $admission_details[$a]['adm_amount'] = $_REQUEST["admission_amount_".$admkeycount];
+            unset($_REQUEST["admission_center_".$admkeycount],$_REQUEST["admission_projection_type_".$admkeycount],$_REQUEST["numOfAdmission_".$admkeycount],$_REQUEST["admission_amount_".$admkeycount]);
+            $a++;
+        }
+    }
+
+    // If admission_details array is not empty then any action will perform
+    if(!empty($admission_details)) {
+        $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`) VALUES";
+        $insert_admission_arr = [];
+        foreach ($admission_details as $key => $value) {
+            $projection_id = checkProjectionAssing($value['adm_projectionType'],$date,$report_details['user_id']);
+            if($projection_id) { 
+                $insert_admission_arr[] = "('".$_SESSION['ID']."','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
+            } else {
+                if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
+                    $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
+                }
+                unset($admission_details[$key]); 
+            }
+        }
+        if(!empty($insert_admission_arr)) {
+            $insert_admission_query = $conn->query($insert_admission . implode(',',$insert_admission_arr));
+            if(count($insert_admission_arr) > 1) {
+                $first_inserted_id = $conn->insert_id;
+                $last_inserted_id = $first_inserted_id + count($insert_admission_arr) - 1;
+                $insert_ids = createAllInsertedIdsList($first_inserted_id,$last_inserted_id);
+                if(!empty($report_details['admission_ids'])) {
+                    $admission_insert_ids = array_merge(json_decode($report_details['admission_ids'],true),$insert_ids);
+                    $admission_insert_ids = json_encode($admission_insert_ids);
+                }
+            } else {
+                $first_inserted_id = $conn->insert_id;
+                $insert_ids = [$first_inserted_id];
+                if(!empty($report_details['admission_ids'])) {
+                    $admission_insert_ids = array_merge(json_decode($report_details['admission_ids'],true),$insert_ids);
+                    $admission_insert_ids = json_encode($admission_insert_ids);
+                }
+            }
+        } else {
+            $admission_insert_ids = $report_details['admission_ids'];    
+        }
     } else {
-        $numofmeeting = $report_details['numofmeeting'];
+        $admission_insert_ids = $report_details['admission_ids'];
     }
 
     /**
@@ -281,6 +426,16 @@ function updateDailyReport() {
     $doc_closed_ids = '';
     $projectionNotPresetnforDocCloseId = [];
     if(isset($_REQUEST['doc_close'])) {
+        // 1st update amount deal close amount
+        $word = 'center_create_amount';
+        foreach ($_REQUEST as $key => $value) {
+            if (strpos($key, $word) !== false) {
+                $id = (explode('_',$key))[3];
+                $update = $conn->query("UPDATE Closure_details SET  amount = '$value' WHERE id = '$id'");
+                unset($_REQUEST['center_create_amount_'.$id]);
+            }
+        }
+
         $doc_closed = $_REQUEST['doc_close'];
         $doc_closed_ids_duplicate = $doc_closed;
         unset($_REQUEST['doc_close']);
@@ -319,10 +474,13 @@ function updateDailyReport() {
             $docCloseAndProjection = getProjectionId($doc_closed,$date);
             foreach ($docCloseAndProjection as $key => $value) {
                 if($value != 'projection not generated') {
-                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                    $amount = mysqli_real_escape_string($conn,$_REQUEST["center_create_amount_$key"]);
+                    unset($_REQUEST["center_create_amount_$key"]);
+                    $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , amount = '$amount' , projection_id = '$value' WHERE id = '$key'");
                 } else {
                     $unset_key = array_search($key,$doc_closed);
                     unset($doc_closed[$unset_key]);
+                    unset($_REQUEST["center_create_amount_$key"]);
                     $projectionNotPresetnforDocCloseId[] = $key;
                 }
             }
@@ -333,7 +491,7 @@ function updateDailyReport() {
     } elseif(!isset($_REQUEST['doc_close']) && !empty($report_details['doc_close'])) {
         unset($_REQUEST['doc_close']);
         $db_doc_closed = json_decode($report_details['doc_close'],true);
-        $updateClosedCenterStatus = $conn->query("UPDATE Closure_details SET doc_closed = null WHERE id IN (".implode(',',$db_doc_closed).")");
+        $updateClosedCenterStatus = $conn->query("UPDATE Closure_details SET doc_closed = null , amount = null WHERE id IN (".implode(',',$db_doc_closed).")");
     } else {
         unset($_REQUEST['doc_close']);
     }
@@ -391,11 +549,14 @@ function updateDailyReport() {
     } else {
         $doc_updated_prepare_ids = '';
     }
-    $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`doc_prepare`='$doc_updated_prepare_ids',`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
-    if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId)) {
+    $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`admission_ids` = '$admission_insert_ids',`doc_prepare`='$doc_updated_prepare_ids',`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
+    if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId) && empty($projectionNotPresentForAdmission)) {
         showResponse($updateDailyReport,'updated','success');
     } else {
         $message = '<ul class="text-sm-left">';
+        if(!empty($projectionNotPresentForAdmission)) {
+            $message .= createMessageForAdmission($projectionNotPresentForAdmission);
+        }
         if(!empty($projectionNotPresetnforDocReceivedId)) {
             $message .= createMessage($projectionNotPresetnforDocReceivedId);
         }
@@ -459,6 +620,26 @@ function getProjectionId($doc_ids,$report_date) {
     return $docIdsAndprojection;
 }
 
+// check for given projection type projection assing to user for this month or not 
+function checkProjectionAssing($projection_type_id,$report_date,$user_id=null) {
+
+    global $conn;
+
+    $report_date = strtotime($report_date);
+    $month = date("n",$report_date);
+    $year = date("Y",$report_date);
+    if($_SESSION['role'] == '2') {
+        $user_id = mysqli_real_escape_string($conn,$_SESSION['ID']);
+    }
+    $projection = $conn->query("SELECT ID FROM `Projection` WHERE month = '$month' AND year = '$year' AND projectionType = '$projection_type_id' AND user_id = '$user_id'");
+    if($projection->num_rows > 0) {
+        $projection_id = mysqli_fetch_column($projection);
+        return $projection_id;
+    } else {
+        return false;
+    }
+}
+
 /**
  * Create messeage for those doc ids for which projection not create on this month
  */
@@ -470,6 +651,15 @@ function createMessage($doc_ids) {
         $getProjectionTypeName = mysqli_fetch_assoc($getProjectionTypeName);
         $message .= "<li class='text-start fs-6'>Status not updated for <b>".$getProjectionTypeName['center']."</b>,projection not assigned on current month for the <b>".$getProjectionTypeName['projection_type']."</b> type.</li>";
     }
+    return $message;
+}
+
+function createMessageForAdmission($projectionType_arr) : string {
+    global $conn;
+    $message = '';
+    $projectionType_name = $conn->query("SELECT GROUP_CONCAT(Name) FROM `Projection_type` WHERE ID IN (".implode(',',$projectionType_arr).")");
+    $projectionType_name = mysqli_fetch_column($projectionType_name);
+    $message .= "<li class='text-start fs-6'>Status not updated for admission,projection not assigned on current month for the <b>".$projectionType_name."</b> type.</li>";
     return $message;
 }
 ?>

@@ -17,11 +17,19 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     width:93.6%;
 }
 
-#total_report_box,#total_call_box,#total_new_call_box,#total_meeting_box,#total_doc_prepare_box,#total_doc_received_box,#total_deal_close_box {
+#total_report_box,#total_call_box,#total_new_call_box,#total_meeting_box,#total_admission_box,#total_doc_prepare_box,#total_doc_received_box,#total_deal_close_box {
     z-index: 0 !important;
     background-color: #f2f2f2 !important;
     color: #434746 !important;
     font-size: 13px;
+}
+
+.tooltip-inner {
+    background-color: #FFFFFF !important; /* Change background color */
+    color: #212529 !important; /* Change text color */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 10px; /* Round corners */
+    font-size: 14px; /* Adjust font size */
 }
 
 </style>
@@ -86,6 +94,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                                 <th>Total Call</th>
                                 <th>New Call</th>
                                 <th>No. Meetings</th>
+                                <th>No. Admission</th>
                                 <th>Doc Prepare</th>
                                 <th>Doc Received</th>
                                 <th>Deal Closed</th>
@@ -100,8 +109,8 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     <div class="row justify-content-center">
         <div class="card" style="margin-bottom: 0px !important;" id = "total_summary_report">
             <div class="d-flex align-items-center justify-content-start gap-1 m-2" style="padding-right: 1%;">
-                <div class="col-3 col-sm-3 card p-3 mb-1" id = "total_report_box">
-                    <div class="fw-bold text-center">Total Daily Report Status</div>
+                <div class="col-2 col-sm-2 card p-3 mb-1" id = "total_report_box">
+                    <div class="fw-bold text-center">Daily Report Status</div>
                 </div>
                 <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_call_box">
                     <div class="fw-bold text-center">Total Call</div>
@@ -114,6 +123,10 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                 <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_meeting_box">
                     <div class="fw-bold text-center">No. Meetings</div>
                     <div class="text-center fw-bold" id="total_meeting" ></div>
+                </div>
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_admission_box">
+                    <div class="fw-bold text-center">Admission</div>
+                    <div class="text-center fw-bold" id="total_admission"></div>
                 </div>
                 <div class="col-2 col-sm-2 card p-2 mb-1" id = "total_doc_prepare_box">
                     <div class="fw-bold text-center">Doc Preapre</div>
@@ -188,9 +201,39 @@ var dailyReportSettings = {
             if (data === 'None' || data === '') {
                 return '<div><i class="bi bi-calendar-event"></i><b> 0 </b></div>';    
             } else {
-                return '<div><i class="bi bi-calendar-event"></i><b> ' + data + '</b></div>';
+                if(Array.isArray(data)) {
+                    let client = '';
+                    for (let index = 0; index < data.length; index++) {
+                        if(index != data.length-1) {
+                            client += data[index];
+                            client += '<br>';
+                        } else {
+                            client += data[index];
+                        }
+                    }
+                    return '<div><i class="bi bi-calendar-event cursor-pointer" data-html = "true" data-toggle="tooltip" data-bs-placement = "right" title="'+client+'"> <b>'+data.length+' </b></i></div>';
+                } else {
+                    return '<div><i class="bi bi-calendar-event"></i><b> '+data+' </b></div>';
+                }
+            } 
+        }
+    },{
+        data : "admission_ids",
+        render : function(data,type,row) {
+            if (Array.isArray(data)) {
+                var ids = '';
+                for(let i = 0 ; i < data.length ; i++) {
+                    if(i != data.length-1) {
+                        ids += data[i];
+                        ids += ',';
+                    } else {
+                        ids += data[i];
+                    }
+                }
+                return '<div onclick = "seeAdmissionDetails(&#39;'+ids+'&#39;)"><i class="bi bi-person-fill"></i><b> ' + row.admission_count + '</b></div>';
+            } else {
+                return '<div><i class="bi bi-person-fill"></i><b> 0 </b></div>';
             }
-            
         }
     },{
         data: "doc_prepare",
@@ -261,6 +304,7 @@ var dailyReportSettings = {
     "scrollCollapse": true,
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
+            html : true ,
             template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
         });
     },
@@ -521,9 +565,7 @@ function addDailyReport() {
 }
 
 function updateDetails(report_id, creatDate) {
-    const d = new Date(Date.now()).toLocaleString().split(',')[0];
-    // console.log(d);
-    // console.log(creatDate);
+    const d = formateDate();
     <?php if ($_SESSION['role'] == '2') { ?>
         if (creatDate.localeCompare(d) == 0) {
             $.ajax({
@@ -559,5 +601,39 @@ function updateDetails(report_id, creatDate) {
     <?php } ?>
 }
 
+function seeAdmissionDetails(admission_ids) {
+    $.ajax({
+        url: "/app/dailyReporting/viewAdmission",
+        type: 'post',
+        data: {
+            admission_ids
+        },
+        success: function(data) {
+            $('#lg-modal-content').html(data);
+            $('#lgmodal').modal('show');
+        }
+    });
+}
+
+function formateDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    const formattedToday = dd + '/' + mm + '/' + yyyy;
+    return formattedToday;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+    new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+
 </script>
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/includes/footer-bottom.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/includes/footer-bottom.php'); ?> 
