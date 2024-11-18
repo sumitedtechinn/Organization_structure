@@ -62,6 +62,14 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
         margin-right: 0.6rem;
     }
 
+    .hide {
+        display: none !important;
+    }
+
+    .show {
+        display: block !important;
+    }
+
 </style>
 
 
@@ -72,6 +80,9 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Projection Table</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
+                    <div class="col-sm-6 mt-1" style="z-index: 0 !important;">
+                        <button type="button" class="btn btn-dark btn-sm" onclick="showAndHideFilter()">Advance Filter<i class="bi bi-funnel"></i></button>
+                    </div>    
                     <div class="col-sm-6" style="z-index: 0 !important;">
                         <select type="text" class="form-control month_container form-control-sm single-select select2" name="month_filter" id="month_filter" onchange="reloadTable(this.id)">
                             <?=$optionTagForMonth?>   
@@ -87,44 +98,46 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                     </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-start <?=$gap?> mt-2 mb-2" style="padding-right: 1%;">
-                <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { 
-                    if($_SESSION['role'] != '3') {
-                ?>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">Organization</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <?php } ?>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">Branch</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">Vertical</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="<?=$col_size?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">Department</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <?php } ?>
-                <div class="<?=$col_size?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">Projection Type</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="projectionType_filter" id="projectionType_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                    <label class="col-form-label" style="font-size: small;">User</label>
-                    <select type="text" class="form-control form-control-sm single-select select2" name="user_filter" id="user_filter" onchange="reloadTable(this.id)">
-                    </select>
+            <div class="hide" id = "advance_filter">
+                <div class="d-flex align-items-center justify-content-start <?=$gap?> mt-2 mb-2" style="padding-right: 1%;">
+                    <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { 
+                        if($_SESSION['role'] != '3') {
+                    ?>
+                    <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">Organization</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <?php } ?>
+                    <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">Branch</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">Vertical</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <div class="<?=$col_size?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">Department</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <?php } ?>
+                    <div class="<?=$col_size?> card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">Projection Type</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="projectionType_filter" id="projectionType_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size: small;">User</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="user_filter" id="user_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-start" id = "projection_summary">
+            <div class="d-flex align-items-center justify-content-start" id = "projection_summary" style="margin-top: 0.6rem;">
                 <div class="col-sm-4 card bg-light mb-1" id="organization_info" style="padding: 1.2rem;"></div>
                 <div class="col-sm-8">
                     <div class="row mb-1" id = "center_projection">
@@ -157,13 +170,13 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                             <div class="text-center mt-3 fw-bold" id="admission_completed_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_projection_pending">
-                            <div class="fw-bold text-center">Pending Admission Projection</div>
+                            <div class="fw-bold text-center">Remaining Admission Projection</div>
                             <div class="text-center mt-3 fw-bold" id="admission_pending_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1"  id = "admission_projection_view">
                             <div class="fw-bold text-center">View All Admission Projection</div>
                             <div class="text-center mt-2 fw-bold" id="pending_projection_number">
-                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyClosureDetails('admission')">View All</button>
+                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyAdmissionDetails('admission')">View All</button>
                             </div>
                         </div>
                     </div>
@@ -258,7 +271,9 @@ var projectionSettings = {
         },{
             data : "View Clouser" , 
             render : function(data,type,row) {
-                var view = '<button type="button" class="btn btn-outline-info px-4" style="font-size:small" onclick = "viewClosureDetailsProjectionBias('+row.ID+')">View </button>';
+                var projection_type_name = (row.projection_type.split(" "))[1];
+                projection_type_name = projection_type_name.toLowerCase();
+                var view = '<button type="button" class="btn btn-outline-info px-4" style="font-size:small" onclick = "viewClosureDetailsProjectionBias('+row.ID+',&#39;'+projection_type_name+'&#39;)">View </button>';
                 return view;
             }
         },{         
@@ -571,18 +586,32 @@ function updateProjectionDetails(projection_id) {
     });
 }
 
-function viewClosureDetailsProjectionBias(projection_id) {
-    $.ajax({
-        url: "/app/addProjection/viewClosureDetails",
-        type: 'post',
-        data : {
-            projection_id, 
-        },
-        success: function(data) {
-            $('#lg-modal-content-viewtable').html(data);
-            $('#view-lgmodal').modal('show');
-        }
-    });
+function viewClosureDetailsProjectionBias(projection_id,type) {
+    if(type == 'center') {
+        $.ajax({
+            url: "/app/addProjection/viewClosureDetails",
+            type: 'post',
+            data : {
+                projection_id, 
+            },
+            success: function(data) {
+                $('#lg-modal-content-viewtable').html(data);
+                $('#view-lgmodal').modal('show');
+            }
+        });
+    } else if (type == 'admission') {
+        $.ajax({
+            url: "/app/addProjection/viewAdmissionDetails",
+            type: 'post',
+            data : {
+                projection_id, 
+            },
+            success: function(data) {
+                $('#lg-modal-content-viewtable').html(data);
+                $('#view-lgmodal').modal('show');
+            }
+        });
+    }
 } 
 
 function viewAllMonthlyClosureDetails(type) {
@@ -597,6 +626,27 @@ function viewAllMonthlyClosureDetails(type) {
     }
     $.ajax({
         url: "/app/addProjection/viewAllMonthlyClosureDetails",
+        type: 'post',
+        data : info_data,
+        success: function(data) {
+            $('#lg-modal-content-viewtable').html(data);
+            $('#view-lgmodal').modal('show');
+        }
+    });
+}
+
+function viewAllMonthlyAdmissionDetails(type) {
+    let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , projectionType : "" , user : "" , month : "" , year : "", selected_projectiontype : type};
+    var filter_arr = ['organization','branch','vertical','department','projectionType','user','month','year'];
+    for (const value of filter_arr) {
+        if($('#'+value+'_filter option').length > 0 && $('#'+value+'_filter').val().length > 0) {
+            info_data[value] = $('#'+value+'_filter').val();
+        } else {
+            info_data[value] = "None";
+        }
+    }
+    $.ajax({
+        url: "/app/addProjection/viewAllMonthlyAdmissionDetails",
         type: 'post',
         data : info_data,
         success: function(data) {
@@ -628,5 +678,16 @@ function showMonthlyClosureDetails() {
         }
     });
 }
+
+function showAndHideFilter() {
+    if ($('#advance_filter').hasClass('hide')) {
+        $('#advance_filter').removeClass('hide').addClass('show'); // Show the filter
+        $("#projection_summary").css('margin-top', '0rem');
+    } else {
+        $('#advance_filter').removeClass('show').addClass('hide'); // Hide the filter
+        $("#projection_summary").css('margin-top', '0.6rem');
+    }
+}
+
 </script>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-bottom.php');?>

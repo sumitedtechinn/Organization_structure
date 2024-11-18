@@ -88,10 +88,28 @@ $projection = $conn->query("SELECT Projection.* , Projection_type.Name as `proje
 $data = [];
 if ($projection->num_rows > 0 ) {
     while( $row = mysqli_fetch_assoc($projection)) {
-        $numOfClosureComplete = $conn->query("SELECT COUNT(ID) FROM Closure_details WHERE Projection_id = '".$row['ID']."' and doc_closed IS NOT NULL AND Deleted_At IS NULL");
-        $numOfClosureComplete = intval(mysqli_fetch_column($numOfClosureComplete));
-        $numOfClosurePending = $conn->query("SELECT COUNT(ID) FROM Closure_details WHERE Projection_id = '".$row['ID']."' and doc_closed IS NULL AND Deleted_At IS NULL");
-        $numOfClosurePending = intval(mysqli_fetch_column($numOfClosurePending));
+        $type = (explode(' ',$row['projection_type']))[1];
+        $type = strtolower($type);
+        $pending = ''; $complete = '';
+        if($type == 'center') {
+            $numOfClosureComplete = $conn->query("SELECT COUNT(ID) FROM Closure_details WHERE Projection_id = '".$row['ID']."' and doc_closed IS NOT NULL AND Deleted_At IS NULL");
+            $numOfClosureComplete = intval(mysqli_fetch_column($numOfClosureComplete));
+            $numOfClosurePending = $conn->query("SELECT COUNT(ID) FROM Closure_details WHERE Projection_id = '".$row['ID']."' and doc_closed IS NULL AND Deleted_At IS NULL");
+            $numOfClosurePending = intval(mysqli_fetch_column($numOfClosurePending));   
+            $pending = $numOfClosurePending;
+            $complete = $numOfClosureComplete;
+        } elseif ($type == 'admission') {
+            $numOfAdmissionComplete = $conn->query("SELECT SUM(admission_details.numofadmission) as `admission` FROM `admission_details` WHERE admission_details.projection_id = '".$row['ID']."' AND admission_details.Deleted_At IS NULL");
+            $numOfAdmissionComplete = mysqli_fetch_column($numOfAdmissionComplete);
+            if(!is_null($numOfAdmissionComplete)) {
+                $numOfAdmissionRemaining = $row['numOfClosure'] - $numOfAdmissionComplete;    
+            } else {
+                $numOfAdmissionRemaining = $row['numOfClosure'];
+                $numOfAdmissionComplete = intval(0);
+            }
+            $pending = $numOfAdmissionRemaining;
+            $complete = $numOfAdmissionComplete;
+        }
         $month_arr = ['1' => 'January','2' => 'February' , '3' => 'March' , '4' => 'April' , '5' => 'May' , '6' => 'June' , '7' => 'July' , '8' => 'August' , '9' => 'September' , '10' => 'October' , '11' => 'November' , '12' => 'December'];
         $month = $month_arr[$row['month']];
         $data[] = array(
@@ -118,8 +136,8 @@ if ($projection->num_rows > 0 ) {
             'user_image' => $row['user_image'],
             'user_delete' => $row['user_delete'],
             'numOfClosure' => $row['numOfClosure'],
-            'numOfClosureComplete' => $numOfClosureComplete,
-            'numOfClosurePending' => $numOfClosurePending,
+            'numOfClosureComplete' => $complete,
+            'numOfClosurePending' => $pending,
             'month' => $month ,
             'year' => $row['year']
         );

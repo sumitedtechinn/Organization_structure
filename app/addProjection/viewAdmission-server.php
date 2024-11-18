@@ -4,14 +4,16 @@
 include '../../includes/db-config.php';
 session_start();
 
-if (isset($_REQUEST['admission_ids'])) {
+if (isset($_REQUEST['projection_id'])) {
 
-    $admission_ids = mysqli_real_escape_string($conn,$_REQUEST['admission_ids']);
+    $projection_id = mysqli_real_escape_string($conn,$_REQUEST['projection_id']);
+
     ## Read value
     $draw = $_POST['draw'];
     $row = $_POST['start'];
     $rowperpage = $_POST['length']; // Rows display per page
     $orderby = '';
+    $data = [];
 
     if (isset($_POST['order'])) {
         $columnIndex = $_POST['order'][0]['column']; // Column index
@@ -25,37 +27,42 @@ if (isset($_REQUEST['admission_ids'])) {
         $orderby = "ORDER BY admission_details.id ASC";
     }
 
+    $searchValue = mysqli_real_escape_string($conn, $_POST['search']['value']); // Search value
+
     $searchQuery = "";
+    if (!empty($searchValue)) {
+        $searchQuery = "AND (Closure_details.center_name LIKE '%$searchValue%' OR users.Name LIKE '%$searchValue%')"; 
+    }
 
     ## Total number of records without filtering
-    $all_count = $conn->query("SELECT COUNT(id) as `allcount` FROM admission_details WHERE admission_details.id IN ($admission_ids)");
+    $all_count = $conn->query("SELECT COUNT(admission_details.id) as `allcount` FROM admission_details WHERE admission_details.projection_id = '$projection_id' AND Deleted_At IS NULL");
     $records = mysqli_fetch_assoc($all_count);
     $totalRecords = $records['allcount'];
 
     ## Total number of record with filtering
-    $filter_count = $conn->query("SELECT COUNT(id) as `filtered` FROM admission_details WHERE admission_details.id IN ($admission_ids) $searchQuery");
+    $filter_count = $conn->query("SELECT COUNT(admission_details.id) as `filtered` FROM admission_details LEFT JOIN Closure_details ON Closure_details.id = admission_details.admission_by LEFT JOIN users ON users.ID = admission_details.user_id WHERE admission_details.projection_id = '$projection_id' AND admission_details.Deleted_At IS NULL $searchQuery");
     $records = mysqli_fetch_assoc($filter_count);
     $totalRecordwithFilter = $records['filtered'];
 
     ## Fetch Record
-    $admission_details = $conn->query("SELECT admission_details.* , Projection_type.Name as `projection_type` , IF( admission_details.admission_by != 'self', Closure_details.center_name,'Self') as `adm_byname` FROM `admission_details` LEFT JOIN Projection_type ON Projection_type.ID = admission_details.projectionType LEFT JOIN Closure_details ON Closure_details.id = admission_details.admission_by WHERE admission_details.Deleted_At IS NULL AND admission_details.id IN ($admission_ids) $searchQuery $orderby LIMIT $row , $rowperpage");
+    $admission_details = $conn->query("SELECT admission_details.* ,Projection_type.Name as `projection_type`, IF(admission_details.admission_by != 'self', Closure_details.center_name , CONCAT('Self','(',users.Name,')')) as `adm_by` FROM `admission_details` LEFT JOIN Closure_details ON Closure_details.id = admission_details.admission_by LEFT JOIN users ON users.ID = admission_details.user_id LEFT JOIN Projection_type ON Projection_type.ID = admission_details.projectionType WHERE admission_details.Deleted_At IS NULL AND admission_details.projection_id = '$projection_id' $searchQuery $orderby LIMIT $row , $rowperpage");
 
-    $data = [];
     if ($admission_details->num_rows > 0 ) {
         while( $row = mysqli_fetch_assoc($admission_details)) {
-            $createDate = date_format(date_create($row['created_at']),'d/m/Y');
+            $createDate = date_format(date_create($row['created_at']),'d-M-Y');
             $data[] = array(
                 'ID' => $row['id'],
-                'adm_by' => $row['adm_byname'],
+                'adm_by' => $row['adm_by'],
                 'projection_type' => $row['projection_type'], 
                 'projection_id' => $row['projection_id'] , 
                 'user_id' => $row['user_id'],
                 'adm_number' => $row['numofadmission'],
                 'adm_amount' => number_format($row['amount'],2,",","."),
-                'create_date' => $createDate
+                'adm_date' => $createDate
             );
         }
     }
+
 
     ## Response
     $response = array(

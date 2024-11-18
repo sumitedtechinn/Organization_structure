@@ -88,23 +88,34 @@ function countProjectionData($projectionTypeSearchIds,$type) {
             $closure_data[$type.'_total_projection_number'] += $projection['numOfClosure']; 
         }
 
-        ## Fetch Record
-        $closure_details = $conn->query("SELECT Closure_details.* FROM Closure_details WHERE Closure_details.Projection_id IN (".implode(',',$projection_ids).") AND Closure_details.Deleted_At IS NULL");
-        if ($closure_details->num_rows > 0 ) {
-            while($row = mysqli_fetch_assoc($closure_details)) {
-                $status = "";
-                $doc_received_status = is_null($row['doc_received']) ?  false : true;
-                if($doc_received_status) {
-                    $doc_colse_status = is_null($row['doc_closed']) ? false : true;
-                    if($doc_colse_status) {
-                        $closure_data[$type.'_completed_projection_number']++;
+        if($type == 'center') {
+            ## Fetch Record
+            $closure_details = $conn->query("SELECT Closure_details.* FROM Closure_details WHERE Closure_details.Projection_id IN (".implode(',',$projection_ids).") AND Closure_details.Deleted_At IS NULL");
+            if ($closure_details->num_rows > 0 ) {
+                while($row = mysqli_fetch_assoc($closure_details)) {
+                    $status = "";
+                    $doc_received_status = is_null($row['doc_received']) ?  false : true;
+                    if($doc_received_status) {
+                        $doc_colse_status = is_null($row['doc_closed']) ? false : true;
+                        if($doc_colse_status) {
+                            $closure_data[$type.'_completed_projection_number']++;
+                        } else {
+                            $closure_data[$type.'_pending_projection_number']++;
+                        }
                     } else {
                         $closure_data[$type.'_pending_projection_number']++;
                     }
-                } else {
-                    $closure_data[$type.'_pending_projection_number']++;
                 }
             }
+        } else {
+            ## Fetch Record
+            $admission_details = $conn->query("SELECT admission_details.* FROM `admission_details` WHERE admission_details.projection_id IN (".implode(',',$projection_ids).") AND admission_details.Deleted_At IS NULL");
+            if($admission_details->num_rows > 0 ) {
+                while($row = mysqli_fetch_assoc($admission_details)) {
+                    $closure_data[$type.'_completed_projection_number'] += $row['numofadmission']; 
+                }
+            }
+            $closure_data[$type.'_pending_projection_number'] = $closure_data[$type.'_total_projection_number'] - $closure_data[$type.'_completed_projection_number'];
         }
     }
 }

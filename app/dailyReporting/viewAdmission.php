@@ -10,7 +10,7 @@
         <hr/>
         <div class="table-responsive mt-3">
             <table class="table table-striped align-middle w-100" id="viewAdmissionTable">
-                <thead class="table-light">
+                <thead class="table-light"> 
                     <tr>
                         <th>Admission By</th>
                         <th>Projection Type</th>
@@ -54,8 +54,22 @@ var viewAdmissionSettings = {
             data : "Action",
             render : function(data, type, row) {
                 var table = "admission_details"; var edit = '';var del = '';
-                edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateAdmissionDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
-                del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                const d = formateDate();
+                let user_role = '';
+                <?php if($_SESSION['role'] == '2') { ?>
+                    user_role = 'user';
+                <?php } else { ?>
+                    user_role = 'admin';
+                <?php } ?>
+                if( user_role == 'user') {
+                    if (row.create_date.localeCompare(d) == 0) {
+                        edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateAdmissionDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                        del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    }
+                } else {
+                    edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateAdmissionDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                    del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                }
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             }
         }
@@ -94,6 +108,19 @@ function updateAdmissionDetails(id) {
             }
         })
     },500);
+}
+
+function formateDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    const formattedToday = dd + '/' + mm + '/' + yyyy;
+    return formattedToday;
 }
 
 </script>
