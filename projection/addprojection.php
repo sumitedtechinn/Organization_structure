@@ -52,7 +52,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     }
 
     .page-content {
-        margin-top: 15px !important;
+        margin-top: 55px !important;
         padding: 1rem 1rem 2rem 1rem;
     }
 

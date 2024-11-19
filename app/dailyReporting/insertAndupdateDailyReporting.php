@@ -28,8 +28,11 @@ function makeNumberOfMeetingDropDown() {
     if(!empty($dailyReport_details['numofmeeting'])) {
         $numOfMeeting = is_numeric($dailyReport_details['numofmeeting']) ? $dailyReport_details['numofmeeting'] : count(json_decode($dailyReport_details['numofmeeting'],true));
         $meeting_count = $numOfMeeting;
-        $meeting_client = json_decode($dailyReport_details['numofmeeting'],true);
-        $meeting_client = implode(',',$meeting_client); 
+        $meeting_client = '';
+        if(!is_numeric($numOfMeeting)) {
+            $meeting_client = json_decode($dailyReport_details['numofmeeting'],true);
+            $meeting_client = implode(',',$meeting_client); 
+        }
     }
 
     $option = '<option value = "">Select</option>';

@@ -297,7 +297,8 @@ function updateDailyReport() {
         foreach ($admission_details as $key => $value) {
             $projection_id = checkProjectionAssing($value['adm_projectionType'],$date,$report_details['user_id']);
             if($projection_id) { 
-                $insert_admission_arr[] = "('".$_SESSION['ID']."','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
+                $user_id = $_SESSION['role'] == '2' ? $_SESSION['ID'] : $report_details['user_id'];  
+                $insert_admission_arr[] = "('$user_id','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
             } else {
                 if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
                     $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
@@ -314,6 +315,8 @@ function updateDailyReport() {
                 if(!empty($report_details['admission_ids'])) {
                     $admission_insert_ids = array_merge(json_decode($report_details['admission_ids'],true),$insert_ids);
                     $admission_insert_ids = json_encode($admission_insert_ids);
+                } else {
+                    $admission_insert_ids = json_encode($insert_ids);
                 }
             } else {
                 $first_inserted_id = $conn->insert_id;
@@ -321,6 +324,8 @@ function updateDailyReport() {
                 if(!empty($report_details['admission_ids'])) {
                     $admission_insert_ids = array_merge(json_decode($report_details['admission_ids'],true),$insert_ids);
                     $admission_insert_ids = json_encode($admission_insert_ids);
+                } else {
+                    $admission_insert_ids = json_encode($insert_ids);
                 }
             }
         } else {

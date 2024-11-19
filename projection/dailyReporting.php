@@ -211,9 +211,9 @@ var dailyReportSettings = {
                             client += data[index];
                         }
                     }
-                    return '<div><i class="bi bi-calendar-event cursor-pointer" data-html = "true" data-toggle="tooltip" data-bs-placement = "right" title="'+client+'"> <b>'+data.length+' </b></i></div>';
+                    return '<div><i class="bi bi-calendar-event cursor-pointer" data-html = "true" data-toggle="tooltip" data-bs-placement = "right" title="'+client+'"></i><b> '+data.length+' </b></div>';
                 } else {
-                    return '<div><i class="bi bi-calendar-event"></i><b> '+data+' </b></div>';
+                    return '<div><i class="bi bi-calendar-event cursor-pointer"></i><b> '+data+' </b></div>';
                 }
             } 
         }
@@ -230,9 +230,9 @@ var dailyReportSettings = {
                         ids += data[i];
                     }
                 }
-                return '<div onclick = "seeAdmissionDetails(&#39;'+ids+'&#39;)"><i class="bi bi-person-fill"></i><b> ' + row.admission_count + '</b></div>';
+                return '<div onclick = "seeAdmissionDetails(&#39;'+ids+'&#39;)" class = "cursor-pointer"><i class="bi bi-person-fill"></i><b> ' + row.admission_count + '</b></div>';
             } else {
-                return '<div><i class="bi bi-person-fill"></i><b> 0 </b></div>';
+                return '<div class = "cursor-pointer"><i class="bi bi-person-fill"></i><b> 0 </b></div>';
             }
         }
     },{
@@ -248,9 +248,9 @@ var dailyReportSettings = {
                         ids += data[i];
                     }
                 }
-                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)" class = "cursor-pointer" ><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
+                return '<div class = "cursor-pointer"><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
@@ -266,9 +266,9 @@ var dailyReportSettings = {
                         ids += data[i];
                     }
                 }
-                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)" class = "cursor-pointer"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
+                return '<div class = "cursor-pointer"><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
@@ -284,9 +284,9 @@ var dailyReportSettings = {
                         ids += data[i];
                     }
                 }
-                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
+                return '<div onclick = "seeCenterDetails(&#39;'+ids+'&#39;)" class = "cursor-pointer"><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div><i class="bi bi-envelope"></i><b> 0 </b></div>';
+                return '<div class = "cursor-pointer"><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     }, {
