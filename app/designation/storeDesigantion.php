@@ -3,6 +3,10 @@
 include '../../includes/db-config.php';
 session_start();
 
+// echo "<pre>";
+// print_r($_REQUEST);
+// exit;
+
 if (isset($_REQUEST['designation']) && isset($_REQUEST['designation_code']) && isset($_REQUEST['parent_desigantion']) && isset($_REQUEST['node_colour']) && isset($_REQUEST['designation_addIn'])) {
 
     $designation = mysqli_real_escape_string($conn,$_REQUEST['designation']);
@@ -10,22 +14,27 @@ if (isset($_REQUEST['designation']) && isset($_REQUEST['designation_code']) && i
     list($parent_desigantion_id,$parent_hierarchy_value) = explode('_',mysqli_real_escape_string($conn,$_REQUEST['parent_desigantion']));
     $node_colour = mysqli_real_escape_string($conn,$_REQUEST['node_colour']);
     $designation_addIn = mysqli_real_escape_string($conn,$_REQUEST['designation_addIn']);
+    $added_inside = mysqli_real_escape_string($conn,$_REQUEST['added_inside']);
 
     $hierarchy_value = intval($parent_hierarchy_value) + 1;
     $where_clause = '';$insert_query = '';
-    if(isset($_REQUEST['department'])) {
-        $department = mysqli_real_escape_string($conn,$_REQUEST['department']);
-        $where_clause =  "AND department_id = '$department'";
-        $insert_query = "INSERT INTO `Designation`(`designation_name`,`code`,`hierarchy_value`,`department_id`, `parent_id`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$department','$parent_desigantion_id','$node_colour')";
-    } elseif(isset($_REQUEST['organization']) && isset($_REQUEST['branch'])) {
-        $organization = mysqli_real_escape_string($conn,$_REQUEST['organization']);
-        $branch = mysqli_real_escape_string($conn,$_REQUEST['branch']);
-        $where_clause =  "AND branch_id = '$branch' AND organization_id = '$organization'";
-        $insert_query = "INSERT INTO `Designation`(`designation_name`,`code`,`hierarchy_value`,`branch_id`,organization_id,`parent_id`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$branch','$organization','$parent_desigantion_id','$node_colour')";
-    } elseif (isset($_REQUEST['organization'])) {
-        $organization = mysqli_real_escape_string($conn,$_REQUEST['organization']);
-        $where_clause =  "AND branch_id IS NULL AND organization_id = '$organization'";
-        $insert_query = "INSERT INTO `Designation`(`designation_name`,`code`,`hierarchy_value`,`organization_id`, `parent_id`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$organization','$parent_desigantion_id','$node_colour')";
+    if(isset($_REQUEST['department_id']) && ($added_inside == '4')) {
+        $department = mysqli_real_escape_string($conn,$_REQUEST['department_id']);
+        $where_clause =  "AND department_id = '$department' AND added_inside = '$added_inside'";
+        $insert_query = "INSERT INTO `Designation`(`designation_name`,`code`,`hierarchy_value`,`department_id`, `parent_id`, `added_inside`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$department','$parent_desigantion_id','$added_inside','$node_colour')";
+    } elseif(isset($_REQUEST['vertical_id']) && $added_inside = '3') {
+        $vertical = mysqli_real_escape_string($conn,$_REQUEST['vertical_id']);
+        $where_clause =  "AND vertical_id = '$vertical' AND added_inside = '$added_inside'";
+        $insert_query = "INSERT INTO `Designation`(`designation_name`, `code`, `hierarchy_value`, `vertical_id`, `parent_id`, `added_inside`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$vertical','$parent_desigantion_id','$added_inside','$node_colour')";
+    } elseif(isset($_REQUEST['organization_id']) && isset($_REQUEST['branch_id'])) {
+        $organization = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
+        $branch = mysqli_real_escape_string($conn,$_REQUEST['branch_id']);
+        $where_clause =  "AND branch_id = '$branch' AND organization_id = '$organization' AND added_inside = '$added_inside'";
+        $insert_query = "INSERT INTO `Designation`(`designation_name`, `code`, `hierarchy_value`, `branch_id`, `organization_id`, `parent_id`, `added_inside`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$branch','$organization','$parent_desigantion_id','$added_inside','$node_colour')";
+    } elseif (isset($_REQUEST['organization_id'])) {
+        $organization = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
+        $where_clause =  "AND organization_id = '$organization' AND added_inside = '$added_inside'";
+        $insert_query = "INSERT INTO `Designation`(`designation_name`, `code`, `hierarchy_value`, `organization_id`, `parent_id`, `added_inside`, `color`) VALUES ('$designation','$designation_code','$hierarchy_value','$organization','$parent_desigantion_id','$added_inside','$node_colour')";
     }
     
     $insert_designation = $conn->query($insert_query);
@@ -50,7 +59,6 @@ if (isset($_REQUEST['designation']) && isset($_REQUEST['designation_code']) && i
 }
 
 function checkAndUpdateBelowHierarchy($ids_list,$where_clause,$hierarchy_value) {
-
     global $conn;
     while($row = mysqli_fetch_assoc($ids_list)) {
         $check_upper_hierarchy = $conn->query("SELECT ID FROM Designation WHERE parent_id = '".$row['ID']."' $where_clause ");

@@ -53,7 +53,7 @@
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <h5 class="mb-0">Designation Details</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
-                    <div class="col-sm-12" style="z-index: 0 !important;">
+                    <!-- <div class="col-sm-12" style="z-index: 0 !important;">
                         <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
@@ -64,7 +64,7 @@
                     <div class="col-sm-12" style="z-index: 0 !important;">
                         <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
                         </select>
-                    </div>
+                    </div> -->
                     <?php if( in_array('Department Create',$_SESSION['permission'])) { ?>
                     <div class="theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add" onclick="addDesignation()" data-bs-toggle="tooltip">
                         <i class="bi bi-person-plus-fill" id="add_user"></i>
@@ -73,7 +73,33 @@
                 </div>
             </div>
             <div class="row mb-1">
-                
+                <div class="d-flex align-items-center justify-content-start <?=$gap?> mt-2 mb-2" style="padding-right: 1%;">
+                    <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { 
+                        if($_SESSION['role'] != '3') {
+                    ?>
+                    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size:0.90rem;font-weight: 500;">Designation Inside Organization</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <?php } ?>
+                    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size:0.90rem;font-weight: 500;">Designation Inside Branch</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size:0.90rem;font-weight: 500;">Designation Inside Vertical</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <div class="col-sm-3 card bg-light p-1 mb-1" style="z-index: 0 !important;">
+                        <label class="col-form-label" style="font-size:0.90rem;font-weight: 500;">Designation Inside Department</label>
+                        <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
+                        </select>
+                    </div>
+                    <?php } ?>
+                </div>
             </div>
             <div class="row">
                 <div class="table-responsive mt-3 col-sm-8">
@@ -101,7 +127,7 @@
 <script>
 
 $(document).ready(function(){
-    var filter_data_field = ['organization','branch','department'];
+    var filter_data_field = ['organization','branch','vertical','department'];
     $.ajax({
         url : "/app/common/getAllFilterData" , 
         type : "post",
@@ -130,6 +156,7 @@ var designationSettings = {
             d.departmentfilter = $('#department_filter').val();
             d.organizationfilter = $("#organization_filter").val();
             d.branchfilter = $("#branch_filter").val();
+            d.verticalfilter = $("#vertical_filter").val();
         }
     },
     'columns': [{
@@ -143,8 +170,10 @@ var designationSettings = {
                     return '<div>'+row.department+'</div>';
                 } else if (data == 'organization') {
                     return '<div>'+row.organization+'</div>';
-                } else {
+                } else if (data == 'branch') {
                     return '<div>'+row.branch+'</div>';
+                } else if (data == 'vertical') {
+                    return '<div>'+row.vertical+'</div>';
                 }
             }
         },{         
@@ -177,7 +206,7 @@ let isUpdating = false;
 
 function reloadTable(id) {
     if(isUpdating) return;
-    var filter = ['organization_filter','branch_filter','department_filter'];
+    var filter = ['organization_filter','branch_filter','vertical_filter','department_filter'];
     for (const key in filter) {
         if (id != filter[key]) {
             triggerChange(filter[key]);
@@ -211,7 +240,10 @@ async function fetchData() {
         } else if($('#branch_filter option').length > 0 && $('#branch_filter').val().length > 0) {
             search_id = $('#branch_filter').val();
             id_type = "branch";
-        }
+        } else if($('#vertical_filter option').length > 0 && $('#vertical_filter').val().length > 0) {
+            search_id = $('#vertical_filter').val();
+            id_type = "vertical";
+        } 
         const response = await fetch('/app/designation/designation-orgchart-server?search_id='+search_id+'&id_type='+id_type);
         const data = await response.json();
         return data;
@@ -282,7 +314,7 @@ function addDesignation() {
 function updateDetails(id,desigantion_inside) {
     var url = capitalizeFirstLetter(desigantion_inside);
     $.ajax({
-        url : "/app/designation/insertAndupdateDesignationInside"+url , 
+        url : "/app/designation/insertAndupdateDesignation", 
         type : "post", 
         data : {
             id

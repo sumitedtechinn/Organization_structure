@@ -28,23 +28,21 @@ if (!empty($searchValue)) {
     $searchQuery = "AND (Designation.designation_name LIKE '%$searchValue%' OR Designation.code LIKE '%$searchValue%')"; 
 }
 
-$delete_query = "";
-if(isset($_POST['departmentType'])) {
-    $delete_query = "Designation.Deleted_At IS NOT NULL";
-} else {
-    $delete_query = "Designation.Deleted_At IS NULL";
-}
+$delete_query = (isset($_POST['departmentType'])) ? "Designation.Deleted_At IS NOT NULL" : "Designation.Deleted_At IS NULL";
 
 $designation_inside = '';
 if(isset($_POST['departmentfilter']) && !empty($_POST['departmentfilter'])) {
-    $searchQuery .= "AND Designation.department_id = '".$_POST['departmentfilter']."'";
+    $searchQuery .= "AND Designation.department_id = '".$_POST['departmentfilter']."' AND Designation.added_inside = '4'";
     $designation_inside = 'department';
 } elseif(isset($_POST['organizationfilter']) && !empty($_POST['organizationfilter'])) {
-    $searchQuery .= "AND Designation.organization_id = '".$_POST['organizationfilter']."' AND Designation.branch_id IS NULL";
+    $searchQuery .= "AND Designation.organization_id = '".$_POST['organizationfilter']."' AND Designation.added_inside = '1'";
     $designation_inside = 'organization';
 } elseif(isset($_POST['branchfilter']) && !empty($_POST['branchfilter'])) {
-    $searchQuery .= "AND Designation.branch_id = '".$_POST['branchfilter']."'";
+    $searchQuery .= "AND Designation.branch_id = '".$_POST['branchfilter']."' AND Designation.added_inside = '2'";
     $designation_inside = 'branch';
+} elseif(isset($_POST['verticalfilter']) && !empty($_POST['verticalfilter'])) {
+    $searchQuery .= "AND Designation.vertical_id = '".$_POST['verticalfilter']."' AND Designation.added_inside = '3'";
+    $designation_inside = 'vertical';
 } else {
     $department = $conn->query("SELECT ID FROM `Designation` LIMIT 1");
     $department = mysqli_fetch_column($department);
@@ -63,7 +61,7 @@ $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
 ## Fetch Record
-$designation = $conn->query("SELECT Designation.* , Department.department_name as `department` , organization.organization_name as `organization` , Branch.Branch_name as `branch` FROM `Designation` LEFT JOIN Department ON Department.id = Designation.department_id LEFT JOIN organization ON organization.id = Designation.organization_id LEFT JOIN Branch ON Branch.ID = Designation.branch_id WHERE $delete_query $searchQuery $orderby LIMIT $row , $rowperpage");
+$designation = $conn->query("SELECT Designation.* , Department.department_name as `department` , organization.organization_name as `organization` , Branch.Branch_name as `branch` , Vertical.Vertical_name as `vertical` FROM `Designation` LEFT JOIN Department ON Department.id = Designation.department_id LEFT JOIN organization ON organization.id = Designation.organization_id LEFT JOIN Branch ON Branch.ID = Designation.branch_id LEFT JOIN Vertical ON Vertical.ID = Designation.vertical_id WHERE $delete_query $searchQuery $orderby LIMIT $row , $rowperpage");
 
 $data = [];
 if ($designation->num_rows > 0 ) {
@@ -76,6 +74,7 @@ if ($designation->num_rows > 0 ) {
             'department' => $row['department'], 
             'organization' => $row['organization'],
             'branch' => $row['branch'] ,
+            'v  ertical' => $row['vertical'],
             'desigantion_inside' => $designation_inside,
             'color' => $row['color']
         );

@@ -18,7 +18,7 @@ if(isset($_REQUEST['branch_id']) && isset($_REQUEST['organization_id'])) {
     $parent_id  = '';
     if (isset($_REQUEST['hierarchy_value']) && !empty($_REQUEST['hierarchy_value'])) {
         $parent_hierarchy = intval($_REQUEST['hierarchy_value'])-1;
-        $parent = $conn->query("SELECT ID FROM `Designation` where hierarchy_value = '".$parent_hierarchy."' AND branch_id = '".$_POST['branch_id']."' AND organization_id = '".$_POST['organization_id']."'"); 
+        $parent = $conn->query("SELECT ID FROM `Designation` where hierarchy_value = '$parent_hierarchy' AND branch_id = '$branch_id' AND organization_id = '$organization_id' AND added_inside = '2'"); 
         if($parent->num_rows > 0) {
             $parent_id = mysqli_fetch_column($parent);
         } else {
@@ -31,7 +31,7 @@ if(isset($_REQUEST['branch_id']) && isset($_REQUEST['organization_id'])) {
         $designation_id = mysqli_real_escape_string($conn,$_REQUEST['designation_id']);
     }
     
-    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE branch_id = '".$_POST['branch_id']."' AND organization_id = '".$_POST['organization_id']."'");
+    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE branch_id = '$branch_id' AND organization_id = '$organization_id' AND added_inside = '2'");
     if($designation->num_rows > 0) {
         while($row = mysqli_fetch_assoc($designation)) {
             if (!empty($parent_id) && $row['ID'] == $parent_id) {

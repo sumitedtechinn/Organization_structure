@@ -11,11 +11,13 @@ if (isset($_REQUEST['search_id']) && !empty($_REQUEST['search_id']) && isset($_R
 
     $where_clause = '';
     if($id_type == 'department') {
-        $where_clause = "department_id = '$search_id'";
+        $where_clause = "department_id = '$search_id' AND added_inside = '4'";
     } elseif($id_type == 'organization') {
-        $where_clause = "branch_id IS NULL AND organization_id = '$search_id'";
-    } else {
-        $where_clause = "branch_id = '$search_id'";
+        $where_clause = "organization_id = '$search_id' AND added_inside = '1'";
+    } elseif ($id_type == 'branch') {
+        $where_clause = "branch_id = '$search_id' AND added_inside = '2'";
+    } elseif ($id_type == 'vertical') { 
+        $where_clause = "vertical_id = '$search_id' AND added_inside = '3'";
     }
     getSalesHierarchyData($where_clause);
 } else {

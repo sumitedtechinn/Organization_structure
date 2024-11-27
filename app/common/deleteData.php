@@ -23,22 +23,26 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['table'])) {
 
 function updateHierarchyBeforeDeleteDesigantion(){
     global $conn;
-    $current_designation_details = $conn->query("SELECT id,hierarchy_value,department_id,organization_id,branch_id,parent_id FROM Designation WHERE ID = '".$_REQUEST['id']."'");
+    $current_designation_details = $conn->query("SELECT id,hierarchy_value,department_id,organization_id,branch_id,vertical_id,parent_id,added_inside FROM Designation WHERE ID = '".$_REQUEST['id']."'");
     $current_designation_details = mysqli_fetch_assoc($current_designation_details);
     $id = $current_designation_details['id'];
     $department_id = $current_designation_details['department_id'];
+    $vertical_id = $current_designation_details['vertical_id'];
     $branch_id = $current_designation_details['branch_id'];
     $organization_id = $current_designation_details['organization_id'];
     $hierarchy_value = $current_designation_details['hierarchy_value'];
     $parent_id = $current_designation_details['parent_id'];
+    $added_inside = $current_designation_details['added_inside'];
 
     $where_clause = '';
-    if (is_null($organization_id) && is_null($branch_id)) {
-        $where_clause =  "AND department_id = '$department_id'";
-    } elseif (is_null($department_id) && is_null($branch_id)) {
-        $where_clause =  "AND branch_id IS NULL AND organization_id = '$organization_id'";
-    } else {
-        $where_clause =  "AND branch_id = '$branch_id' AND organization_id = '$organization_id'";
+    if ($added_inside == '4') {
+        $where_clause =  "AND department_id = '$department_id' AND added_inside = '$added_inside'";
+    } elseif ($added_inside == '3') {
+        $where_clause =  "AND vertical_id = '$vertical_id' AND branch_id = '$branch_id' AND organization_id = '$organization_id' AND added_inside = '$added_inside'";
+    } elseif ($added_inside == '2') {
+        $where_clause =  "AND branch_id = '$branch_id' AND organization_id = '$organization_id' AND added_inside = '$added_inside'";
+    } elseif ($added_inside == '1') {
+        $where_clause =  "AND organization_id = '$organization_id' AND added_inside = '$added_inside'";
     }
     $check_upper_hierarchy = $conn->query("SELECT ID FROM Designation WHERE hierarchy_value > '$hierarchy_value' $where_clause AND parent_id = '$id'");
         

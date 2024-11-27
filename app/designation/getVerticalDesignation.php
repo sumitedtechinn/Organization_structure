@@ -10,14 +10,15 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'adminDesignation') {
     $option .= '<option value="">Select</div><option value = "0_0">Head</option>';
 }
 
-if(isset($_REQUEST['organization_id'])) {
+if(isset($_REQUEST['branch_id']) && isset($_REQUEST['vertical_id'])) {
 
-    $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization_id']);
-
+    $branch_id = mysqli_real_escape_string($conn,$_REQUEST['branch_id']);
+    $vertical_id = mysqli_real_escape_string($conn,$_REQUEST['vertical_id']);
+    
     $parent_id  = '';
     if (isset($_REQUEST['hierarchy_value']) && !empty($_REQUEST['hierarchy_value'])) {
         $parent_hierarchy = intval($_REQUEST['hierarchy_value'])-1;
-        $parent = $conn->query("SELECT ID FROM `Designation` where hierarchy_value = '".$parent_hierarchy."' AND organization_id = '$organization_id' AND added_inside = '1'"); 
+        $parent = $conn->query("SELECT ID FROM `Designation` where hierarchy_value = '$parent_hierarchy' AND vertical_id = '$vertical_id' AND added_inside = '3'"); 
         if($parent->num_rows > 0) {
             $parent_id = mysqli_fetch_column($parent);
         } else {
@@ -30,7 +31,7 @@ if(isset($_REQUEST['organization_id'])) {
         $designation_id = mysqli_real_escape_string($conn,$_REQUEST['designation_id']);
     }
     
-    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE organization_id = '$organization_id' AND added_inside = '1'");
+    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE vertical_id = '$vertical_id' AND added_inside = '3'");
     if($designation->num_rows > 0) {
         while($row = mysqli_fetch_assoc($designation)) {
             if (!empty($parent_id) && $row['ID'] == $parent_id) {
