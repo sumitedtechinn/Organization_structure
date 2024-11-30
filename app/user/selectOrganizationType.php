@@ -6,23 +6,33 @@
         </div>
         <hr/>
         <div class="row justify-content-center g-lg-3">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="card">
                     <img src="/../../assets/images/sample_user.jpeg" class="card-img-top" alt="...">
                     <div class="card-body">
-                    <h5 class="card-title">Organization</h5>
+                    <h6 class="card-title">Organization</h6>
                     <p class="card-text">Assign inside Organization</p>
-                    <a href="#" class="btn btn-primary" id="InsideOrganization" onclick="gotoFormPage(this.id)">Add Designation</a>
+                    <a href="#" class="btn btn-primary" style="font-size: 0.8rem;" id="InsideOrganization" onclick="gotoFormPage(this.id)">Add Designation</a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="card">
                     <img src="/../../assets/images/sample_user.jpeg" class="card-img-top" alt="...">
                     <div class="card-body">
-                    <h5 class="card-title">Branch</h5>
+                    <h6 class="card-title">Branch</h6>
                     <p class="card-text">Assign inside Branch</p>
-                    <a href="#" class="btn btn-primary" id="InsideBranch" onclick="gotoFormPage(this.id)">Add Designation</a>
+                    <a href="#" class="btn btn-primary" style="font-size: 0.8rem;" id="InsideBranch" onclick="gotoFormPage(this.id)">Add Designation</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                    <img src="/../../assets/images/sample_user.jpeg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h6 class="card-title">Vertical</h6>
+                    <p class="card-text">Assign inside Vertical</p>
+                    <a href="#" class="btn btn-primary" style="font-size: 0.8rem;" id="InsideVertical" onclick="gotoFormPage(this.id)">Add Designation</a>
                     </div>
                 </div>
             </div>

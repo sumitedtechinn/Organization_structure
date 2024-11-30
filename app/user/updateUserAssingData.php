@@ -19,6 +19,16 @@ if (isset($_REQUEST['ID']) && isset($_REQUEST['branch']) && isset($_REQUEST['dep
     $update_query = $conn->query("UPDATE users SET Department_id = '$department', Designation_id = '$designation_id', Hierarchy_value = '$hierarchy_value', Vertical_id = '$vertical_id', Branch_id = '$branch_id', Organization_id = '$organization_id', Assinged_Person_id = null WHERE ID = $id");
     showResponse($update_query,'updated'); 
 
+} elseif (isset($_REQUEST['ID']) && isset($_REQUEST['organization']) && isset($_REQUEST['branch']) && isset($_REQUEST['vertical']) && isset($_REQUEST['designation'])) {
+
+    $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization']);
+    list($designation_id,$hierarchy_value) = explode("_",mysqli_real_escape_string($conn,$_REQUEST['designation']));
+    $branch_id = mysqli_real_escape_string($conn,$_POST['branch']);
+    $vertical_id = mysqli_real_escape_string($conn,$_REQUEST['vertical']);
+    $id = mysqli_real_escape_string($conn,$_POST['ID']);
+    $update_query = $conn->query("UPDATE users SET Designation_id = '$designation_id', Hierarchy_value = '$hierarchy_value' , Branch_id = '$branch_id', Organization_id = '$organization_id', Vertical_id = '$vertical_id', Assinged_Person_id = null WHERE ID = $id");
+    showResponse($update_query,'updated');
+
 } elseif (isset($_REQUEST['ID']) && isset($_REQUEST['organization']) && isset($_REQUEST['branch']) && isset($_REQUEST['designation'])) {
 
     $organization_id = mysqli_real_escape_string($conn,$_REQUEST['organization']);

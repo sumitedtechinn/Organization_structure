@@ -184,6 +184,15 @@ function checkAssignUser(){
             } else {
                 return (json_encode(['status'=> 400 ,'title'=>"Sorry can't update Branch" ,'text'=>"User assign as parent!",'previous' => $assignBranch_id]));
             }
+        } elseif (isset($_REQUEST['type']) && $_REQUEST['type'] == "update_vertical" && isset($_REQUEST['vertical_id'])) {
+            $currentVertical_id = $_REQUEST['vertical_id'];
+            $assignVertical_id = $conn->query("SELECT Vertical_id FROM users WHERE ID = '$user_id'");
+            $assignVertical_id = mysqli_fetch_column($assignVertical_id); 
+            if ($currentVertical_id == $assignVertical_id) {
+                return json_encode(['status' => 200 , 'message' => "same vertical"]);    
+            } else {
+                return (json_encode(['status'=> 400 ,'title'=>"Sorry can't update Vertical" ,'text'=>"User assign as parent!",'previous' => $assignVertical_id]));
+            }
         } elseif ( isset($_REQUEST['type']) && $_REQUEST['type'] == "update_designation" && isset($_REQUEST['designation_id'])) {
             $currentDesignation = explode("_",$_REQUEST['designation_id']);
             $currentDesignation_id = $currentDesignation[0];
@@ -233,6 +242,15 @@ function checkAssignUser(){
             $assignBranch_id = mysqli_fetch_column($assignBranch_id);
             if ($currentBranch_id == $assignBranch_id) {
                 return json_encode(['status' => 200 , 'message' => "same branch"]);    
+            } else {
+                return json_encode(['status' => 200 , 'message' => "User not assign as parent"]);
+            }
+        } elseif (isset($_REQUEST['type']) && $_REQUEST['type'] == "update_vertical" && isset($_REQUEST['vertical_id'])) {
+            $currentVertical_id = $_REQUEST['vertical_id'];
+            $assignVertical_id = $conn->query("SELECT Vertical_id FROM users WHERE ID = '$user_id'");
+            $assignVertical_id = mysqli_fetch_column($assignVertical_id);
+            if ($currentVertical_id == $assignVertical_id) {
+                return json_encode(['status' => 200 , 'message' => "same vertical"]);    
             } else {
                 return json_encode(['status' => 200 , 'message' => "User not assign as parent"]);
             }

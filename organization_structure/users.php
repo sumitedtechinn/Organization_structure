@@ -135,7 +135,7 @@ var UserSettings = {
                 }
                 var email = row.Email;
                 var doj = row.doj;
-                var designation_name = (row.designation == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.designation+'</span>';
+                var designation_name = (row.organization_info_assign == 'No') ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.designation+'</span>';
                 return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p><p class = "mb-1"><b>Email : </b>'+email+'</p><p class = "mb-1"><b>DOJ : </b>'+doj+'</p><p class = "mb-1 text-wrap" style = "width:200px;"><b>Designation : </b>'+designation_name+'</p></div>';
             }
         },{
@@ -150,7 +150,7 @@ var UserSettings = {
                 if (row.role_name == 'admin' && row.organization_name != null ) {
                     var department = '<span>All</span>';
                     var organization = '<span>'+row.organization_name+'</span>';
-                    var vertical = '<span>All</span>';
+                    var vertical = '<span>'+row.vertical_name+'</span>';
                     var branch = (row.branch_name == null) ? '<span>All</span>': '<span>'+row.branch_name+'</span>';
                     var role_name = row.role_name.toUpperCase();
                 } else {

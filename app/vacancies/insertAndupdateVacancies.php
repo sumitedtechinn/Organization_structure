@@ -131,6 +131,7 @@ function getDepartmentDesignation(department_id) {
         data : {
             department_id,
             designation_id,
+            'added_inside_id' : '4',
             'type' : 'userDesignation'
         },
         success : function(data) {

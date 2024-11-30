@@ -13,7 +13,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'userDesignation') {
 if (isset($_REQUEST['department_id'])) {
 
     $department_id = mysqli_real_escape_string($conn,$_REQUEST['department_id']);
-    $added_inside = mysqli_real_escape_string($conn,$_REQUEST['added_inside_id']);
+    //$added_inside = mysqli_real_escape_string($conn,$_REQUEST['added_inside_id']);
     $parent_id  = '';
     if (isset($_REQUEST['hierarchy_value']) && !empty($_REQUEST['hierarchy_value'])) {
         $parent_hierarchy = intval($_REQUEST['hierarchy_value'])-1;
@@ -30,7 +30,7 @@ if (isset($_REQUEST['department_id'])) {
         $designation_id = mysqli_real_escape_string($conn,$_REQUEST['designation_id']);
     }
 
-    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE department_id = '$department_id' AND added_inside = '$added_inside'");
+    $designation = $conn->query("SELECT ID , hierarchy_value , CONCAT(designation_name,'(',code,')') as `name` FROM Designation WHERE department_id = '$department_id' AND added_inside = '4'");
     if($designation->num_rows > 0) {
         while($row = mysqli_fetch_assoc($designation)) {
             if (!empty($parent_id) && $row['ID'] == $parent_id) {

@@ -47,7 +47,7 @@ if (isset($_REQUEST['branch']) && isset($_REQUEST['department']) && isset($_REQU
     $numofvacancies = mysqli_real_escape_string($conn,$_POST['numofvacancies']);
     $raisedby = mysqli_real_escape_string($conn,$_POST['raisedby']);
 
-    if ($numofvacancies - $numofvacanciesfill > 0) {
+    if ($numofvacancies - $numofvacanciesfill >= 0) {
         $updated_time = date("Y-m-d h:i:s");
         $update_query = $conn->query("UPDATE `Vacancies` SET `NumOfVacanciesRaised`='$numofvacancies',`Raised_by`='$raisedby' WHERE `ID` = '".$_REQUEST['ID']."'");
         showResponse($update_query,'Updated');

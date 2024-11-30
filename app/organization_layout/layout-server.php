@@ -409,77 +409,220 @@ function getDepartmentData() {
     }
 }
 
+/**
+ *  1st get all the data of one department of all the user 
+ *  And also get the vacancy 
+ *  Now, see one arrange data on hierachy basis 
+ */
+// function getUserListDepartmentBasis() {
+
+//     global $conn;
+//     global $layout;
+//     global $organization_id; global $branch_id; global $vertical_id; global $department_id;
+//     $searchQuery = '';
+//     if (!empty($branch_id)) {
+//         $searchQuery .= "AND users.Branch_id = '$branch_id'";
+//     }
+//     if (!empty($vertical_id)) {
+//         $searchQuery .= "AND users.Vertical_id = '$vertical_id'";
+//     }
+//     if(!empty($department_id)) {
+//         $searchQuery .= "AND users.Department_id = '$department_id'";
+//     }
+//     $directUser = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Assinged_Person_id = '0' AND users.Organization_id = '$organization_id' $searchQuery  AND users.role = '2' AND users.Deleted_At IS NULL");
+//     if($directUser->num_rows > 0) {
+//         while ($row = mysqli_fetch_assoc($directUser)) {
+//             $date1 = new DateTime($row['DOJ']);
+//             $date2 = new DateTime();
+//             $interval = $date1->diff($date2);
+//             $address = "country : ".$row['Country']." \n State : ".$row['State']." \n City : ".$row['City']." \n Locality : ".$row['Address'];
+//             $image = (is_null($row['Photo'])) ? "../../assets/images/sample_user.jpg" : $row['Photo'];
+//             $tag = $row['designation_code'] . '_' .$row['Department_id'];
+//             $layout[] = array(
+//                 "id" => "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'] , 
+//                 "pid" => "department_".$row['Department_id']."_" . $row['Vertical_id'] . "_" . $row['Branch_id'] , 
+//                 "Name" => $row['Name'],
+//                 "Designation" => $row['designation'],
+//                 "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
+//                 "Image" => $image,
+//                 "Address" => $address ,
+//                 "Code" =>  $row['designation_code'] . '_' .$row['Department_id'],
+//                 "tags" => ["$tag"], 
+//                 "color" => $row['color'],
+//             );    
+//         }
+//     }
+
+//     $allChildUsers = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Assinged_Person_id != '0' AND users.Organization_id = '$organization_id' $searchQuery  AND users.role = '2' AND users.Deleted_At IS NULL");
+
+//     if($allChildUsers->num_rows > 0) {
+//         while ($row = mysqli_fetch_assoc($allChildUsers)) {
+//             $date1 = new DateTime($row['DOJ']);
+//             $date2 = new DateTime();
+//             $interval = $date1->diff($date2);
+//             $address = "country : ".$row['Country']." \n State : ".$row['State']." \n City : ".$row['City']." \n Locality : ".$row['Address'];
+//             if (is_null($row['Photo'])) {
+//                 $image = "../../assets/images/sample_user.jpg";
+//             } else {
+//                 $image = $row['Photo'];
+//             }
+//             $tag = $row['designation_code'] . '_' .$row['Department_id'];
+//             $layout[] = array(
+//                 "id" => "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'] , 
+//                 "pid" => "user_".$row['Assinged_Person_id']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id']  , 
+//                 "Name" => $row['Name'],
+//                 "Designation" => $row['designation'],
+//                 "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
+//                 "Image" => $image,
+//                 "Address" => $address ,
+//                 "Code" =>  $row['designation_code']. '_' .$row['Department_id'],
+//                 "tags" => ["$tag"], 
+//                 "color" => $row['color'],
+//             );    
+//         }
+//     }
+
+// }
+
 function getUserListDepartmentBasis() {
 
     global $conn;
     global $layout;
     global $organization_id; global $branch_id; global $vertical_id; global $department_id;
-    $searchQuery = '';
+    $userSearchQuery = '';
     if (!empty($branch_id)) {
-        $searchQuery .= "AND users.Branch_id = '$branch_id'";
+        $userSearchQuery .= "AND users.Branch_id = '$branch_id'";
     }
     if (!empty($vertical_id)) {
-        $searchQuery .= "AND users.Vertical_id = '$vertical_id'";
+        $userSearchQuery .= "AND users.Vertical_id = '$vertical_id'";
     }
     if(!empty($department_id)) {
-        $searchQuery .= "AND users.Department_id = '$department_id'";
+        $userSearchQuery .= "AND users.Department_id = '$department_id'";
     }
+
+    $vacancySearchQuery = '';
+    if (!empty($branch_id)) {
+        $vacancySearchQuery .= "AND Vacancies.Branch_id = '$branch_id'";
+    }
+    if (!empty($vertical_id)) {
+        $vacancySearchQuery .= "AND Vacancies.Vertical_id = '$vertical_id'";
+    }
+    if(!empty($department_id)) {
+        $vacancySearchQuery .= "AND Vacancies.Department_id = '$department_id'";
+    }
+    /**
+    * -> List of all the hierarchy present in the department
+    */
+
+    $departmentHierarchy = $conn->query("SELECT DISTINCT hierarchy_value FROM Designation WHERE department_id = '$department_id' AND added_inside = '4' ORDER BY hierarchy_value ASC");
+    if ($departmentHierarchy->num_rows > 0) {
+        $hierarchy_list = [];
+        while($hierarchy = mysqli_fetch_assoc($departmentHierarchy)) {
+            $hierarchy_list[] = $hierarchy['hierarchy_value'];        
+        }
+    }
+
+    $i = 1;
+    $lastHierarchyUser = []; $lastHierarchyVacancy = [];
+    foreach($hierarchy_list as $hierarchy) {
+        $userList = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Organization_id = '$organization_id' $userSearchQuery AND users.Hierarchy_value = '$hierarchy' AND users.role = '2' AND users.Deleted_At IS NULL");
+
+        if($userList->num_rows > 0) {
+            while ($row = mysqli_fetch_assoc($userList)) {
+                $date1 = new DateTime($row['DOJ']);
+                $date2 = new DateTime();
+                $interval = $date1->diff($date2);
+                $address = "country : ".$row['Country']." \n State : ".$row['State']." \n City : ".$row['City']." \n Locality : ".$row['Address'];
+                $image = (is_null($row['Photo'])) ? "../../assets/images/sample_user.jpg" : $row['Photo'];
+                $tag = $row['designation_code'] . '_' .$row['Department_id'];
+                if($i == '1') {
+                    $pid = "department_".$row['Department_id']."_" . $row['Vertical_id'] . "_" . $row['Branch_id'];
+                    if (!array_key_exists("user_".$i , $lastHierarchyUser )) {
+                        $lastHierarchyUser['user_'.$i] = "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'];
+                    }
+                } else {
+                    if (!empty($lastHierarchyUser)) {
+                        $userLastkey = explode('_',array_key_last($lastHierarchyUser))[1];
+                        $vacancyLastKey = explode('_',array_key_last($lastHierarchyVacancy))[1];
+                        $pid = "user_".$row['Assinged_Person_id']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'];
+                        $lastHierarchyUser['user_'.$i] = "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'];    
+                    } elseif(!empty($lastHierarchyVacancy)) {
+                        $pid = $lastHierarchyVacancy['vacancy_'.($i-1)];
+                    } elseif(empty($lastHierarchyUser) && empty($lastHierarchyVacancy)) {
+                        $pid = "department_".$row['Department_id']."_" . $row['Vertical_id'] . "_" . $row['Branch_id'];
+                        if (!array_key_exists("user_".$i , $lastHierarchyUser )) {
+                            $lastHierarchyUser['user_'.$i] = "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'];
+                        }   
+                    }
+                }
+                $layout[] = array(
+                    "id" => "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'] , 
+                    "pid" => "department_".$row['Department_id']."_" . $row['Vertical_id'] . "_" . $row['Branch_id'] , 
+                    "Name" => $row['Name'],
+                    "Designation" => $row['designation'],
+                    "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
+                    "Image" => $image,
+                    "Address" => $address ,
+                    "Code" =>  $row['designation_code'] . '_' .$row['Department_id'],
+                    "tags" => ["$tag"], 
+                    "color" => $row['color'],
+                    "hierarchy_value" => $hierarchy
+                );    
+            }
+        }
+
+        $vacancyList = $conn->query("SELECT Vacancies.* , Designation.designation_name as `designation` , Designation.code as `designation_code` FROM `Vacancies` LEFT JOIN Designation ON Designation.ID = Vacancies.Designation_id WHERE Vacancies.Deleted_At IS NULL AND Vacancies.Organization_id = '$organization_id' $vacancySearchQuery AND Designation.hierarchy_value = '$hierarchy'");
+
+        if ($vacancyList->num_rows > 0) {
+            while( $row = mysqli_fetch_assoc($vacancyList)) {
+                $branch = $row['Branch_id'];
+                $vertical = $row['Vertical_id'];
+                $organization = $row['Organization_id'];
+                $designation_id = $row['Designation_id']; // from hierarchy table
+                $department = $row['Department_id'];
+                $numofVacancy = $row['NumOfVacanciesRaised'];
+                $raisedby = $row['Raised_by'];
+                $vacancies_fill = $conn->query("SELECT COUNT(users.ID) as `allcount` FROM users where Vertical_id = '".$vertical."' AND Organization_id = '".$organization."' AND Department_id = '".$department."' AND Branch_id = '$branch' AND  Designation_id = '".$designation_id."' AND Assinged_Person_id IS NOT NULL AND Deleted_At IS NULL");
+                $numofvacanciesfill = mysqli_fetch_column($vacancies_fill);
+                $numofVacancyVacanct = intval($numofVacancy - $numofvacanciesfill);
+                while($numofVacancyVacanct > 0 ) {
+                    $id = "vacancy_".$row['ID']."_" .$department . "_". $vertical . "_" . $branch .'_'. $numofVacancyVacanct;
+                    if($i == '1') {
+                        $pid = 'department_'.$department.'_'.$vertical.'_'.$branch ;
+                        if (!array_key_exists("vacancy_".$i , $lastHierarchyVacancy )) {
+                            $lastHierarchyVacancy['vacancy_'.$i] = "vacancy_".$row['ID']."_" .$department . "_". $vertical . "_" . $branch .'_'. $numofVacancyVacanct;
+                        }
+                    } else {
+                        if (!empty($lastHierarchyVacancy) && isset($lastHierarchyVacancy['vacancy_'.($i-1)])) {
+                                
+                        } else {
+                            $pid = $lastHierarchyVacancy['vacancy_'.($i-1)];
+                        }
+                    }
+                    $layout[] = array(
+                        "id" => $id , 
+                        "pid" => $pid, 
+                        "Name" => "N/A",
+                        "Designation" => $row['designation'],
+                        "Image" => "/../../assets/images/vacant_position.avif" , 
+                        "Code" =>  'vacancy',
+                        "tags" => ["vacancy"], 
+                        "color" => $row['color'],
+                        "hierarchy_value" => $hierarchy
+                    );
+                    $numofVacancyVacanct -= 1;
+                } 
+            }
+        }
+        
+    }
+    
+    echo "<pre>";
+    print_r($layout);
+    exit;
+
     $directUser = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Assinged_Person_id = '0' AND users.Organization_id = '$organization_id' $searchQuery  AND users.role = '2' AND users.Deleted_At IS NULL");
-    if($directUser->num_rows > 0) {
-        while ($row = mysqli_fetch_assoc($directUser)) {
-            $date1 = new DateTime($row['DOJ']);
-            $date2 = new DateTime();
-            $interval = $date1->diff($date2);
-            $address = "country : ".$row['Country']." \n State : ".$row['State']." \n City : ".$row['City']." \n Locality : ".$row['Address'];
-            if (is_null($row['Photo'])) {
-                $image = "../../assets/images/sample_user.jpg";
-            } else {
-                $image = $row['Photo'];
-            }
-            $tag = $row['designation_code'] . '_' .$row['Department_id'];
-            $layout[] = array(
-                "id" => "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'] , 
-                "pid" => "department_".$row['Department_id']."_" . $row['Vertical_id'] . "_" . $row['Branch_id'] , 
-                "Name" => $row['Name'],
-                "Designation" => $row['designation'],
-                "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
-                "Image" => $image,
-                "Address" => $address ,
-                "Code" =>  $row['designation_code'] . '_' .$row['Department_id'],
-                "tags" => ["$tag"], 
-                "color" => $row['color'],
-            );    
-        }
-    }
-
-    $allChildUsers = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Assinged_Person_id != '0' AND users.Organization_id = '$organization_id' $searchQuery  AND users.role = '2' AND users.Deleted_At IS NULL");
-
-    if($allChildUsers->num_rows > 0) {
-        while ($row = mysqli_fetch_assoc($allChildUsers)) {
-            $date1 = new DateTime($row['DOJ']);
-            $date2 = new DateTime();
-            $interval = $date1->diff($date2);
-            $address = "country : ".$row['Country']." \n State : ".$row['State']." \n City : ".$row['City']." \n Locality : ".$row['Address'];
-            if (is_null($row['Photo'])) {
-                $image = "../../assets/images/sample_user.jpg";
-            } else {
-                $image = $row['Photo'];
-            }
-            $tag = $row['designation_code'] . '_' .$row['Department_id'];
-            $layout[] = array(
-                "id" => "user_".$row['ID']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id'] , 
-                "pid" => "user_".$row['Assinged_Person_id']."_" .$row['Department_id'] . "_". $row['Vertical_id'] . "_" . $row['Branch_id']  , 
-                "Name" => $row['Name'],
-                "Designation" => $row['designation'],
-                "Duration" => $interval->y ." Year " .$interval->m . " Month ".$interval->d. " Day",
-                "Image" => $image,
-                "Address" => $address ,
-                "Code" =>  $row['designation_code']. '_' .$row['Department_id'],
-                "tags" => ["$tag"], 
-                "color" => $row['color'],
-            );    
-        }
-    }
+    
 
 }
 

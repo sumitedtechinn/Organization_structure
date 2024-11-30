@@ -4,21 +4,19 @@
 include '../../includes/db-config.php';
 session_start();
 
-$user_details = [];$user_designation_added_inside = '';
+$user_details = [];
+$user_designation_added_inside = '';
 if (isset($_REQUEST['id'])) {
-    $user_details = $conn->query("SELECT users.* , roles.guard_name as `role_name` FROM users LEFT JOIN roles ON roles.ID = users.role WHERE users.ID = '".$_REQUEST['id']."'");
+    $user_details = $conn->query("SELECT * FROM users WHERE users.ID = '".$_REQUEST['id']."'");
     $user_details = mysqli_fetch_assoc($user_details);
     if($user_details['Assinged_Person_id'] == '0') {
         $user_details['Assinged_Person_id'] = 'head';
     }
-    if($user_details['role_name'] == 'admin') {
-        if (is_null($user_details['Branch_id']) && !is_null($user_details['Organization_id'])) {
-            $user_designation_added_inside = 'organization';
-        } else {
-            $user_designation_added_inside = 'branch';
-        }
-    } else {
-        $user_designation_added_inside = 'department';
+    $checkAddedInside = $conn->query("SELECT Designation.added_inside as `added_inside` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.ID = '".$_REQUEST['id']."'");
+    $checkAddedInside = mysqli_fetch_column($checkAddedInside);
+    $added_insideList = ['1' => 'organization' , '2' => 'branch' , '3' => 'vertical' , '4' => 'department'];
+    if(array_key_exists($checkAddedInside,$added_insideList)) {
+        $user_designation_added_inside = $added_insideList[$checkAddedInside];
     }
 }
 
@@ -124,6 +122,29 @@ $(document).ready(function(){
                 organization_id,
                 hierarchy_value,
                 "designation_type" : "insideBranch"
+            },
+            success : function(data) {
+                $("#reporting_person").html(data);
+                <?php if(!empty($user_details['Assinged_Person_id'])) {  ?>
+                    $("#reporting_person").trigger('change');
+                <?php } ?>
+            }
+        });
+    <?php } elseif ($user_designation_added_inside == 'vertical') { ?>
+        var vertical_id = '<?=$user_details['Vertical_id']?>';
+        var branch_id = '<?=$user_details['Branch_id']?>';
+        var organization_id = '<?=$user_details['Organization_id']?>';
+        var hierarchy_value = '<?=$user_details['Hierarchy_value']?>';
+        $.ajax({
+            url : "/app/common/reportingPersonList",
+            type : 'post',
+            data : {
+                assing_person_id,
+                vertical_id,
+                branch_id,
+                organization_id,
+                hierarchy_value,
+                "designation_type" : "insideVertical"
             },
             success : function(data) {
                 $("#reporting_person").html(data);

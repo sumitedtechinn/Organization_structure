@@ -21,8 +21,10 @@ if (isset($_REQUEST['user_id']) && isset($_REQUEST['parent_id'])) {
         if( ($numofvacancy - $numofvacanciesfill) > 0 ) {
             echo json_encode(['status' => 200 , 'message' => "Vacancy Present"]);
         } else {
-            if ( (!empty($user_details['Assinged_Person_id']) || $user_details['Assinged_Person_id'] == '0' ) &&  $current_assign_parent == $user_details['Assinged_Person_id'] ) {
+            if ((!empty($user_details['Assinged_Person_id']) || $user_details['Assinged_Person_id'] == '0' ) &&  $current_assign_parent == $user_details['Assinged_Person_id'] ) {
                 echo json_encode(['status' => 200 , 'message' => "Same parent"]);
+            } elseif((!empty($user_details['Assinged_Person_id']) || $user_details['Assinged_Person_id'] == '0' )) {
+                echo json_encode(['status' => 200 , 'message' => "Parent is change"]);
             } else {
                 echo json_encode(['status' => 400 , 'message' => "Vacancy is full please update"]);
             }

@@ -88,24 +88,18 @@ if ($users->num_rows > 0) {
     while($row = mysqli_fetch_assoc($users)) {
         $doj = date_format(date_create($row["DOJ"]),'d-M-Y');
         $password = base64_decode($row['Password']);
-        $designation_inside = '';
-        if($row['role_name'] == 'admin') {
-            if (is_null($row['Branch_id']) && !is_null($row['Organization_id'])) {
-                $designation_name = $conn->query("SELECT CONCAT(designation_name,'(',code,')') as `designation_name` FROM `Designation` WHERE branch_id IS NULL AND organization_id = '".$row['Organization_id']."' AND hierarchy_value = '".$row['Hierarchy_value']."' AND ID = '".$row['Designation_id']."'");
-                $designation_inside = 'InsideOrganization';
-            } else {
-                $designation_name = $conn->query("SELECT CONCAT(designation_name,'(',code,')') as `designation_name` FROM `Designation` WHERE branch_id = '".$row['Branch_id']."' AND organization_id = '".$row['Organization_id']."' AND hierarchy_value = '".$row['Hierarchy_value']."' AND ID = '".$row['Designation_id']."'");
-                $designation_inside = 'InsideBranch';
-            }
-        } else {
-            $designation_name = $conn->query("SELECT CONCAT(designation_name,'(',code,')') as `designation_name` FROM `Designation` WHERE department_id = '".$row['Department_id']."' AND hierarchy_value = '".$row['Hierarchy_value']."' AND ID = '".$row['Designation_id']."'"); 
-            $designation_inside = 'InsideDepartment';
-        }
+        $designation_inside = '';$designation_name = '';
         $organization_info_assign = 'No';
         if ( $row['Designation_id'] != null ) {
             $organization_info_assign = 'Yes';
+            $checkAddedInside = $conn->query("SELECT Designation.added_inside as `added_inside` , CONCAT(designation_name,'(',code,')') as `designation_name` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.ID = '".$row['ID']."'");
+            $checkAddedInside = mysqli_fetch_assoc($checkAddedInside);
+            $added_insideList = ['1' => 'InsideOrganization' , '2' => 'InsideDepartment' , '3' => 'InsideVertical' , '4' => 'InsideDepartment'];
+            if(array_key_exists($checkAddedInside['added_inside'],$added_insideList)) {
+                $designation_inside = $added_insideList[$checkAddedInside['added_inside']];
+            }
+            $designation_name = $checkAddedInside['designation_name'];    
         }
-        $designation_name = mysqli_fetch_column($designation_name);
         $data[] = array(
             "ID" => $row["ID"], 
             "Name" => $row["Name"],

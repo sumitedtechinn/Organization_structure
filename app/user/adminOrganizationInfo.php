@@ -37,11 +37,20 @@ if (isset($_REQUEST['id'])) {
                     </select>
                 </div>
             </div>
-            <?php if($_REQUEST['page_type'] == 'InsideBranch') { ?>
+            <?php if($_REQUEST['page_type'] == 'InsideBranch' || $_REQUEST['page_type'] == 'InsideVertical') { ?>
             <div class="row mb-2">
             <label class="col-sm-4 col-form-label">Branch</label>
                 <div class="col-sm-8">
                     <select type="text" class="form-control form-control-sm single-select select2" name="branch" id="branch" onchange="checkUserForUpdateBranch(this.value)">
+                    </select>
+                </div>
+            </div>
+            <?php } ?>
+            <?php if($_REQUEST['page_type'] == 'InsideVertical') { ?>
+            <div class="row mb-2">
+            <label class="col-sm-4 col-form-label">Vertical</label>
+                <div class="col-sm-8">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="vertical" id="vertical" onchange="checkUserForUpdateVertical(this.value)">
                     </select>
                 </div>
             </div>
@@ -201,12 +210,13 @@ function checkUserForUpdateBranch(branch_id) {
     <?php } ?>
 }
 
-function getBranchDesignation(branch_id){
+function getBranchDesignation(branch_id) {
     var organization_id = $("#organization").val();
     var designation_id = '';
     <?php if(!empty($user_details)) { ?>
         designation_id = '<?=$user_details['Designation_id']?>';
     <?php } ?>
+    <?php if($_REQUEST['page_type'] == 'InsideBranch') { ?>
     $.ajax({
         url : "/app/designation/getBranchDesignation",
         type : "post",
@@ -223,9 +233,94 @@ function getBranchDesignation(branch_id){
             <?php } ?>
         }
     });
+    <?php } else { ?>
+        getBranchVertical(organization_id,branch_id);
+    <?php } ?>
+}
+
+function getBranchVertical(organization_id,branch) {
+    var vertical_id = '';
+    <?php if(!empty($user_details['Vertical_id'])) { ?>
+        vertical_id = '<?=$user_details['Vertical_id']?>';
+    <?php } ?>
+    $.ajax({
+        url : "/app/common/verticalList" ,
+        type : 'post',
+        data : {
+            branch,
+            organization_id,
+            vertical_id
+        },
+        success : function(data) {
+            $("#vertical").html(data);
+            <?php if(!empty($user_details['Vertical_id'])) { ?>
+                $("#vertical").trigger('change');
+            <?php } ?>
+        }
+    });
+}
+
+function checkUserForUpdateVertical(vertical_id) {
+    <?php if(!empty($user_details)) { ?>
+        var id = '<?=$_REQUEST['id']?>';
+        var search = 'users';
+        $.ajax({
+            url : "/app/common/checkAssignDetails",
+            type : "post", 
+            data : {
+            id,
+            search,
+            vertical_id,
+            "type" : "update_vertical"
+            },
+            dataType : "json",
+            success : function(data) {
+                if(data.status == 400) {
+                    Swal.fire({
+                        title : data.title,
+                        text : data.text,
+                        icon: 'error',
+                    });
+                    $("#vertical").val(data.previous);
+                    $("#vertical").trigger('change');
+                } else {
+                    getVerticalDesignation(vertical_id);
+                }   
+            }
+        });    
+    <?php } else { ?>
+        getVerticalDesignation(vertical_id);
+    <?php } ?>
+}
+
+function getVerticalDesignation(vertical_id) {
+    var organization_id = $("#organization").val();
+    var branch_id = $("#branch").val();
+    var designation_id = '';
+    <?php if(!empty($user_details)) { ?>
+        designation_id = '<?=$user_details['Designation_id']?>';
+    <?php } ?>
+    $.ajax({
+        url : "/app/designation/getVerticalDesignation",
+        type : "post",
+        data : {
+            vertical_id,
+            branch_id,
+            organization_id,
+            designation_id,
+            "type" : "adminDesignation"
+        },
+        success : function(data) {
+            $("#designation").html(data);
+            <?php if(!empty($user_details)) { ?>
+                $("#designation").trigger('change');
+            <?php } ?>
+        }
+    });
 }
 
 function checkUserForUpdateDesignation(designation_id) {
+    console.log(designation_id);
     <?php if(!empty($user_details)) { ?>
         var id = '<?=$_REQUEST['id']?>';
         var search = 'users';
