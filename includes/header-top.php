@@ -53,6 +53,7 @@ if (stripos($url_page,'_')) {
   <link href="/assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
   <link href="/assets/plugins/datatable/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
   <!-- Bootstrap CSS -->
   <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/assets/css/bootstrap-extended.css" rel="stylesheet" />

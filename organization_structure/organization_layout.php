@@ -44,7 +44,12 @@ $col_length = ($_SESSION['role'] == '3') ? 'col-sm-4' : 'col-sm-3';
 }
 
 #tree>svg {
-    background-color: #2E2E2E;
+    background-color: #3580b3;
+}
+
+.swal2-popup{
+    width: 45rem;
+    padding: 1em 1em .3em;
 }
 
 </style>
@@ -93,11 +98,11 @@ $col_length = ($_SESSION['role'] == '3') ? 'col-sm-4' : 'col-sm-3';
         <div class="col-sm-2" style="width: 65%;">Department</div>
         <div class="col-sm-2" style="width: 6%;" id="department"></div>
     </div>
-    <div class="row d-flex flex-row text-white" id = "user_box" style="display: none !important;"> 
+    <div class="row d-flex flex-row text-white cursor-pointer" id = "user_box" style="display: none !important;" onclick="showDetails('employee')"> 
         <div class="col-sm-2" style="width: 65%;">Employee</div>
         <div class="col-sm-2" style="width: 6%;" id="user"></div>
     </div>
-    <div class="row d-flex flex-row text-white" id = "vacancy_box" style="display: none !important;">
+    <div class="row d-flex flex-row text-white cursor-pointer" id = "vacancy_box" style="display: none !important;" onclick="showDetails('vacancy')">
         <div class="col-sm-2" style="width: 65%;">Vacancy</div>
         <div class="col-sm-2" style="width: 6%;" id="vacancy"></div>
     </div>
@@ -248,31 +253,56 @@ async function fetchData() {
 
 
 let nodeCount = {
-    organization: {
-        counting : 0,
-        color : "",
-    }, branch : {
-        counting : 0,
-        color : "",
-    }, vertical : {
-        counting : 0 , 
-        color : "",
-    }, department : {
-        counting : 0 , 
-        color : "",
-    }, user : {
-        counting : 0 , 
-        color : "",
-    }, vacancy : {
-        counting : 0 , 
-        color : "",
-    }
+    organization: {counting : 0,color : "",}, 
+    branch : {counting : 0,color : "",}, 
+    vertical : {counting : 0 , color : "",}, 
+    department : { counting : 0 , color : "",}, 
+    user : {counting : 0 , color : "",}, 
+    vacancy : {counting : 0 , color : "",}
 };
+
+let employeeCount = {}; let vacancyCount = {}; let departmentData = {};
 
 function incrementNodeCount(variableName,color) {
     if (nodeCount.hasOwnProperty(variableName)) {
         nodeCount[variableName]['counting']++;
         nodeCount[variableName]['color'] = color;
+    }
+}
+
+function insertDepartmentData (id,name) {
+    if(!(id in departmentData)) {
+        departmentData[id] = name;
+    }
+}
+
+function insertEmployeeData(department_id,designation_name,designation_code) {
+    if (!(department_id in employeeCount)) {
+        employeeCount[department_id] = {};
+    }
+
+    if (!(designation_code in employeeCount[department_id])) {
+        employeeCount[department_id][designation_code] = {
+            designation_name: designation_name,
+            count: 1
+        };
+    } else {
+        employeeCount[department_id][designation_code]['count']++;
+    }
+}
+
+function insertVacancyData(department_id,designation_name,designation_code) {
+    if (!(department_id in vacancyCount)) {
+        vacancyCount[department_id] = {};
+    }
+
+    if (!(designation_code in vacancyCount[department_id])) {
+        vacancyCount[department_id][designation_code] = {
+            designation_name: designation_name,
+            count: 1
+        };
+    } else {
+        vacancyCount[department_id][designation_code]['count']++;
     }
 }
 
@@ -289,6 +319,23 @@ async function initializeChart() {
         let counting = (data[x]['id'].split("_"))[0];
         let color = data[x]['color'];
         incrementNodeCount(counting,color);
+        if(counting == 'department') {
+            let department_id = (data[x]['id'].split("_"))[1];
+            let department_name = data[x]['Name'];
+            insertDepartmentData(department_id,department_name);
+        }
+        if(counting == 'user' || counting == 'vacancy' ) {
+            let depart_id = (data[x]['id'].split("_"))[2];
+            let designation_name = data[x]['Designation'];
+            let designation_code = '';
+            if(counting == 'user') {
+                designation_code = (data[x]['Code'].split("_"))[0];
+                insertEmployeeData(depart_id,designation_name,designation_code);
+            } else if (counting == 'vacancy') {
+                designation_code = data[x]['Designation_code'];
+                insertVacancyData(depart_id,designation_name,designation_code);
+            }
+        }
         if(addDesignation(data[x]['Code'],data[x]['color'])) {
             const newIndex = Object.keys(designations).length; // Get the next index
             designations[newIndex] = {
@@ -401,13 +448,57 @@ async function initializeChart() {
             legent.innerHTML = document.querySelector('#legent-content').innerHTML;
             chart.element.appendChild(legent);
         });
-
     }
 }
 
 $(document).ready(function(){
     initializeChart();
 });
+
+function makeEmployeeAndVacancyData(type) {
+    if(type == 'employee') {
+        let makeEmplyeeDetailsTable = '<table class="table table-striped align-middle" style="font-size:0.7rem;"><thead class="table-secondary"><tr><th>Department</th><th>Designation</th><th>No. of Employee</th></tr></thead>';
+        for (const key in employeeCount) {
+            let depart_name = departmentData[key];
+            for (const code in employeeCount[key]) {
+                makeEmplyeeDetailsTable += '<tr>';
+                makeEmplyeeDetailsTable += '<td>'+depart_name+'</td>';
+                makeEmplyeeDetailsTable += '<td>'+employeeCount[key][code]['designation_name']+'</td>';
+                makeEmplyeeDetailsTable += '<td>'+employeeCount[key][code]['count']+'</td>';
+                makeEmplyeeDetailsTable += '</tr>';
+            }
+        }
+        makeEmplyeeDetailsTable += '</table>';
+        return makeEmplyeeDetailsTable;
+    } else {
+        let makevacancyDetailsTable =  '<table class="table table-striped align-middle" style="font-size:0.7rem;"><thead class="table-secondary"><tr><th>Department</th><th>Designation</th><th>No. of Vacancy</th></tr></thead>';
+        for (const key in vacancyCount) {
+            let depart_name = departmentData[key];
+            for (const code in vacancyCount[key]) {
+                makevacancyDetailsTable += '<tr>';
+                makevacancyDetailsTable += '<td>'+depart_name+'</td>';
+                makevacancyDetailsTable += '<td>'+vacancyCount[key][code]['designation_name']+'</td>';
+                makevacancyDetailsTable += '<td>'+vacancyCount[key][code]['count']+'</td>';
+                makevacancyDetailsTable += '</tr>';
+            }
+        }
+        makevacancyDetailsTable += '</table>';
+        return makevacancyDetailsTable;
+    }
+}
+
+function showDetails(type) {
+    let showData = makeEmployeeAndVacancyData(type);
+    Swal.fire({
+        html: showData,
+        showClass: {
+            popup: 'animate__animated animate__fadeInUp animate__faster'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutDown animate__faster'
+        },
+    });
+}
 
 </script> 
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-bottom.php');?>
