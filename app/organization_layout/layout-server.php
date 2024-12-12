@@ -388,7 +388,7 @@ function getDepartmentData() {
                 if(!empty($branch_id)) {
                     if($branch == $branch_id) {
                         $department_pid = departmentPID($organization_id,$branch,$row['vertical_id']);
-                        $pid = $department_id ? 'verticalUser_'. $department_pid :  "vertical_".$row['vertical_id']."_" . $branch;
+                        $pid = $department_pid ? 'verticalUser_'. $department_pid :  "vertical_".$row['vertical_id']."_" . $branch;
                         $layout[] = array(
                             "id" => "department_".$row['id']."_" . $row['vertical_id'] . "_" . $branch , 
                             "pid" => $pid , 
@@ -512,7 +512,7 @@ function getUserListDepartmentBasis() {
                     if (empty($department_id)) {
                         $userDepartment = "AND users.Department_id = '$department_value'";
                     }
-                    $userList = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Organization_id = '$organization_id' $userSearchQuery $userDepartment AND users.Hierarchy_value = '$hierarchy' AND users.role = '2' AND users.Deleted_At IS NULL");
+                    $userList = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE users.Organization_id = '$organization_id' $userSearchQuery $userDepartment AND users.Hierarchy_value = '$hierarchy' AND users.role = '2' AND users.Assinged_Person_id IS NOT NULL AND users.Deleted_At IS NULL");
 
                     if($userList->num_rows > 0) {
                         while ($row = mysqli_fetch_assoc($userList)) {

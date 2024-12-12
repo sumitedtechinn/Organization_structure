@@ -298,7 +298,8 @@ function getDealCloseAmountInputfield(id,center_name,value) {
     let dealCloseAmountBox = '<div class="row mb-1" id = "center_create_amount_box_'+id+'">';
     dealCloseAmountBox += '<label class="col-sm-4 col-form-label">Center Created Amount for '+center_name+'</label>';
     dealCloseAmountBox += '<div class="col-sm-4">';
-    dealCloseAmountBox += '<input type="text" class="form-control" name="center_create_amount_'+id+'" id = "center_create_amount_'+id+'" placeholder="eg:-10,000" onkeypress="return /[0-9]/i.test(event.key)" value = "'+value+'">';                
+    dealCloseAmountBox += '<input type="text" class="form-control" name="center_create_amount_'+id+'" id = "center_create_amount_'+id+'" placeholder="eg:-10,000" onkeypress="return /[0-9]/i.test(event.key)" value = "'+value+'">'; 
+    dealCloseAmountBox += '<span id = "empty_center_create_amount_'+id+'" class="text-danger small"></span>';               
     dealCloseAmountBox += '</div></div>';
     return dealCloseAmountBox;
 }
@@ -428,6 +429,18 @@ $("#form-dailyReporting").on('submit',function(e){
             formData.append('numofmeeting','<?=$meeting_count?>');
         <?php } ?>
         formData.append("country_code",$(".iti__selected-dial-code").text());
+        let allFieldsFilled = true;
+        $('input[id^="center_create_amount_"]').each(function () {
+            if ($.trim($(this).val()) === '') {
+                allFieldsFilled = false;
+                $("#empty_"+this.id).text('Please fill the amount');
+                $("#"+this.id).focus();
+                return false;
+            } else {
+                $("#empty_"+this.id).text('');
+            }
+        });
+        if (!allFieldsFilled) return;
         $.ajax({
             url: this.action,
             type: 'post',

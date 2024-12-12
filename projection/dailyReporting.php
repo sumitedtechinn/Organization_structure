@@ -516,7 +516,7 @@ function getFilterData() {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(updateOptionTag(data[key]));
+                $("#branch_filter").html(updateOptionTag(data));
                 $("#branch_filter").trigger('change');
             }   
         });

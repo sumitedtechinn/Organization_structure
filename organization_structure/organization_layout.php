@@ -45,6 +45,11 @@ $col_length = ($_SESSION['role'] == '3') ? 'col-sm-4' : 'col-sm-3';
 
 #tree>svg {
     background-color: #3580b3;
+    background-image: url("/assets/images/world_map.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 880px;
 }
 
 .swal2-popup{
@@ -137,7 +142,8 @@ function getFilterData() {
             dataType: 'json', 
             success : function(data) {
                 for (const key in data) {
-                    $("#"+key+"_filter").html(data[key]);
+                    $("#"+key+"_filter").html(updateOptionTag(data[key]));
+                    $("#"+key+"_filter").trigger('change'); 
                 }
             }   
         });
@@ -150,13 +156,17 @@ function getFilterData() {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
-            }   
+                $("#branch_filter").html(updateOptionTag(data));
+                $("#branch_filter").trigger('change');
+            }  
         });
     <?php } ?>
 }
 
+var isUpdating = false;
+
 function reloadTable(id) {
+    if(isUpdating) return;
     if(id == 'organization_filter') {
         var organization_id = $("#organization_filter").val();
         $.ajax({
@@ -166,14 +176,13 @@ function reloadTable(id) {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(data);
-                if($('#vertical_filter option').length > 0) {
-                    $('#vertical_filter').val("");
-                    $('#vertical_filter').trigger('change');
-                }
-                if($("#department_filter option").length > 0 ) {
-                    $('#department_filter').val("");
-                    $('#department_filter').trigger('change');
+                $("#branch_filter").html(updateOptionTag(data));
+                $("#branch_filter").trigger('change');
+                filter_arr = ['vertical','department'];
+                for (const key in filter_arr) {
+                    if($('#'+filter_arr[key]+'_filter option').length > 0) {
+                        triggerChange(filter_arr[key]+'_filter');
+                    }
                 }
                 initializeChart();
             }   
@@ -194,11 +203,14 @@ function reloadTable(id) {
                 branch
             }, 
             success : function(data) {
-                if($("#department_filter option").length > 0 ) {
-                    $('#department_filter').val("");
-                    $('#department_filter').trigger('change');
+                $("#vertical_filter").html(updateOptionTag(data));
+                $("#vertical_filter").trigger('change');
+                filter_arr = ['department'];
+                for (const key in filter_arr) {
+                    if($('#'+filter_arr[key]+'_filter option').length > 0) {
+                        triggerChange(filter_arr[key]+'_filter');
+                    }
                 }
-                $("#vertical_filter").html(data);
                 initializeChart();
             }   
         });  
@@ -227,6 +239,31 @@ function reloadTable(id) {
     } else {
         initializeChart();
     }
+}
+
+function triggerChange(id) {
+    isUpdating = true;
+    console.log(id);
+    $("#"+id).val("");
+    $("#"+id).trigger('change');
+    isUpdating = false;
+}
+
+function updateOptionTag(strData) {
+    let options = strData.split('</option>');
+    options = options.filter((option) => (option != '') ? true : false);
+    let count = 1;
+    options = options.map((option) => {
+        option += '</option>';
+        if(count === 1) {
+            if (!option.includes('value=""')) {
+                option = option.replace('<option', '<option selected');
+                count++;
+            }
+        }
+        return option;
+    });
+    return options.join('');
 }
 
 async function fetchData() {
@@ -309,6 +346,7 @@ function insertVacancyData(department_id,designation_name,designation_code) {
 async function initializeChart() {
     const data = await fetchData();
     var tag = {}; var colors = []; var designations = {};
+    employeeCount = {}; vacancyCount = {}; departmentData = {};
     nodeCount.organization.counting = 0;
     nodeCount.branch.counting = 0;
     nodeCount.vertical.counting = 0;
