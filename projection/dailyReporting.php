@@ -95,6 +95,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                                 <th>New Call</th>
                                 <th>No. Meetings</th>
                                 <th>No. Admission</th>
+                                <th>No. Center Deposit</th>
                                 <th>Doc Prepare</th>
                                 <th>Doc Received</th>
                                 <th>Deal Closed</th>
@@ -233,6 +234,24 @@ var dailyReportSettings = {
                 return '<div onclick = "seeAdmissionDetails(&#39;'+ids+'&#39;)" class = "cursor-pointer"><i class="bi bi-person-fill"></i><b> ' + row.admission_count + '</b></div>';
             } else {
                 return '<div class = "cursor-pointer"><i class="bi bi-person-fill"></i><b> 0 </b></div>';
+            }
+        }
+    },{
+        data: "center_deposit_ids",
+        render: function(data, type, row) {
+            if (Array.isArray(data)) {
+                var ids = '';
+                for(let i = 0 ; i < data.length ; i++) {
+                    if(i != data.length-1) {
+                        ids += data[i];
+                        ids += ',';
+                    } else {
+                        ids += data[i];
+                    }
+                }
+                return '<div onclick = "seeCenterDepositDetails(&#39;'+ids+'&#39;,&#39;'+row.id+'&#39;)" class = "cursor-pointer" ><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
+            } else {
+                return '<div class = "cursor-pointer"><i class="bi bi-envelope"></i><b> 0 </b></div>';
             }
         }
     },{
@@ -607,6 +626,21 @@ function seeAdmissionDetails(admission_ids) {
         type: 'post',
         data: {
             admission_ids
+        },
+        success: function(data) {
+            $('#lg-modal-content').html(data);
+            $('#lgmodal').modal('show');
+        }
+    });
+}
+
+function seeCenterDepositDetails(center_deposit_ids,daily_report_id) {
+    $.ajax({
+        url: "/app/dailyReporting/viewCenterDepositDetails",
+        type: 'post',
+        data: {
+            center_deposit_ids,
+            daily_report_id
         },
         success: function(data) {
             $('#lg-modal-content').html(data);

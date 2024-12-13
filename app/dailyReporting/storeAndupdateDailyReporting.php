@@ -35,7 +35,7 @@ function insertDailyReport() {
          * make numofmeeting data in json formate
          */
         $numofmeeting = null;
-        if (isset($_REQUEST['numofmeeting'])) {
+        if (isset($_REQUEST['numofmeeting']) && !empty($_REQUEST['numofmeeting'])) {
             $numofmeeting = mysqli_real_escape_string($conn,$_REQUEST['numofmeeting']);
             $numofmeeting_arr = [];
             $count = 1;
@@ -46,56 +46,6 @@ function insertDailyReport() {
             }
             unset($_REQUEST['numofmeeting']);
             $numofmeeting = json_encode($numofmeeting_arr);
-        }
-
-        /**
-         * 1) make an array for center admission
-         * 2)  Once the center admission array make then insert the details in admission table 
-        */
- 
-        $word = 'admission_center';
-        $admission_insert_ids = null;
-        $projectionNotPresentForAdmission = [];
-        $admission_details = [];
-        $a = 0;
-        foreach ($_REQUEST as $key => $value) {
-            if (strpos($key, $word) !== false) {
-                $admkeycount = (explode('_',$key))[2];
-                $admission_details[$a]['adm_centerId'] = $_REQUEST["admission_center_".$admkeycount];
-                $admission_details[$a]['adm_projectionType'] = $_REQUEST["admission_projection_type_".$admkeycount];
-                $admission_details[$a]['numofadmission'] = $_REQUEST["numOfAdmission_".$admkeycount];
-                $admission_details[$a]['adm_amount'] = $_REQUEST["admission_amount_".$admkeycount];
-                unset($_REQUEST["admission_center_".$admkeycount],$_REQUEST["admission_projection_type_".$admkeycount],$_REQUEST["numOfAdmission_".$admkeycount],$_REQUEST["admission_amount_".$admkeycount]);
-                $a++;
-            }
-        }
-
-        // If admission_details array is not empty then any action will perform
-        if(!empty($admission_details)) {
-            $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`) VALUES";
-            $insert_admission_arr = [];
-            foreach ($admission_details as $key => $value) {
-                $projection_id = checkProjectionAssing($value['adm_projectionType'],$date);
-                if($projection_id) { 
-                    $insert_admission_arr[] = "('".$_SESSION['ID']."','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
-                } else {
-                    if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
-                        $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
-                    }
-                    unset($admission_details[$key]); 
-                }
-            }
-            if(!empty($insert_admission_arr)) {
-                $insert_admission_query = $conn->query($insert_admission . implode(',',$insert_admission_arr));
-                if(count($insert_admission_arr) > 1) {
-                    $first_inserted_id = $conn->insert_id;
-                    $last_inserted_id = $first_inserted_id + count($insert_admission_arr) - 1;
-                    $admission_insert_ids = json_encode(createAllInsertedIdsList($first_inserted_id,$last_inserted_id));
-                } else {
-                    $first_inserted_id = $conn->insert_id;
-                    $admission_insert_ids = json_encode([$first_inserted_id]);
-                }
-            }
         }
 
         /**
@@ -150,6 +100,104 @@ function insertDailyReport() {
             } 
         }
 
+        /**
+        * 1) Check for center deposit data
+        * 2) IF data present then store in the center_deposit table 
+        * 3) Store the id 
+        * 4) Concat the deposite amount in the closure_details table deposite amount column
+        */
+
+        $str = 'deposit_center';
+        $center_deposit_ids = null;
+        $deposite_center_details = [];
+        $b = 0;
+        foreach ($_REQUEST as $key => $value) {
+            if (strpos($key, $str) !== false) {
+                $admkeycount = (explode('_',$key))[2];
+                $deposite_center_details[$b]['deposit_center'] = $_REQUEST['deposit_center_'.$admkeycount];
+                $deposite_center_details[$b]['deposit_amount'] = $_REQUEST['deposit_amount_'.$admkeycount];
+                unset($_REQUEST["deposit_center_".$admkeycount],$_REQUEST["deposit_amount_".$admkeycount]);
+                $b++;
+            }
+        }
+
+        if(!empty($deposite_center_details)) {
+            $insert_deposit = "INSERT INTO `center_deposite`(`user_id`, `center_id`, `deposit_amount`) VALUES";
+            $insert_deposit_arr = [];
+            foreach ($deposite_center_details as $value) {
+                $insert_deposit_arr[] = "('".$_SESSION['ID']."','".$value['deposit_center']."','".$value['deposit_amount']."')";
+                $getAlreadyDepositAmount = $conn->query("SELECT deposit_amount FROM `Closure_details` WHERE id = '".$value['deposit_center']."'");
+                $getAlreadyDepositAmount = mysqli_fetch_column($getAlreadyDepositAmount);
+                $concatDepositAmount = intval($value['deposit_amount']);
+                if(!is_null($getAlreadyDepositAmount)) {
+                    $concatDepositAmount += $getAlreadyDepositAmount; 
+                }
+                $updatedepositAmount = $conn->query("UPDATE Closure_details SET deposit_amount = '$concatDepositAmount' WHERE id = '".$value['deposit_center']."'");
+            }
+            if(!empty($insert_deposit_arr)) {
+                $insert_deposit_query = $conn->query($insert_deposit . implode(',',$insert_deposit_arr));
+                if(count($insert_deposit_arr) > 1) {
+                    $first_inserted_id = $conn->insert_id;
+                    $last_inserted_id = $first_inserted_id + count($insert_deposit_arr) - 1;
+                    $center_deposit_ids = json_encode(createAllInsertedIdsList($first_inserted_id,$last_inserted_id));
+                } else {
+                    $first_inserted_id = $conn->insert_id;
+                    $center_deposit_ids = json_encode([$first_inserted_id]);
+                }
+            }
+        }
+
+        /**
+         * 1) make an array for center admission
+         * 2)  Once the center admission array make then insert the details in admission table 
+        */
+ 
+        $word = 'admission_center';
+        $admission_insert_ids = null;
+        $projectionNotPresentForAdmission = [];
+        $admission_details = [];
+        $a = 0;
+        foreach ($_REQUEST as $key => $value) {
+            if (strpos($key, $word) !== false) {
+                $admkeycount = (explode('_',$key))[2];
+                $admission_details[$a]['adm_centerId'] = $_REQUEST["admission_center_".$admkeycount];
+                $admission_details[$a]['adm_projectionType'] = $_REQUEST["admission_projection_type_".$admkeycount];
+                $admission_details[$a]['numofadmission'] = $_REQUEST["numOfAdmission_".$admkeycount];
+                $admission_details[$a]['adm_amount'] = $_REQUEST["admission_amount_".$admkeycount];
+                unset($_REQUEST["admission_center_".$admkeycount],$_REQUEST["admission_projection_type_".$admkeycount],$_REQUEST["numOfAdmission_".$admkeycount],$_REQUEST["admission_amount_".$admkeycount]);
+                $a++;
+            }
+        }
+
+        // If admission_details array is not empty then any action will perform
+        if(!empty($admission_details)) {
+            $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`,`deposit_amount`) VALUES";
+            $insert_admission_arr = [];
+            foreach ($admission_details as $key => $value) {
+                $projection_id = checkProjectionAssing($value['adm_projectionType'],$date);
+                if($projection_id) {
+                    list($received_amount,$deposit_amount) = checkAndUpdateCenterDeposit($value['adm_centerId'],$value['adm_amount']);
+                    $insert_admission_arr[] = "('".$_SESSION['ID']."','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','$received_amount','$deposit_amount')"; 
+                } else {
+                    if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
+                        $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
+                    }
+                    unset($admission_details[$key]); 
+                }
+            }
+            if(!empty($insert_admission_arr)) {
+                $insert_admission_query = $conn->query($insert_admission . implode(',',$insert_admission_arr));
+                if(count($insert_admission_arr) > 1) {
+                    $first_inserted_id = $conn->insert_id;
+                    $last_inserted_id = $first_inserted_id + count($insert_admission_arr) - 1;
+                    $admission_insert_ids = json_encode(createAllInsertedIdsList($first_inserted_id,$last_inserted_id));
+                } else {
+                    $first_inserted_id = $conn->insert_id;
+                    $admission_insert_ids = json_encode([$first_inserted_id]);
+                }
+            }
+        }
+
         $doc_prepare_ids = null;
         if (!empty($_REQUEST)) {
             foreach ($_REQUEST as $centerkey => $centervalue) {
@@ -199,7 +247,7 @@ function insertDailyReport() {
             }
         }
 
-        $insertDailyStatus = $conn->query("INSERT INTO `daily_reporting`(`user_id`, `total_call`, `new_call`,`admission_ids`,`doc_prepare`, `doc_received`, `doc_close`,`numofmeeting`,`date`) VALUES ('".$_SESSION['ID']."','$total_call','$new_call','$admission_insert_ids','$doc_prepare_ids','$doc_received_ids','$doc_closed_ids','$numofmeeting','$report_date')");
+        $insertDailyStatus = $conn->query("INSERT INTO `daily_reporting`(`user_id`, `total_call`, `new_call`,`admission_ids`,`doc_prepare`, `doc_received`, `doc_close`,`center_deposit_id`,`numofmeeting`,`date`) VALUES ('".$_SESSION['ID']."','$total_call','$new_call','$admission_insert_ids','$doc_prepare_ids','$doc_received_ids','$doc_closed_ids','$center_deposit_ids','$numofmeeting','$report_date')");
         if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId) && empty($projectionNotPresentForAdmission)) {
            showResponse($insertDailyStatus,"inserted",'success');
         } else {
@@ -269,6 +317,70 @@ function updateDailyReport() {
     }
 
     /**
+    * 1) Check for center deposit data
+    * 2) IF data present then store in the center_deposit table 
+    * 3) Store the id 
+    * 4) Concat the deposite amount in the closure_details table deposite amount column
+    */
+
+    $str = 'deposit_center';
+    $center_deposit_ids = null;
+    $deposite_center_details = [];
+    $b = 0;
+    foreach ($_REQUEST as $key => $value) {
+        if (strpos($key, $str) !== false) {
+            $admkeycount = (explode('_',$key))[2];
+            $deposite_center_details[$b]['deposit_center'] = $_REQUEST['deposit_center_'.$admkeycount];
+            $deposite_center_details[$b]['deposit_amount'] = $_REQUEST['deposit_amount_'.$admkeycount];
+            unset($_REQUEST["deposit_center_".$admkeycount],$_REQUEST["deposit_amount_".$admkeycount]);
+            $b++;
+        }
+    }
+
+    if(!empty($deposite_center_details)) {
+        $insert_deposit = "INSERT INTO `center_deposite`(`user_id`, `center_id`, `deposit_amount`) VALUES";
+        $insert_deposit_arr = [];
+        foreach ($deposite_center_details as $value) {
+            $user_id = $_SESSION['role'] == '2' ? $_SESSION['ID'] : $report_details['user_id'];
+            $insert_deposit_arr[] = "('$user_id','".$value['deposit_center']."','".$value['deposit_amount']."')";
+            $getAlreadyDepositAmount = $conn->query("SELECT deposit_amount FROM `Closure_details` WHERE id = '".$value['deposit_center']."'");
+            $getAlreadyDepositAmount = mysqli_fetch_column($getAlreadyDepositAmount);
+            $concatDepositAmount = intval($value['deposit_amount']);
+            if(!is_null($getAlreadyDepositAmount)) {
+                $concatDepositAmount += $getAlreadyDepositAmount; 
+            }
+            $updatedepositAmount = $conn->query("UPDATE Closure_details SET deposit_amount = '$concatDepositAmount' WHERE id = '".$value['deposit_center']."'");
+        }
+        if(!empty($insert_deposit_arr)) {
+            $insert_deposit_query = $conn->query($insert_deposit . implode(',',$insert_deposit_arr));
+            if(count($insert_deposit_arr) > 1) {
+                $first_inserted_id = $conn->insert_id;
+                $last_inserted_id = $first_inserted_id + count($insert_deposit_arr) - 1;
+                $deposit_insert_ids = createAllInsertedIdsList($first_inserted_id,$last_inserted_id);
+                if(!empty($report_details['center_deposit_id'])) {
+                    $center_deposit_ids = array_merge(json_decode($report_details['center_deposit_id'],true),$deposit_insert_ids);
+                    $center_deposit_ids = json_encode($center_deposit_ids);
+                } else {
+                    $center_deposit_ids = json_encode($deposit_insert_ids);
+                }
+            } else {
+                $first_inserted_id = $conn->insert_id;
+                $deposit_insert_ids = [$first_inserted_id];
+                if(!empty($report_details['center_deposit_id'])) {
+                    $center_deposit_ids = array_merge(json_decode($report_details['center_deposit_id'],true),$deposit_insert_ids);
+                    $center_deposit_ids = json_encode($center_deposit_ids);
+                } else {
+                    $center_deposit_ids = json_encode($deposit_insert_ids);
+                }
+            }
+        } else {
+            $center_deposit_ids = $report_details['center_deposit_id'];
+        }
+    } else {
+        $center_deposit_ids = $report_details['center_deposit_id'];
+    }   
+
+    /**
      * 1) make an array for center admission
      * 2)  Once the center admission array make then insert the details in admission table 
     */
@@ -292,13 +404,14 @@ function updateDailyReport() {
 
     // If admission_details array is not empty then any action will perform
     if(!empty($admission_details)) {
-        $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`) VALUES";
+        $insert_admission = "INSERT INTO `admission_details`(`user_id`,`projectionType`,`projection_id`, `admission_by`,`numofadmission`,`amount`,`deposit_amount`) VALUES";
         $insert_admission_arr = [];
         foreach ($admission_details as $key => $value) {
             $projection_id = checkProjectionAssing($value['adm_projectionType'],$date,$report_details['user_id']);
             if($projection_id) { 
+                list($received_amount,$deposit_amount) = checkAndUpdateCenterDeposit($value['adm_centerId'],$value['adm_amount']);
                 $user_id = $_SESSION['role'] == '2' ? $_SESSION['ID'] : $report_details['user_id'];  
-                $insert_admission_arr[] = "('$user_id','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','".$value['adm_amount']."')"; 
+                $insert_admission_arr[] = "('$user_id','".$value['adm_projectionType']."','$projection_id','".$value['adm_centerId']."','".$value['numofadmission']."','$received_amount','$deposit_amount')"; 
             } else {
                 if(!in_array($value['adm_projectionType'],$projectionNotPresentForAdmission)) {
                     $projectionNotPresentForAdmission[] = $value['adm_projectionType'];
@@ -554,7 +667,7 @@ function updateDailyReport() {
     } else {
         $doc_updated_prepare_ids = '';
     }
-    $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`admission_ids` = '$admission_insert_ids',`doc_prepare`='$doc_updated_prepare_ids',`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
+    $updateDailyReport = $conn->query("UPDATE `daily_reporting` SET `user_id`='".$report_details['user_id']."',`total_call`='$total_call',`new_call`='$new_call',`admission_ids` = '$admission_insert_ids',`doc_prepare`='$doc_updated_prepare_ids',`center_deposit_id` = '$center_deposit_ids' ,`doc_received`='$doc_received_ids',`doc_close`='$doc_closed_ids',`numofmeeting` = '$numofmeeting',`date`='$report_date' WHERE id = '$report_id'");
     if(empty($projectionTypeName) && empty($projectionNotPresetnforDocReceivedId) && empty($projectionNotPresetnforDocCloseId) && empty($projectionNotPresentForAdmission)) {
         showResponse($updateDailyReport,'updated','success');
     } else {
@@ -666,5 +779,43 @@ function createMessageForAdmission($projectionType_arr) : string {
     $projectionType_name = mysqli_fetch_column($projectionType_name);
     $message .= "<li class='text-start fs-6'>Status not updated for admission,projection not assigned on current month for the <b>".$projectionType_name."</b> type.</li>";
     return $message;
+}
+
+function checkAndUpdateCenterDeposit($center_id,$admAmount) {
+
+    global $conn;
+    $received_amount = ''; $deposit_amount = '';$updatedWidthrawAmount = '';
+    if ($center_id != 'self') {
+        $amountDepositClosureDetails = $conn->query("SELECT deposit_amount , withdraw_amount FROM Closure_details WHERE id = '$center_id'");   
+        $amountDepositClosureDetails = mysqli_fetch_assoc($amountDepositClosureDetails);
+        if(!is_null($amountDepositClosureDetails['deposit_amount'])) {
+            $diffAmount = !is_null($amountDepositClosureDetails['withdraw_amount']) ? intval($amountDepositClosureDetails['deposit_amount'] - $amountDepositClosureDetails['withdraw_amount']) : intval($amountDepositClosureDetails['deposit_amount']);
+            // Then concat all the amount to widthraw amount 
+            if ($diffAmount >= $admAmount) {
+                $updatedWidthrawAmount = !is_null($amountDepositClosureDetails['withdraw_amount']) ? ($amountDepositClosureDetails['withdraw_amount']+$admAmount) : ($admAmount); 
+                $received_amount = null;
+                $deposit_amount = $admAmount;    
+            } else {
+                $restAmount = intval($admAmount) - intval($diffAmount);
+                $updatedWidthrawAmount = !is_null($amountDepositClosureDetails['withdraw_amount']) ? ($amountDepositClosureDetails['withdraw_amount']+$diffAmount) : ($diffAmount);
+                $received_amount = $restAmount;
+                $deposit_amount = $diffAmount;
+            }
+        } else {
+            $received_amount = $admAmount;
+            $deposit_amount = null;    
+        }
+    } else {
+        $received_amount = $admAmount;
+        $deposit_amount = null;
+    }
+    $setClosurequery = '';
+    if(empty($updatedWidthrawAmount)) {
+        $setClosurequery = "withdraw_amount = NULL";
+    } else {
+        $setClosurequery = "withdraw_amount = '$updatedWidthrawAmount'";
+    }
+    $updateClosureDeposit = $conn->query("UPDATE Closure_details SET $setClosurequery WHERE id = '$center_id'");
+    return [$received_amount,$deposit_amount];
 }
 ?>

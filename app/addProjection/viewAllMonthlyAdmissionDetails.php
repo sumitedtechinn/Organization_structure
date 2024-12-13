@@ -15,7 +15,8 @@
                         <th>Admission By</th>
                         <th>Projection Type</th>
                         <th>No. Admission</th>
-                        <th>Amount</th>
+                        <th>Received Amount</th>
+                        <th>Deposit Amount</th>
                         <th>Admission Date</th>
                     </tr>
                 </thead>
@@ -57,6 +58,22 @@ var viewAdmissionSettings = {
             data: "adm_number",
         },{
             data : "adm_amount",
+            render : function(data,type,row) {
+                if(data != '') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>-----</div>';
+                }
+            }
+        },{
+            data : "deposit_amount",
+            render : function(data,type,row) {
+                if(data != '') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>-----</div>';
+                }
+            }
         },{
             data : "adm_date",
             render : function(data,type,row) {

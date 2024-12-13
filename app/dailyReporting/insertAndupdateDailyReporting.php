@@ -18,7 +18,6 @@ $meeting_client = '';
 $meeting_count = '';
 $numOfMeeting = makeNumberOfMeetingDropDown();
 
-
 function makeNumberOfMeetingDropDown() {
     global $dailyReport_details;
     global $meeting_client;
@@ -29,7 +28,7 @@ function makeNumberOfMeetingDropDown() {
         $numOfMeeting = is_numeric($dailyReport_details['numofmeeting']) ? $dailyReport_details['numofmeeting'] : count(json_decode($dailyReport_details['numofmeeting'],true));
         $meeting_count = $numOfMeeting;
         $meeting_client = '';
-        if(!is_numeric($numOfMeeting)) {
+        if(!is_numeric($dailyReport_details['numofmeeting'])) {
             $meeting_client = json_decode($dailyReport_details['numofmeeting'],true);
             $meeting_client = implode(',',$meeting_client); 
         }
@@ -126,6 +125,12 @@ function makeNumberOfMeetingDropDown() {
                 </div>
             </div>
             <div id = "deal_close_amount_inputField" class="mt-1"></div>
+            <div class="row mb-2 mt-3">
+                <div class="col-sm-12">
+                    <button type="button" class="btn-sm btn-success" id = "insert_center_deposit">Insert Center Deposit</button>
+                </div>
+            </div>
+            <div id="add_center_deposit"></div>
             <div class="row mb-1">
                 <div class="col-sm-6">
                     <label class="col-sm-12 col-form-label">Number Of Meetings</label>
@@ -213,6 +218,21 @@ $("#insert_addmission").on('click',function(){
     })
 })
 
+var center_deposit = 0;
+$("#insert_center_deposit").on('click',function(){
+    center_deposit++;
+    $.ajax({ 
+        url : "/app/dailyReporting/addCenterDeposit",
+        type : "post",
+        data : {
+            center_deposit
+        },
+        success : function(data) {
+            $("#add_center_deposit").append(data);
+        }
+    })
+})
+
 function addCenterCard(id) {
     center_count++;
     $.ajax({
@@ -238,7 +258,21 @@ function addAdmissionCard(id) {
         success : function(data) {
             $("#add_admission").append(data);
         }
-    })
+    });
+}
+
+function addCenterDepositCard(id) {
+    center_deposit++;
+    $.ajax({ 
+        url : "/app/dailyReporting/addCenterDeposit",
+        type : "post",
+        data : {
+            center_deposit
+        },
+        success : function(data) {
+            $("#add_center_deposit").append(data);
+        }
+    });
 }
 
 function removeCenterCard(id) {
@@ -249,6 +283,11 @@ function removeCenterCard(id) {
 function removeAdmissionCard(id) {
     var remove_admission_count = id.split("_")[3];
     $("#add_admission_card_"+remove_admission_count).remove();
+}
+
+function removeCenterDepositCard(id) {
+    var remove_center_deposit_count = id.split("_")[4];
+    $("#add_center_deposit_card_"+remove_center_deposit_count).remove();
 }
  
 function checkDocCloseAmount() {

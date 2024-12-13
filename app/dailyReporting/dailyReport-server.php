@@ -100,6 +100,7 @@ if($dailyReport->num_rows > 0) {
         $doc_preapre = !empty($row['doc_prepare']) ? json_decode($row['doc_prepare'],true) : 'None';
         $doc_received = !empty($row['doc_received']) ? json_decode($row['doc_received'],true) : 'None';
         $doc_closed = !empty($row['doc_close']) ? json_decode($row['doc_close'],true) : 'None';
+        $center_deposit_id = !empty($row['center_deposit_id']) ? json_decode($row['center_deposit_id'],true) : 'None'; 
         $numofmeeting = '';
         if(is_null($row['numofmeeting'])) {
             $numofmeeting = 'None';
@@ -138,7 +139,8 @@ if($dailyReport->num_rows > 0) {
             "date" => $report_date, 
             "createDate" => $createDate , 
             'admission_ids' => $admission_ids,
-            'admission_count' => $admission_count
+            'admission_count' => $admission_count,
+            'center_deposit_ids' => $center_deposit_id
         );
     }
 }
