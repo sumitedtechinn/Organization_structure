@@ -15,7 +15,8 @@
                         <th>Admission By</th>
                         <th>Projection Type</th>
                         <th>No. Admission</th>
-                        <th>Amount</th>
+                        <th>Received Amount</th>
+                        <th>Deposit Amount</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -50,10 +51,26 @@ var viewAdmissionSettings = {
             data: "adm_number",
         },{
             data : "adm_amount",
+            render : function(data,type,row) {
+                if(data != '') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>-----</div>';
+                }
+            }
+        },{
+            data : "deposit_amount",
+            render : function(data,type,row) {
+                if(data != '') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>-----</div>';
+                }
+            }
         },{
             data : "Action",
             render : function(data, type, row) {
-                var table = "admission_details"; var edit = '';var del = '';
+                var edit = '';var del = '';
                 const d = formateDate();
                 let user_role = '';
                 <?php if($_SESSION['role'] == '2') { ?>
@@ -64,11 +81,11 @@ var viewAdmissionSettings = {
                 if( user_role == 'user') {
                     if (row.create_date.localeCompare(d) == 0) {
                         edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateAdmissionDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
-                        del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                        del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "deleteAdmissionDetails('+row.ID+')"><i class="bi bi-trash-fill"></i></div>';
                     }
                 } else {
                     edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateAdmissionDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
-                    del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "deleteAdmissionDetails('+row.ID+')"><i class="bi bi-trash-fill"></i></div>';
                 }
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             }
@@ -95,19 +112,53 @@ $('#hide-modal-view').click(function() {
 
 function updateAdmissionDetails(id) {
     $('.modal').modal('hide');
-    setTimeout(function(){
-        $.ajax({ 
-            url : "/app/dailyReporting/updateAdmissionDetails",
-            type : "post" ,
-            data : {
-                id
-            },
-            success : function(data) {
-                $('#lg-modal-content').html(data);
-                $('#lgmodal').modal('show');
-            }
-        })
-    },500);
+    if(id != undefined) {
+        setTimeout(function(){
+            $.ajax({ 
+                url : "/app/dailyReporting/updateAdmissionDetails",
+                type : "post" ,
+                data : {
+                    id
+                },
+                success : function(data) {
+                    $('#lg-modal-content').html(data);
+                    $('#lgmodal').modal('show');
+                }
+            })
+        },500);
+    }
+}
+
+function deleteAdmissionDetails(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Process.'
+    }).then((isConfirm) => {
+        if (isConfirm.value === true) {
+            $.ajax({
+                url: "/app/dailyReporting/deleteAdmissionDetails", 
+                type: 'POST',
+                dataType: 'json',
+                data: {id},
+                success: function(data) {
+                    if (data.status == 200) {
+                        toastr.success(data.message);
+                        $('.table').DataTable().ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.message);
+                        $('.table').DataTable().ajax.reload(null, false);
+                    }
+                }
+            });
+        } else {
+            $('.table').DataTable().ajax.reload(null, false);
+        }
+    });
 }
 
 function formateDate() {

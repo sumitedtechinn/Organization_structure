@@ -10,6 +10,10 @@ if(isset($_REQUEST['id'])) {
     $admission_details = mysqli_fetch_assoc($admission);
 }
 
+$received_amount = (!empty($admission_details['amount'])) ? $admission_details['amount'] : 0;
+$deposit_amount = (!empty($admission_details['deposit_amount'])) ? $admission_details['deposit_amount'] : 0;
+
+$total_amount = $received_amount+$deposit_amount;
 $dealCloseCenter_option = dealCloseCenter(); 
 
 function dealCloseCenter() {
@@ -55,7 +59,7 @@ function dealCloseCenter() {
                 <div class="col-sm-6">
                     <label for="name" class="col-sm-12 col-form-label">Admission Center</label>
                     <div class="col-sm-12">
-                        <select type="text" class="form-control form-control-sm single-select select2" required name="admission_center" id = "admission_center">
+                        <select type="text" class="form-control form-control-sm single-select select2" required name="admission_center" id = "admission_center" disabled>
                             <?=$dealCloseCenter_option?>
                         </select>
                     </div>
@@ -71,7 +75,7 @@ function dealCloseCenter() {
                 <div class="col-sm-6">
                     <label class="col-sm-12 col-form-label">Admission Amount</label>
                     <div class="col-sm-12">
-                        <input type="text" class="form-control form-control-sm" name="admission_amount" id = "admission_amount" required value="<?=$admission_details['amount']?>" placeholder="eg:- Rs. 1000" onkeypress="return /[0-9]/i.test(event.key)">
+                        <input type="text" class="form-control form-control-sm" name="admission_amount" id = "admission_amount" required value="<?=$total_amount?>" placeholder="eg:- Rs. 1000" onkeypress="return /[0-9]/i.test(event.key)">
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -119,10 +123,10 @@ $(document).ready(function() {
 $(function(){
     $('#form-admission').validate({
     rules: {
-        admission_center: {required:true}, 
+        //admission_center: {required:true}, 
         numOfAdmission : {required:true} ,
         admission_amount : {required:true},
-        admission_projection_type : {required:true}
+        //admission_projection_type : {required:true}
     },
     highlight: function (element) {
         $(element).addClass('error');
@@ -142,6 +146,7 @@ $("#form-admission").on('submit',function(e){
         <?php if(isset($_REQUEST['id'])) { ?>
             formData.append('id',<?=$_REQUEST['id']?>);
         <?php } ?>
+        formData.append('admission_center',$("#admission_center").val());
         $.ajax({
             url: this.action,
             type: 'post',
@@ -151,7 +156,7 @@ $("#form-admission").on('submit',function(e){
             processData: false,
             dataType: 'json',
             success: function(data) {
-                if(data.status == 200) {
+                if (data.status == 200) {
                     toastr.success(data.message);
                     $('.modal').modal('hide');
                 } else {
