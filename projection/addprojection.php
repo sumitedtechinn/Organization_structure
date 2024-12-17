@@ -62,6 +62,12 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
         margin-right: 0.6rem;
     }
 
+    .textStyle{
+        font-size: small;
+        font-weight: 580;
+        color: #353434;
+    }
+
     .hide {
         display: none !important;
     }
@@ -80,7 +86,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
             <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mb-0">Projection Table</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
-                    <div class="col-sm-6 mt-1" style="z-index: 0 !important;">
+                    <div class="col-sm-7 mt-1" style="z-index: 0 !important;">
                         <button type="button" class="btn btn-dark btn-sm" onclick="showAndHideFilter()">Advance Filter<i class="bi bi-funnel"></i></button>
                     </div>    
                     <div class="col-sm-6" style="z-index: 0 !important;">
@@ -140,43 +146,53 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
             <div class="d-flex align-items-center justify-content-start" id = "projection_summary" style="margin-top: 0.6rem;">
                 <div class="col-sm-4 card bg-light mb-1" id="organization_info" style="padding: 1.2rem;"></div>
                 <div class="col-sm-8">
-                    <div class="row mb-1" id = "center_projection">
+                    <div class="row" style="margin-bottom: 0.45rem;" id = "center_projection">
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_total_projection">
-                            <div class="fw-bold text-center">Total Center Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="center_total_projection_number"></div>
+                            <div class="textStyle text-center">Total Center Projection</div>
+                            <div class="text-center mt-3 textStyle" id="center_total_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_completed">
-                            <div class="fw-bold text-center">Completed Center Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="center_completed_projection_number"></div>
+                            <div class="textStyle text-center">Completed Center</div>
+                            <div class="text-center mt-3 textStyle" id="center_completed_projection_number"></div>
                         </div>
-                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_pending">
-                            <div class="fw-bold text-center">Pending Center Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="center_pending_projection_number"></div>
+                        <div class="col-sm-2 card bg-light p-1 mb-1" id = "center_projection_pending">
+                            <div class="textStyle text-center">Pending Center</div>
+                            <div class="text-center mt-3 textStyle" id="center_pending_projection_number"></div>
                         </div>
-                        <div class="col-sm-3 card bg-light p-1 mb-1" id = "center_projection_view">
-                            <div class="fw-bold text-center">View All Center Projection</div>
-                            <div class="text-center mt-2 fw-bold" id="pending_projection_number">
-                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyClosureDetails('center')">View All</button>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="col-sm-6 card bg-light p-1 mb-1" id = "center_projection_view">
+                                    <div class="textStyle text-center">Center Projection</div>
+                                    <div class="text-center mt-2 textStyle" id="pending_projection_number">
+                                        <button type="button" class="btn btn-outline-info btn-sm px-2" style="font-size:small" onclick="viewAllMonthlyClosureDetails('center')">View All</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 card bg-light p-1 mb-1" id = "center_deposit_view">
+                                    <div class="textStyle text-center">Center Deposits</div>
+                                    <div class="text-center mt-2 textStyle" id="center_deposit_button">
+                                        <button type="button" class="btn btn-outline-info btn-sm px-2" style="font-size:small" onclick="viewAllMonthlyCenterDeposit('center')">View All</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row" id = "admission_projection">
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_total_projection">
-                            <div class="fw-bold text-center">Total Admission Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="admission_total_projection_number"></div>
+                            <div class="textStyle text-center">Total Admission Projection</div>
+                            <div class="text-center mt-3 textStyle" id="admission_total_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_projection_completed">
-                            <div class="fw-bold text-center">Completed Admission Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="admission_completed_projection_number"></div>
+                            <div class="textStyle text-center">Completed Admission</div>
+                            <div class="text-center mt-3 textStyle" id="admission_completed_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1" id = "admission_projection_pending">
-                            <div class="fw-bold text-center">Remaining Admission Projection</div>
-                            <div class="text-center mt-3 fw-bold" id="admission_pending_projection_number"></div>
+                            <div class="textStyle text-center">Remaining Admission</div>
+                            <div class="text-center mt-3 textStyle" id="admission_pending_projection_number"></div>
                         </div>
                         <div class="col-sm-3 card bg-light p-1 mb-1"  id = "admission_projection_view">
-                            <div class="fw-bold text-center">View All Admission Projection</div>
-                            <div class="text-center mt-2 fw-bold" id="pending_projection_number">
-                                <button type="button" class="btn btn-outline-info px-2" style="font-size:small" onclick="viewAllMonthlyAdmissionDetails('admission')">View All</button>
+                            <div class="textStyle text-center">Admission Projection</div>
+                            <div class="text-center mt-2 textStyle" id="pending_projection_number">
+                                <button type="button" class="btn btn-outline-info btn-sm px-2" style="font-size:small" onclick="viewAllMonthlyAdmissionDetails('admission')">View All</button>
                             </div>
                         </div>
                     </div>
@@ -517,7 +533,7 @@ function getFilterData() {
                 organization_id
             },  
             success : function(data) {
-                $("#branch_filter").html(updateOptionTag(data[key]));
+                $("#branch_filter").html(updateOptionTag(data));
                 $("#branch_filter").trigger('change');
                 makeOrganizationInfoAndProjectionData();
                 showMonthlyClosureDetails();
@@ -631,6 +647,46 @@ function viewAllMonthlyClosureDetails(type) {
         success: function(data) {
             $('#lg-modal-content-viewtable').html(data);
             $('#view-lgmodal').modal('show');
+        }
+    });
+}
+
+function viewAllMonthlyCenterDeposit(type) {
+    let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , projectionType : "" , user : "" , month : "" , year : "", selected_projectiontype : type};
+    var filter_arr = ['organization','branch','vertical','department','projectionType','user','month','year'];
+    for (const value of filter_arr) {
+        if($('#'+value+'_filter option').length > 0 && $('#'+value+'_filter').val().length > 0) {
+            info_data[value] = $('#'+value+'_filter').val();
+        } else {
+            info_data[value] = "None";
+        }
+    }
+    $.ajax({
+        url: "/app/addProjection/getCenterDepositIds",
+        type: 'post',
+        data : info_data,
+        dataType: 'json',
+        success: function(data) {
+            let center_deposit_id = '';
+            if(data.status == '200') {
+                center_deposit_id = data.center_deposit;  
+            } 
+            seeCenterDepositDetails(center_deposit_id);
+        }
+    });
+}
+
+function seeCenterDepositDetails(center_deposit_ids) {
+    $.ajax({
+        url: "/app/dailyReporting/viewCenterDepositDetails",
+        type: 'post',
+        data: {
+            center_deposit_ids,
+            'type' : 'monthly'
+        },
+        success: function(data) {
+            $('#lg-modal-content').html(data);
+            $('#lgmodal').modal('show');
         }
     });
 }

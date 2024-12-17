@@ -4,7 +4,7 @@
 include '../../includes/db-config.php';
 session_start();
 
-if (isset($_REQUEST['center_deposit_ids'])) {
+if (isset($_REQUEST['center_deposit_ids']) && !empty($_REQUEST['center_deposit_ids'])) {
 
     $center_deposit_ids = mysqli_real_escape_string($conn,$_REQUEST['center_deposit_ids']);
     ## Read value
@@ -63,6 +63,16 @@ if (isset($_REQUEST['center_deposit_ids'])) {
         "draw" => intval($draw),
         "iTotalRecords" => $totalRecords,
         "iTotalDisplayRecords" => $totalRecordwithFilter,
+        "aaData" => $data
+    );
+} else {
+
+    $draw = $_POST['draw'];$data = [];
+    ## Response
+    $response = array(
+        "draw" => intval($draw),
+        "iTotalRecords" => 0,
+        "iTotalDisplayRecords" => 0,
         "aaData" => $data
     );
 }

@@ -16,7 +16,9 @@
                         <th>Center Name</th>
                         <th>Deposit Amount</th>
                         <th>Date</th>
+                        <?php if ( isset($_REQUEST['type']) && $_REQUEST['type'] == 'daily') { ?>
                         <th>Action</th>
+                        <?php } ?>
                     </tr>
                 </thead>
             </table>
@@ -86,8 +88,52 @@ var viewCenterDepositSettings = {
     "aaSorting": []
 };
 
+var viewMonthlyCenterDepositSettings = {
+    'processing': true,
+    'serverSide': true,
+    'serverMethod': 'post',
+    "searching": false ,
+    'ajax': {
+        'url': '/app/dailyReporting/viewCenterDeposit-server',
+        'type': 'POST',
+        'data' : {
+            "center_deposit_ids" : '<?=$_REQUEST['center_deposit_ids']?>'
+        }
+    },
+    'columns': [{
+            data: "slno" ,
+            render : function(data,type,row) {
+                return '<div>'+data+'</div>';
+            }
+        },{
+            data : "center_name" , 
+        },{
+            data : "deposit_amount",
+            render : function(data,type,row) {
+                return '<div class = "fw-bold"><span>₹ </span>'+data+'</div>';
+            }
+        },{
+            data : "deposit_date",
+        }
+    ],
+    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    "destroy": true,
+    "scrollCollapse": true,
+    drawCallback: function(settings, json) {
+        $('[data-toggle="tooltip"]').tooltip({
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+    },
+    "aaSorting": []
+};
+
+
 $(document).ready(function() {
-    $('#viewCenterDepositTable').DataTable(viewCenterDepositSettings);
+    <?php if($_REQUEST['type'] == 'daily') { ?>
+        $('#viewCenterDepositTable').DataTable(viewCenterDepositSettings);    
+    <?php } elseif ($_REQUEST['type'] == 'monthly') { ?>
+        $('#viewCenterDepositTable').DataTable(viewMonthlyCenterDepositSettings);
+    <?php } ?>
 });
 
 $('#hide-modal-view').click(function() {
@@ -105,7 +151,10 @@ function deleteDepositAmount(id,center_id) {
         confirmButtonText: 'Yes, Process.'
     }).then((isConfirm) => {
         if (isConfirm.value === true) {
-            let dailyReport_id = '<?=$_REQUEST['daily_report_id']?>';
+            let dailyReport_id = '';
+            <?php if(isset($_REQUEST['daily_report_id'])) { ?>
+                dailyReport_id = '<?=$_REQUEST['daily_report_id']?>';
+            <?php } ?>
             $.ajax({
                 url: "/app/dailyReporting/deleteCenterDeposit", 
                 type: 'post',

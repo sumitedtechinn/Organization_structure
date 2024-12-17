@@ -17,7 +17,7 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     width:93.6%;
 }
 
-#total_report_box,#total_call_box,#total_new_call_box,#total_meeting_box,#total_admission_box,#total_doc_prepare_box,#total_doc_received_box,#total_deal_close_box {
+#total_report_box,#total_call_box,#total_new_call_box,#total_meeting_box,#total_admission_box,#total_doc_prepare_box,#total_doc_received_box,#total_deal_close_box,#total_amount_box {
     z-index: 0 !important;
     background-color: #f2f2f2 !important;
     color: #434746 !important;
@@ -109,8 +109,8 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
     </div>
     <div class="row justify-content-center">
         <div class="card" style="margin-bottom: 0px !important;" id = "total_summary_report">
-            <div class="d-flex align-items-center justify-content-start gap-1 m-2" style="padding-right: 1%;">
-                <div class="col-2 col-sm-2 card p-3 mb-1" id = "total_report_box">
+            <div class="d-flex align-items-center justify-content-start m-2" style="padding-right: 1%;gap: 0.9rem;">
+                <div class="col-3 col-sm-3 card p-3 mb-1" id = "total_report_box">
                     <div class="fw-bold text-center">Daily Report Status</div>
                 </div>
                 <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_call_box">
@@ -129,17 +129,21 @@ $gap = ($_SESSION['role'] == '1') ? "gap-1" : "gap-1";
                     <div class="fw-bold text-center">Admission</div>
                     <div class="text-center fw-bold" id="total_admission"></div>
                 </div>
-                <div class="col-2 col-sm-2 card p-2 mb-1" id = "total_doc_prepare_box">
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_doc_prepare_box">
                     <div class="fw-bold text-center">Doc Preapre</div>
                     <div class="text-center fw-bold" id="total_doc_prepare" ></div>
                 </div>
-                <div class="col-2 col-sm-2 card p-2 mb-1" id = "total_doc_received_box">
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_doc_received_box">
                     <div class="fw-bold text-center">Doc Received</div>
                     <div class="text-center fw-bold" id="total_doc_received" ></div>
                 </div>
-                <div class="col-sm-2 card p-2 mb-1" id = "total_deal_close_box">
+                <div class="col-1 col-sm-1 card p-2 mb-1" id = "total_deal_close_box">
                     <div class="fw-bold text-center">Deal Close</div>
-                    <div class="text-center fw-bold" id="total_deal_close" ></div>
+                    <div class="text-center fw-bold" id="total_deal_close"></div>
+                </div>
+                <div class="col-1 col-sm-1 card p-2 mb-1 cursor-pointer" id = "total_amount_box" onclick="showAmountDetails()">
+                    <div class="fw-bold text-center">Total Amount</div>
+                    <div class="text-center fw-bold " id="total_amount"><span>₹</span></div>
                 </div>
             </div>
         </div>
@@ -249,9 +253,9 @@ var dailyReportSettings = {
                         ids += data[i];
                     }
                 }
-                return '<div onclick = "seeCenterDepositDetails(&#39;'+ids+'&#39;,&#39;'+row.id+'&#39;)" class = "cursor-pointer" ><i class="bi bi-envelope"></i><b>  ' + data.length + '</b></div>';
+                return '<div onclick = "seeCenterDepositDetails(&#39;'+ids+'&#39;,&#39;'+row.id+'&#39;)" class = "cursor-pointer" ><i class="bi bi-building"></i><b>  ' + data.length + '</b></div>';
             } else {
-                return '<div class = "cursor-pointer"><i class="bi bi-envelope"></i><b> 0 </b></div>';
+                return '<div class = "cursor-pointer"><i class="bi bi-building"></i><b> 0 </b></div>';
             }
         }
     },{
@@ -446,7 +450,6 @@ function reloadTableAndOrganizationInfo() {
 
 function triggerChange(id) {
     isUpdating = true;
-    console.log(id);
     $("#"+id).val("");
     $("#"+id).trigger('change');
     isUpdating = false;
@@ -466,7 +469,12 @@ function seeCenterDetails(ids) {
     });
 }
 
+let amount = {"total_admission_amount":0,"total_deposit_amount":0,"total_dealclose_amount":0};
+
 function showTotalDailyReportStatus() {
+    amount.total_admission_amount = 0;
+    amount.total_dealclose_amount = 0;
+    amount.total_deposit_amount = 0;
     let info_data = {organization : "" , branch : "" , vertical : "" , department : "" , user : "" , daterange : ""};
     var filter_arr = ['organization','branch','vertical','department','user','daterange'];
     for (const value of filter_arr) {
@@ -486,10 +494,35 @@ function showTotalDailyReportStatus() {
         data : info_data,
         dataType : "json",
         success: function(data) {
+            let total_amount = 0;
             for (const key in data) {
-                $("#"+key).text(data[key]);
+                if(key == 'total_admission_amount' || key == 'total_deposit_amount' || key == 'total_dealclose_amount') {
+                    amount[key] = data[key];
+                    total_amount = total_amount + data[key];
+                } else {
+                    $("#"+key).text(data[key]);
+                }
             }
+            const formattedAmount = new Intl.NumberFormat('en-GB', 
+            {
+                style: 'currency',
+                currency: 'INR',
+            }).format(total_amount);
+            $("#total_amount").text(formattedAmount);
         }
+    });
+}
+
+function showAmountDetails() {
+    $.ajax({
+        url : "/app/dailyReporting/viewAmountDetails",  
+        type : "post",
+        contentType: 'json',  // Set the content type to JSON 
+        data: JSON.stringify(amount),  
+        success : function(data) {
+            $('#md-modal-content').html(data);
+            $('#mdmodal').modal('show');
+        }   
     });
 }
 
@@ -640,7 +673,8 @@ function seeCenterDepositDetails(center_deposit_ids,daily_report_id) {
         type: 'post',
         data: {
             center_deposit_ids,
-            daily_report_id
+            daily_report_id,
+            'type' : 'daily'
         },
         success: function(data) {
             $('#lg-modal-content').html(data);
