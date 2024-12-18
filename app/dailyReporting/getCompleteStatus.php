@@ -42,7 +42,11 @@ if(!empty($userSearchQuery)) {
 }
 
 if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
-    $selected_user_id = $_SESSION['allChildId'];
+    if(isset($_POST['user']) && !empty($_POST['user']) && $_POST['user'] != 'None') {
+        $selected_user_id = $selected_user_id;
+    } else {
+        $selected_user_id = $_SESSION['allChildId'];
+    }
 }
 
 if(isset($_POST['daterange']) && !empty($_POST['daterange']) && $_POST['daterange'] != 'None' ) {

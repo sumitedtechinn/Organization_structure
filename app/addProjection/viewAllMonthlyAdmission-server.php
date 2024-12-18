@@ -103,8 +103,8 @@ if ($projections->num_rows > 0) {
     if ($admission_details->num_rows > 0 ) {
         while( $row = mysqli_fetch_assoc($admission_details)) {
             $createDate = date_format(date_create($row['created_at']),'d-M-Y');
-            $deposit_amount = (is_null($row['deposit_amount']) || empty($row['deposit_amount'])) ?  '' : number_format($row['deposit_amount'],2,",",".");
-            $received_amount = (is_null($row['amount']) || empty($row['amount'])) ?  '' : number_format($row['amount'],2,",",".");
+            $deposit_amount = (is_null($row['deposit_amount']) || empty($row['deposit_amount'])) ?  '' : number_format($row['deposit_amount'],2,".",",");
+            $received_amount = (is_null($row['amount']) || empty($row['amount'])) ?  '' : number_format($row['amount'],2,".",",");
             $data[] = array(
                 'ID' => $row['id'],
                 'adm_by' => $row['adm_by'],
