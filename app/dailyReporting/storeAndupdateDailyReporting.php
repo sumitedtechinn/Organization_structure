@@ -35,17 +35,21 @@ function insertDailyReport() {
          * make numofmeeting data in json formate
          */
         $numofmeeting = null;
-        if (isset($_REQUEST['numofmeeting']) && !empty($_REQUEST['numofmeeting'])) {
-            $numofmeeting = mysqli_real_escape_string($conn,$_REQUEST['numofmeeting']);
-            $numofmeeting_arr = [];
-            $count = 1;
-            while($count <= $numofmeeting) {
-                $numofmeeting_arr[] = $_REQUEST["client_$count"];
-                unset($_REQUEST["client_$count"]);
-                $count++;
+        if (isset($_REQUEST['numofmeeting'])) {
+            if (!empty($_REQUEST['numofmeeting'])) {
+                $numofmeeting = mysqli_real_escape_string($conn,$_REQUEST['numofmeeting']);
+                $numofmeeting_arr = [];
+                $count = 1;
+                while($count <= $numofmeeting) {
+                    $numofmeeting_arr[] = $_REQUEST["client_$count"];
+                    unset($_REQUEST["client_$count"]);
+                    $count++;
+                }
+                unset($_REQUEST['numofmeeting']);
+                $numofmeeting = json_encode($numofmeeting_arr);
+            } else {
+                unset($_REQUEST['numofmeeting']);
             }
-            unset($_REQUEST['numofmeeting']);
-            $numofmeeting = json_encode($numofmeeting_arr);
         }
 
         /**

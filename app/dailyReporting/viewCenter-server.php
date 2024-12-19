@@ -69,6 +69,7 @@ if (isset($_REQUEST['center_ids'])) {
                 }
             }
             $last_updated_date = date_format(date_create($last_updated_date),'d-M-Y');
+            $authorization_amount = empty($row['amount']) ? 'None' : number_format($row['amount'],2,'.',',');
             $data[] = array(
                 'ID' => $row['id'],
                 'center_name' => $row['center_name'],
@@ -79,6 +80,7 @@ if (isset($_REQUEST['center_ids'])) {
                 'projection_id' => $row['projection_id'] , 
                 'user_id' => $row['user_id'],
                 'doc_status' => $status , 
+                'authorization_amount' => $authorization_amount,
                 'last_update_date' => $last_updated_date
             );
         }

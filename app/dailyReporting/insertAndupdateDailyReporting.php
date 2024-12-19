@@ -462,7 +462,6 @@ $("#form-dailyReporting").on('submit',function(e){
         var formData = new FormData(this);
         <?php if(isset($_REQUEST['report_id'])) { ?>
             formData.append('id',<?=$_REQUEST['report_id']?>);
-            formData.append('numofmeeting',<?=$_REQUEST['report_id']?>);
         <?php } ?>
         <?php if(!empty($dailyReport_details) && !empty($dailyReport_details['numofmeeting'])) { ?>
             formData.append('numofmeeting','<?=$meeting_count?>');

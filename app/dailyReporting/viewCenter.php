@@ -25,6 +25,7 @@
                         <th>Contact</th>
                         <th>Projection Type</th>
                         <th>Doc Status</th>
+                        <th>Authorization Amount</th>
                         <th>Updated Date</th>
                     </tr>
                 </thead>
@@ -69,6 +70,15 @@ var viewCenterSettings = {
                     return '<div class = "text-danger">'+data+'</div>';
                 } else {
                     return '<div class = "text-success">'+data+'</div>';
+                }
+            }
+        },{
+            data : "authorization_amount",
+            render : function(data,type,row) {
+                if(data != 'None') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>Not Received</div>';
                 }
             }
         },{
