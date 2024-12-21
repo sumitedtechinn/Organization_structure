@@ -43,6 +43,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 }
             }
             $_SESSION['allChildId'] = $allchild_ids;
+            echo "<pre>";
+            print_r($_SESSION);
+            exit;
         }
         echo json_encode(['status' => 200, 'message' => 'Welcome!!!', 'url' => '\organization_structure\organization_layout']);
     } else {

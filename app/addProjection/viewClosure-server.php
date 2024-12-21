@@ -64,6 +64,7 @@ if (isset($_REQUEST['projection_id'])) {
                 $last_updated_date = $row['doc_prepare'];
             }
             $last_updated_date = date_format(date_create($last_updated_date),'d-M-Y');
+            $authorization_amount = empty($row['amount']) ? 'None' : number_format($row['amount'],2,'.',',');
             $data[] = array(
                 'ID' => $row['id'],
                 'center_name' => $row['center_name'],
@@ -73,6 +74,7 @@ if (isset($_REQUEST['projection_id'])) {
                 'projection_type' => $row['projection_type'], 
                 'projection_id' => $row['projection_id'] , 
                 'user_id' => $row['user_id'],
+                'authorization_amount' => $authorization_amount,
                 'doc_status' => $status , 
                 'last_update_date' => $last_updated_date
             );

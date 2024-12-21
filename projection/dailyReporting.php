@@ -444,7 +444,7 @@ function reloadTable(id) {
 }
 
 function reloadTableAndOrganizationInfo() {
-    $('.table').DataTable().ajax.reload(null, false);
+    $("#dailyReportTable").DataTable().ajax.reload(null, false);
     showTotalDailyReportStatus();
 }
 

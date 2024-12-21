@@ -27,6 +27,7 @@ session_start();
                         <th>Contact</th>
                         <th>Projection Type</th>
                         <th>Doc Status</th>
+                        <th>Authorization Amount</th>
                         <th>Updated Date</th>
                     </tr>
                 </thead>
@@ -60,7 +61,7 @@ var viewAllClosureSettings = {
     'columns': [{
             data: "center_name",
             render : function(data,type,row) {
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+data+'</p><p class = "mb-1" ><b>Email : </b>'+row.center_email+'</p></div>'
+                return '<div class = "text-wrap" style="font-size:small;width:300px;"><p class = "mb-1"><b>Name : </b> '+data+'</p><p class = "mb-1" ><b>Email : </b>'+row.center_email+'</p></div>'
             }
         },{
             data: "contact" ,
@@ -77,6 +78,15 @@ var viewAllClosureSettings = {
                     return '<div class = "text-warning">'+data+'</div>';
                 } else {
                     return '<div class = "text-success">'+data+'</div>';
+                }
+            }
+        },{
+            data : "authorization_amount",
+            render : function(data,type,row) {
+                if(data != 'None') {
+                    return '<div><span>₹</span>'+data+'</div>';
+                } else {
+                    return '<div>Not Received</div>';
                 }
             }
         },{

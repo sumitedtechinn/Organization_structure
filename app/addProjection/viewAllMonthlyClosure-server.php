@@ -71,7 +71,9 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
 }
 
 if(isset($_POST['month']) && !empty($_POST['month']) && $_POST['month'] != 'None') {
-    $projectionSearchQuery .= "AND month = '".$_POST['month']."'";
+    if ($_POST['month'] != 13) {
+        $projectionSearchQuery .= " AND month = '".$_POST['month']."'";
+    }
 }
 
 if(isset($_POST['year']) && !empty($_POST['year']) && $_POST['year'] != 'None') {
@@ -118,6 +120,7 @@ if ($projections->num_rows > 0) {
                 $last_updated_date = $row['doc_prepare'];
             }
             $last_updated_date = date_format(date_create($last_updated_date),'d-M-Y');
+            $authorization_amount = empty($row['amount']) ? 'None' : number_format($row['amount'],2,'.',',');
             $data[] = array(
                 'ID' => $row['id'],
                 'center_name' => $row['center_name'],
@@ -127,6 +130,7 @@ if ($projections->num_rows > 0) {
                 'projection_type' => $row['projection_type'], 
                 'projection_id' => $row['projection_id'] , 
                 'user_id' => $row['user_id'],
+                'authorization_amount' => $authorization_amount,
                 'doc_status' => $status , 
                 'last_update_date' => $last_updated_date
             );

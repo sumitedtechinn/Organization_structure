@@ -3,6 +3,34 @@
 require '../../includes/db-config.php';
 session_start();
 
+$data_field = file_get_contents('php://input'); // by this we get raw data
+$data_field = json_decode($data_field,true);
+$_REQUEST = $data_field;
+$arr = Array(
+    "ID" => "4",
+    "Name" => "Vividh Solanki",
+    "role" => "2",
+    "Email" => "vividh@edtechinnovate.com",
+    "Department_id" => "3",
+    "Designation_id" => "2",
+    "Hierarchy_value" => "2",
+    "Vertical_id" => "1",
+    "Branch_id" => "1",
+    "Organization_id" => "1",
+    "Assigned_Person_id" => "3", 
+    "organization_name" => "Edtech Innovate Private Limited", 
+    "branch_name" => "Noida, Uttar Pradesh",
+    "vertical_name" => "Edtech Vocational/Skills",
+    "department_name" => "Glocal University Vocational/Skills",
+    "previous_url" => "/organization_structure/organization_layout.php",
+    "current_url" => "/projection/dailyReporting.php",
+    "allChildId" => array(
+        "4",
+        "5",
+        "12"
+    )
+);
+
 if (isset($_REQUEST['id'])) {
     updateDailyReport();
 } elseif (isset($_REQUEST['total_call']) && isset($_REQUEST['new_call']) && isset($_REQUEST['report_date'])) {
@@ -548,16 +576,6 @@ function updateDailyReport() {
     $doc_closed_ids = '';
     $projectionNotPresetnforDocCloseId = [];
     if(isset($_REQUEST['doc_close'])) {
-        // 1st update amount deal close amount
-        $word = 'center_create_amount';
-        foreach ($_REQUEST as $key => $value) {
-            if (strpos($key, $word) !== false) {
-                $id = (explode('_',$key))[3];
-                $update = $conn->query("UPDATE Closure_details SET  amount = '$value' WHERE id = '$id'");
-                unset($_REQUEST['center_create_amount_'.$id]);
-            }
-        }
-
         $doc_closed = $_REQUEST['doc_close'];
         $doc_closed_ids_duplicate = $doc_closed;
         unset($_REQUEST['doc_close']);
@@ -568,11 +586,12 @@ function updateDailyReport() {
                     $db_key = array_search($value,$db_doc_closed);
                     unset($db_doc_closed[$db_key]);
                     unset($doc_closed[$key]);
+                    unset($_REQUEST["center_create_amount_$value"]);
                 }
             }
             if(!empty($db_doc_closed)) {
                 foreach ($db_doc_closed as $value) {
-                    $updateClosedCenterStatus = $conn->query("UPDATE Closure_details SET doc_closed = null WHERE id = '$value'");
+                    $updateClosedCenterStatus = $conn->query("UPDATE Closure_details SET doc_closed = null, amount = null WHERE id = '$value'");
                 }
             }
             $newId_addedInDocClosed = $doc_closed;
@@ -583,10 +602,13 @@ function updateDailyReport() {
                 $docCloseAndProjection = getProjectionId($newId_addedInDocClosed,$date);
                 foreach ($docCloseAndProjection as $key => $value) {
                     if($value != 'projection not generated') {
-                        $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , projection_id = '$value' WHERE id = '$key'");
+                        $amount = mysqli_real_escape_string($conn,$_REQUEST["center_create_amount_$key"]);
+                        unset($_REQUEST["center_create_amount_$key"]);
+                        $updateDocreceivedStatus = $conn->query("UPDATE Closure_details SET doc_closed = CURRENT_TIMESTAMP , amount = '$amount' , projection_id = '$value' WHERE id = '$key'");
                     } else {
                         $unset_key = array_search($key,$newId_addedInDocClosed);
                         unset($newId_addedInDocClosed[$unset_key]);
+                        unset($_REQUEST["center_create_amount_$key"]);
                         $projectionNotPresetnforDocCloseId[] = $key;
                     }
                 }

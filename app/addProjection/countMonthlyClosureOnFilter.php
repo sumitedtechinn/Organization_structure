@@ -60,7 +60,9 @@ if(isset($_POST['user']) && !empty($_POST['user']) && $_POST['user'] != 'None') 
 }
 
 if(isset($_POST['month']) && !empty($_POST['month']) && $_POST['month'] != 'None') {
-    $projectionSearchQuery .= " AND month = '".$_POST['month']."'";
+    if ($_POST['month'] != 13) {
+        $projectionSearchQuery .= " AND month = '".$_POST['month']."'";
+    }
 }
 
 if(isset($_POST['year']) && !empty($_POST['year']) && $_POST['year'] != 'None') {

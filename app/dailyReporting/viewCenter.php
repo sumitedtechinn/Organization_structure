@@ -51,7 +51,7 @@ var viewCenterSettings = {
     'columns': [{
             data: "center_name",
             render : function(data,type,row) {
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+data+'</p><p class = "mb-1" ><b>Email : </b>'+row.center_email+'</p></div>'
+                return '<div class = "text-wrap" style="font-size:small;width:300px;"><p class = "mb-1"><b>Name : </b> '+data+'</p><p class = "mb-1" ><b>Email : </b>'+row.center_email+'</p></div>'
             }
         },{
             data: "contact" ,

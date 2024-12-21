@@ -501,6 +501,7 @@ $("#form-dailyReporting").on('submit',function(e){
                     $('.modal').modal('hide');
                     getFilterData();
                     $('#dailyReportTable').DataTable().ajax.reload(null, false);
+                    showTotalDailyReportStatus();
                 } else {
                     if (data.type == 'error') {
                         Swal.fire({
@@ -517,6 +518,7 @@ $("#form-dailyReporting").on('submit',function(e){
                         $('.modal').modal('hide');
                         getFilterData();
                         $('#dailyReportTable').DataTable().ajax.reload(null, false);
+                        showTotalDailyReportStatus();
                     }
                 }
             }
