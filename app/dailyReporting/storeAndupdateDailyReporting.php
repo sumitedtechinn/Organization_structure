@@ -3,34 +3,6 @@
 require '../../includes/db-config.php';
 session_start();
 
-$data_field = file_get_contents('php://input'); // by this we get raw data
-$data_field = json_decode($data_field,true);
-$_REQUEST = $data_field;
-$arr = Array(
-    "ID" => "4",
-    "Name" => "Vividh Solanki",
-    "role" => "2",
-    "Email" => "vividh@edtechinnovate.com",
-    "Department_id" => "3",
-    "Designation_id" => "2",
-    "Hierarchy_value" => "2",
-    "Vertical_id" => "1",
-    "Branch_id" => "1",
-    "Organization_id" => "1",
-    "Assigned_Person_id" => "3", 
-    "organization_name" => "Edtech Innovate Private Limited", 
-    "branch_name" => "Noida, Uttar Pradesh",
-    "vertical_name" => "Edtech Vocational/Skills",
-    "department_name" => "Glocal University Vocational/Skills",
-    "previous_url" => "/organization_structure/organization_layout.php",
-    "current_url" => "/projection/dailyReporting.php",
-    "allChildId" => array(
-        "4",
-        "5",
-        "12"
-    )
-);
-
 if (isset($_REQUEST['id'])) {
     updateDailyReport();
 } elseif (isset($_REQUEST['total_call']) && isset($_REQUEST['new_call']) && isset($_REQUEST['report_date'])) {

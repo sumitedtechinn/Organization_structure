@@ -289,6 +289,7 @@ var projectionSettings = {
             render : function(data,type,row) {
                 var projection_type_name = (row.projection_type.split(" "))[1];
                 projection_type_name = projection_type_name.toLowerCase();
+                console.log(projection_type_name);
                 var view = '<button type="button" class="btn btn-outline-info px-4" style="font-size:small" onclick = "viewClosureDetailsProjectionBias('+row.ID+',&#39;'+projection_type_name+'&#39;)">View </button>';
                 return view;
             }

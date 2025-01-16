@@ -424,7 +424,7 @@ function getDepartmentData() {
 
 function departmentPID($organization_id,$branch_id,$vertical_id) {
     global $conn;
-    $checkDesignationInsideVertical = $conn->query("SELECT ID , hierarchy_value FROM Designation WHERE branch_id = '$branch_id' AND organization_id = '$organization_id' AND vertical_id = '$vertical_id' AND added_inside = '3' ORDER BY hierarchy_value DESC");
+    $checkDesignationInsideVertical = $conn->query("SELECT ID , hierarchy_value FROM Designation WHERE vertical_id = '$vertical_id' AND added_inside = '3' ORDER BY hierarchy_value DESC");
     if($checkDesignationInsideVertical->num_rows > 0 ) {
         $userId = '';
         while($row = mysqli_fetch_assoc($checkDesignationInsideVertical)) {
