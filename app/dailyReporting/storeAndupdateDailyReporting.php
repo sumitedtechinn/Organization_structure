@@ -30,7 +30,6 @@ function insertDailyReport() {
     if ($checkDailyReport->num_rows == 0 ) {
         $doc_received = []; $doc_closed = []; $doc_prepare = [];
         unset($_REQUEST['total_call'],$_REQUEST['new_call'],$_REQUEST['report_date'],$_REQUEST['country_code']);
-        
         /**
          * make numofmeeting data in json formate
          */
@@ -221,12 +220,12 @@ function insertDailyReport() {
             $date = date_create($report_date);
             $month = date_format($date,"n");
             $year = date_format($date,'Y');
-
+			
             $insert_query = "INSERT INTO `Closure_details`(`center_name`, `center_email` , `contact`, `country_code`, `projectionType`, `projection_id`, `user_id`, `doc_prepare`) VALUES ";
             $insert_query_arr = [];
             $projectionTypeName = [];
             foreach ($doc_prepare as $key=>$value) {
-                $checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND year = '$year' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
+              	$checkProjectionOnParticularProjectionType = $conn->query("SELECT ID FROM `Projection` WHERE user_id = '".$_SESSION['ID']."' AND month = '$month' AND year = '$year' AND projectionType = '".$value['projection_type']."' AND Deleted_At IS NULL");
                 if ($checkProjectionOnParticularProjectionType->num_rows > 0 ) {
                     $projection_id = mysqli_fetch_column($checkProjectionOnParticularProjectionType);
                     $insert_query_arr[] = "('".$value['center_name']."','".$value['center_email']."','".$value['contact_number']."','".$value['country_code']."','".$value['projection_type']."','$projection_id','".$_SESSION['ID']."',CURRENT_TIMESTAMP)";

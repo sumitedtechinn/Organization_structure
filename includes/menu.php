@@ -10,7 +10,6 @@ foreach ($pages as $key => $value) {
     $page_type[$value['Type']][] = $value;
 }
 
-
 function checkPageTypePermission($type) : bool {
     global $page_type;
     $page_present = false;
@@ -69,6 +68,23 @@ function checkPageTypePermission($type) : bool {
                 <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
                 <li>
                     <a style="font-size: small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                </li>
+                <?php } ?>
+            <?php } ?>
+            </ul>
+        </li>
+        <?php } ?>
+        <?php if(checkPageTypePermission('leave')) {?>
+        <li>
+        <a href="javascript:;" class="has-arrow">
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="menu-title">Leave</div>
+        </a>
+            <ul>
+            <?php foreach ($page_type['leave'] as $page) { ?>
+                <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+                <li>
+                    <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
                 </li>
                 <?php } ?>
             <?php } ?>

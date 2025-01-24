@@ -12,7 +12,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         exit;
     }
     $password = base64_encode($password);
-    $check = $conn->query("SELECT users.* , organization.organization_name as `organization_name`,Branch.Branch_name as `branch_name` , Vertical.Vertical_name as `vertical_name` , Department.department_name as `department_name` FROM `users` LEFT JOIN organization ON organization.id = users.Organization_id LEFT JOIN Branch ON Branch.ID = users.Branch_id LEFT JOIN Vertical ON Vertical.ID = users.Vertical_id LEFT JOIN Department ON Department.id = users.Department_id WHERE users.Email = '$username' AND users.Password = '$password' limit 1");
+    $check = $conn->query("SELECT users.* , organization.organization_name as `organization_name`,Branch.Branch_name as `branch_name` , Vertical.Vertical_name as `vertical_name` , Department.department_name as `department_name` , Designation.added_inside as `added_inside` FROM `users` LEFT JOIN organization ON organization.id = users.Organization_id LEFT JOIN Branch ON Branch.ID = users.Branch_id LEFT JOIN Vertical ON Vertical.ID = users.Vertical_id LEFT JOIN Department ON Department.id = users.Department_id LEFT JOIN Designation ON users.Designation_id = Designation.ID WHERE users.Email = '$username' AND users.Password = '$password' limit 1");
     if($check->num_rows > 0) {   
         $row = mysqli_fetch_assoc($check);
         $_SESSION = $row;
@@ -43,9 +43,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
                 }
             }
             $_SESSION['allChildId'] = $allchild_ids;
-            echo "<pre>";
-            print_r($_SESSION);
-            exit;
         }
         echo json_encode(['status' => 200, 'message' => 'Welcome!!!', 'url' => '\organization_structure\organization_layout']);
     } else {

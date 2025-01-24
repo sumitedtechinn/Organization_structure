@@ -71,7 +71,9 @@ if(isset($_SESSION['role']) && $_SESSION['role'] == '2') {
 }
 
 if(isset($_POST['month']) && !empty($_POST['month']) && $_POST['month'] != 'None') {
-    $projectionSearchQuery .= "AND month = '".$_POST['month']."'";
+    if ($_POST['month'] != 13) {
+        $projectionSearchQuery .= " AND month = '".$_POST['month']."'";
+    }
 }
 
 if(isset($_POST['year']) && !empty($_POST['year']) && $_POST['year'] != 'None') {

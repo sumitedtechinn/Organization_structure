@@ -16,9 +16,9 @@ function getDepartmentList() {
     if(isset($_REQUEST['organization_id']) && !empty($_REQUEST['organization_id']) && isset($_REQUEST['branch_id']) && !empty($_REQUEST['branch_id']) && !empty($_REQUEST['vertical_id']) && isset($_REQUEST['vertical_id'])) {
         $searchQuery .= " AND organization_id = '".$_REQUEST['organization_id']."' AND branch_id LIKE '%".$_REQUEST['branch_id']."%' AND vertical_id = '".$_REQUEST['vertical_id']."'";
     } 
-    // if (isset($_REQUEST['department_id']) && !empty($_REQUEST['department_id'])) {
-    //     $searchQuery .= " AND ID = '".$_REQUEST['department_id']."'";
-    // }
+    //if (isset($_REQUEST['department_id']) && !empty($_REQUEST['department_id'])) {
+      //  $searchQuery .= " AND ID = '".$_REQUEST['department_id']."'";
+    //}
     $delete_query = 'Deleted_At IS NULL';
     $option = '<option value="">Choose department</option>';
     $department = $conn->query("SELECT id , department_name FROM `Department` WHERE $delete_query $searchQuery");

@@ -93,7 +93,6 @@ if (isset($_REQUEST['center_ids'])) {
         "iTotalDisplayRecords" => $totalRecordwithFilter,
         "aaData" => $data
     );
-
 }
 
 echo json_encode($response);

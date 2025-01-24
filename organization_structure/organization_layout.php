@@ -42,7 +42,7 @@ $col_length = ($_SESSION['role'] == '3') ? 'col-sm-4' : 'col-sm-3';
 .page-content{
     padding: 0 !important;
 }
-
+  
 #tree>svg {
     background-color: #3580b3;
     background-image: url("/assets/images/world_map.png");
