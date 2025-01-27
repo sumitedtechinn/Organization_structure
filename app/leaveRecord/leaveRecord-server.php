@@ -86,10 +86,21 @@ function getDataTableData() : array{
     $records = mysqli_fetch_assoc($filter_count);
     $totalRecordwithFilter = $records['filtered'];
 
+    $pendingRequest = 0;$pendingNumberOfDay = 0;
+    $approvalRequest = 0;$approvalNumberOfDay = 0;
     ## Fetch Record
     $leaveRecords = $conn->query("SELECT leave_record.* , leaveType.leaveName as `leave_type`, CONCAT(DATE_FORMAT(leave_record.start_date,'%d%b%Y'),' - ',DATE_FORMAT(leave_record.end_date,'%d%b%Y')) as `leave_date` , DATEDIFF(leave_record.end_date,leave_record.start_date) + 1 as `numOfDays` , DATE_FORMAT(DATE(leave_record.created_at),'%d%b%Y') as `applied_on` , users.Name as `user_name` , users.role as `user_role` , users.Photo as `image` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.start_date IS NOT NULL $filterQuery $searchQuery $orderby LIMIT $row , $rowperpage");
     if($leaveRecords->num_rows > 0) {
+        $lastRow = $leaveRecords->num_rows;
+        $i = 1;
         while ($row = mysqli_fetch_assoc($leaveRecords)) {
+            if($row['status'] == '1')  {
+                ++$approvalRequest;
+                $approvalNumberOfDay += $row['numOfDays'];
+            } elseif ($row['status'] == '3') {
+                ++$pendingRequest;
+                $pendingNumberOfDay += $row['numOfDays'];
+            }
             $approved_by = $row['approved_by'];
             $approved_by_user_name = '';
             if (!is_null($approved_by) && !empty($approved_by)) {
@@ -113,7 +124,12 @@ function getDataTableData() : array{
                 "mail_subject" => $row["mail_subject"],
                 "mail_body" => $row['mail_body'],
                 "supported_document" => $row['supported_document'],
+                "pendingRequest" => ($i == $lastRow) ? $pendingRequest : 'none',
+                "pendingNumberOfDay" => ($i == $lastRow) ? $pendingNumberOfDay : 'none' ,
+                "approvalRequest" => ($i == $lastRow) ? $approvalRequest : 'none' ,
+                "approvalNumberOfDay" => ($i == $lastRow) ? $approvalNumberOfDay : 'none' , 
             );
+            $i++;
         }
     }
 
@@ -121,7 +137,7 @@ function getDataTableData() : array{
         "draw" => intval($draw),
         "iTotalRecords" => $totalRecords,
         "iTotalDisplayRecords" => $totalRecordwithFilter,
-        "aaData" => $data
+        "aaData" => $data , 
     );
 
     return $response;

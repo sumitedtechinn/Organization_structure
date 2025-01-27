@@ -19,7 +19,7 @@ $sender_name = "Sumit Kumar";
 $receiver_name = "Vikash";
 $receiver_email = "sumitpathak901@gmail.com";
 
-$message = "Dear <b>{$receiver_name}</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
+$message = "Dear <b>Reporting Manager</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
 
 $mail = new PHPMailer(true);
 

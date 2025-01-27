@@ -2,15 +2,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-<?php
-
-$leaveType_record = [];
-$leaveTypes = $conn->query("SELECT id , leaveName , numOfLeave , leaveCarryForward FROM `leaveType` WHERE Deleted_at IS NULL");
-if ($leaveTypes->num_rows > 0) {
-    $leaveType_record = mysqli_fetch_all($leaveTypes,MYSQLI_ASSOC);
-}
-
-?> 
 <style>
 
 thead {
@@ -63,22 +54,30 @@ thead {
             <!-- start row-->  
             <div class="show" id="leave_record_block">
                 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
-                    <?php if(!empty($leaveType_record)) { ?>
-                        <?php foreach($leaveType_record as $key => $value) { ?>
-                            <div class="col">
-                                <div class="card overflow-hidden radius-5">
-                                    <div class="card-body" style="background-color: #dcdee21a;">
-                                        <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
-                                            <div>
-                                                <div class="cardleave"><?=$value['leaveName']?></div>
-                                                <div style="color: gray;">Used : <?=$value['numOfLeave']?> | Available : <?=$value['numOfLeave']?></div>
-                                            </div>
-                                        </div>
+                    <div class="col">
+                        <div class="card overflow-hidden radius-5">
+                            <div class="card-body" style="background-color: #dcdee21a;">
+                                <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
+                                    <div>
+                                        <div class="cardleave">Full Day Leave</div>
+                                        <div style="color: gray;">Used : <span id="fullDayLeaveUsed"></span> | Available : <span id="fullDayLeaveAvailable"></span></div>
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
-                    <?php } ?>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card overflow-hidden radius-5">
+                            <div class="card-body" style="background-color: #dcdee21a;">
+                                <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
+                                    <div>
+                                        <div class="cardleave">Half Day Leave</div>
+                                        <div style="color: gray;">Used : <span id="halfDayLeaveUsed"></span> | Available : <span id="halfDayLeaveAvailiable"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- End row -->
@@ -97,9 +96,17 @@ thead {
                         <select type="text" class="form-control form-control-sm single-select select2" name="user_filter" id="user_filter" onchange="reloadTable(this.id)">
                         </select>
                     </div>
-                    <div class="col-sm-2 card bg-light p-1 mb-1" style="z-index: 0 !important;">
-                        <label class="col-form-label" style="font-size: small;">Date Range</label>   
+                    <div class="col-sm-2 card p-1 mb-1 filterCard" style="z-index: 0 !important;">
+                        <label class="col-form-label filter" style="font-size: small;">Date Range</label>   
                         <input type="text" name="daterange_filter" id="daterange_filter" class="form-control" onchange="reloadTable(this.id)"/>
+                    </div>
+                    <div class="col-sm-2 card p-1 mb-1 filterCard" style="z-index: 0 !important;">
+                        <div class="filter mb-1 mt-2 ps-1">Approved Request</div>
+                        <div class="mb-3 ps-1" style="color: gray;">Request : <span id="approvalRequest"></span> | Total Days : <span id="approvalNumberOfDay"></span></div>
+                    </div>
+                    <div class="col-sm-2 card p-1 mb-1 filterCard" style="z-index: 0 !important;">
+                        <div class="filter mb-1 mt-2 ps-1">Pending Request</div>
+                        <div class="mb-3 ps-1" style="color: gray;">Request : <span id="pendingRequest"></span> | Total Days : <span id="pendingNumberOfDay"></span></div>
                     </div>
                 </div>
             </div>            
@@ -261,6 +268,7 @@ var requestedLeaveSetting = {
     'ajax': {
         'url': '/app/leaveRecord/leaveRecord-server', 
         'type': 'POST',
+        "Content-Type" :  "application/json",
         "data" : function(d) {
             d.leaveRecord = "requestedLeave";
             d.departmentFilter = $("#department_filter").val();
@@ -276,7 +284,16 @@ var requestedLeaveSetting = {
                 return '<div class = "d-flex align-items-center gap-3 fs-6">'+ img+user_name + '</div>';
             }
         },{
-            data: "leave_type" ,
+            data: "leave_type",
+            render : function(data,type,row) {
+                if( row.pendingRequest != "none") {
+                    $("#pendingRequest").text(row.pendingRequest);
+                    $("#pendingNumberOfDay").text(row.pendingNumberOfDay);
+                    $("#approvalRequest").text(row.approvalRequest);
+                    $("#approvalNumberOfDay").text(row.approvalNumberOfDay);
+                }
+                return data;
+            }
         },{
             data: "leave_date", 
         },{
@@ -343,6 +360,7 @@ $(document).ready(function(){
     });
     getFilterData();
     activeTab();
+    getUserLeaveDetails();
 });
 
 function activeTab() {
@@ -419,6 +437,35 @@ function updateDetails(id,status) {
             icon: 'error',
         })
     }
+}
+
+async function fetchData(url,option) {
+    try {
+        const response = await fetch(url,{
+            method: "POST",
+            body : JSON.stringify(option)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+        return null;
+    }
+}
+
+async function getUserLeaveDetails() {
+    const url = "/app/leaveRecord/getUserLeaveDetails";
+    const option = {"requestType" : "userLeaveDetails"};
+    const data = await fetchData(url,option);
+    if(data.status == 200) {
+        delete data['status'];
+        for (const key in data) {
+            $("#"+key).text(data[key]);
+        }
+    } 
 }
 
 function viewLeaveDetails(id,mail_subject,mail_body,file_path,type,status) {
