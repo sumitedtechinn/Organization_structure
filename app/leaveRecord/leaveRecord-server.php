@@ -17,7 +17,7 @@ if (isset($_POST['order'])) {
     $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 }
 
-$orderby = (isset($columnSortOrder)) ? "ORDER BY  leave_record.$columnName $columnSortOrder" : "ORDER BY leave_record.id ASC"; 
+$orderby = (isset($columnSortOrder)) ? "ORDER BY  leave_record.$columnName $columnSortOrder" : "ORDER BY leave_record.created_at DESC"; 
 $searchValue = mysqli_real_escape_string($conn, $_POST['search']['value']);
 $searchQuery = (!empty($searchValue)) ? "AND (users.Name LIKE '%$searchValue%' OR leaveType.leaveName LIKE '%$searchValue%')" : "";
 

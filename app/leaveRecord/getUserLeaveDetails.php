@@ -5,9 +5,30 @@ session_start();
 $data_field = file_get_contents('php://input'); // by this we get raw data
 $data_field = json_decode($data_field,true);
 $function_name = $data_field['requestType'];
-call_user_func($function_name);
 
-function userLeaveDetails() {
+$response = match($function_name) {
+    "userLeaveDetails" => call_user_func($function_name),
+    "userLeaveStatus" => call_user_func($function_name),    
+};
+
+echo $response;
+
+function userLeaveStatus() {
+
+    global $conn;
+    try {
+        $update = $conn->query("UPDATE leave_record SET `status` = '2' , `approved_by` = '1' WHERE `start_date` < CURRENT_DATE() AND `status` = '3'");
+        if($update) {
+            return json_encode(['status' => 400, 'message' => "Status updated"]);
+        } else {
+            return json_encode(['status' => 400, 'message' => "Something went wrong"]);
+        }
+    } catch (Error $e) {
+        return json_encode(['status' => 400, 'message' => $e->getMessage()]);
+    }
+}
+
+function userLeaveDetails() : string {
 
     global $conn;
     try{
@@ -34,10 +55,10 @@ function userLeaveDetails() {
         $halfDayLeaveUsed = mysqli_fetch_column($halfDayLeave);
         $halfDayLeaveAvailable = ($halfDayLeaveUsed == 0) ? '1' : '0';
     
-        echo json_encode(['status' => 200, 'halfDayLeaveUsed' => $halfDayLeaveUsed , 'halfDayLeaveAvailiable' => $halfDayLeaveAvailable , 'fullDayLeaveUsed' => $currentMonthLeaveUsed , 'fullDayLeaveAvailable' => "$totalAavailiableLeave" ]);
+        return json_encode(['status' => 200, 'halfDayLeaveUsed' => $halfDayLeaveUsed , 'halfDayLeaveAvailiable' => $halfDayLeaveAvailable , 'fullDayLeaveUsed' => $currentMonthLeaveUsed , 'fullDayLeaveAvailable' => "$totalAavailiableLeave" ]);
     
     } catch (Error $e) {
-        echo json_encode(['status' => 400, 'message' => $e->getMessage() ]);
+        return json_encode(['status' => 400, 'message' => $e->getMessage() ]);
     }
 }
 

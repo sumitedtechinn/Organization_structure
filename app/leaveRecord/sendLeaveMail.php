@@ -36,7 +36,7 @@ try {
     $mail->setFrom('noreply@yourdomain.com',$sender_name);
     $mail->addAddress($receiver_email);
 
-    //$mail->addCC('hr@edtechinnovate.com');
+    // $mail->addCC('hr@edtechinnovate.com');
     // if(!empty($data_field['mail_cc'])) {
     //     $cc_email = explode(',',$data_field['mail_cc']);
     //     foreach ($cc_email as $value) {

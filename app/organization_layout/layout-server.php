@@ -335,6 +335,11 @@ function getUserInsideVertical() {
             $id = $vertical['ID'];
             $vertical_branchs = json_decode($vertical['Branch_id'],true);
             foreach ($vertical_branchs as $vertical_branch) {
+                if (!empty($branch_id)) {
+                    if($vertical_branch != $branch_id) {
+                        continue;
+                    }
+                }
                 $vertical_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id = '$vertical_branch' AND users.Organization_id = '$organization_id' AND Designation.added_inside = '3' AND users.Vertical_id = '$id' AND users.Assinged_Person_id IS NOT NULL AND users.Deleted_At IS NULL");       
                 if($vertical_user->num_rows > 0 ) {
                     while ($row = mysqli_fetch_assoc($vertical_user)) {
@@ -428,7 +433,7 @@ function departmentPID($organization_id,$branch_id,$vertical_id) {
   	if($checkDesignationInsideVertical->num_rows > 0 ) {
         $userId = '';
         while($row = mysqli_fetch_assoc($checkDesignationInsideVertical)) {
-            $checkUser = $conn->query("SELECT ID FROM users WHERE Designation_id = '".$row['ID']."' AND Hierarchy_value = '".$row['hierarchy_value']."' AND Deleted_At IS NULL LIMIT 1");
+            $checkUser = $conn->query("SELECT ID FROM users WHERE Designation_id = '".$row['ID']."' AND Hierarchy_value = '".$row['hierarchy_value']."' AND Branch_id = '$branch_id' AND Deleted_At IS NULL LIMIT 1");
             if($checkUser->num_rows > 0) {
                 $userId = mysqli_fetch_column($checkUser);
                 break;

@@ -226,7 +226,7 @@ var myLeaveSetting = {
                     message = "Pending";
                     background = "bg-warning";
                 } else if (data == '4') {
-                    message = "Widthdraw";
+                    message = "Withdraw";
                     background = "bg-secondary";
                 }
                 return '<div class="badge rounded-pill '+background+' m-1 badgeStyle">'+message+'</div>';
@@ -322,7 +322,7 @@ var requestedLeaveSetting = {
                     message = "Pending";
                     background = "bg-warning";
                 } else if (data == '4') {
-                    message = "Widthdraw";
+                    message = "Withdraw";
                     background = "bg-secondary";
                 }
                 return '<div class="badge rounded-pill '+background+' m-1 badgeStyle">'+message+'</div>';
@@ -361,6 +361,7 @@ $(document).ready(function(){
     getFilterData();
     activeTab();
     getUserLeaveDetails();
+    updateUserLeaveStatus();
 });
 
 function activeTab() {
@@ -465,6 +466,15 @@ async function getUserLeaveDetails() {
         for (const key in data) {
             $("#"+key).text(data[key]);
         }
+    } 
+}
+
+async function updateUserLeaveStatus() {
+    const url = "/app/leaveRecord/getUserLeaveDetails";
+    const option = {"requestType" : "userLeaveStatus"};
+    const data = await fetchData(url,option);
+    if(data.status == 200) {
+        console.log(data.message);
     } 
 }
 

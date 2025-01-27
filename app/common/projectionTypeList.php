@@ -12,9 +12,9 @@ if (isset($_REQUEST['projection_type'])) {
     } else if ($_SESSION['role'] == '3') {
         $searchQuery .= "AND Projection_type.organization_id = '".$_SESSION['Organization_id']."'";
     }
-    $projection_type = $conn->query("SELECT Projection_type.* , Department.department_name as `department` FROM `Projection_type` LEFT JOIN Department ON Department.id = Projection_type.department_id WHERE Projection_type.Deleted_At IS NULL $searchQuery");
+    $projection_type = $conn->query("SELECT Projection_type.* , Department.department_name as `department` , SUBSTRING_INDEX(Branch.Branch_name,',',1)  as `branch_name` FROM `Projection_type` LEFT JOIN Department ON Department.id = Projection_type.department_id LEFT JOIN Branch ON Branch.ID = Projection_type.branch_id WHERE Projection_type.Deleted_At IS NULL $searchQuery");
     while ($row = mysqli_fetch_assoc($projection_type)) {
-        $department_name = $_SESSION['role'] == '2' ? '': '('.$row['department'].')';
+        $department_name = $_SESSION['role'] == '2' ? '': '('.$row['department'].')('.$row['branch_name'].')';
         if(isset($_REQUEST['projectionType_form'])) {
             if (str_contains(strtolower($row['Name']),$_REQUEST['projectionType_form'])) {
                 if (!empty($_REQUEST['projection_type']) && $row['ID'] == $_REQUEST['projection_type']) {

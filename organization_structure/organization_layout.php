@@ -385,8 +385,8 @@ async function initializeChart() {
         tag[designation] = {'template':designation};
     }
     // console.log(nodeCount);
-    //console.log(designations);
-    //console.log(tag);
+    // console.log(designations);
+    // console.log(tag);
     
     function addDesignation(newDesignation, newColor) {
         for (let key in designations) {

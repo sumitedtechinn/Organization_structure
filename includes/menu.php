@@ -91,22 +91,28 @@ function checkPageTypePermission($type) : bool {
             </ul>
         </li>
         <?php } ?>
-        <?php if(checkPageTypePermission('projection')) {?>
-        <li>
-        <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon"><i class="bi bi-list-task"></i></div>
-            <div class="menu-title">Projection</div>
-        </a>
-            <ul>
-            <?php foreach ($page_type['projection'] as $page) { ?>
-                <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+        <?php if(checkPageTypePermission('projection')) { 
+            $show = true;
+            if ($_SESSION['role'] == '2') {
+                $show = ($_SESSION['Vertical_id'] == '1' || $_SESSION['Vertical_id'] == '2' || $_SESSION['Vertical_id'] == '3') ? true : false;
+            }
+            if ($show) { ?>
                 <li>
-                    <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                <a href="javascript:;" class="has-arrow">
+                    <div class="parent-icon"><i class="bi bi-list-task"></i></div>
+                    <div class="menu-title">Projection</div>
+                </a>
+                    <ul>
+                    <?php foreach ($page_type['projection'] as $page) { ?>
+                        <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+                        <li>
+                            <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                        </li>
+                        <?php } ?>
+                    <?php } ?>
+                    </ul>
                 </li>
-                <?php } ?>
             <?php } ?>
-            </ul>
-        </li>
         <?php } ?>
     </ul>
 <!--end navigation-->
