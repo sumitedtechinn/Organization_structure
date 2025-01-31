@@ -26,7 +26,8 @@
                 <!-- Submit Button -->
                 <hr>
                 <?php if($_REQUEST['type'] == 'requestedLeave') { ?>
-                    <div class="text-end">
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        <div class="spinner-border text-primary" id="spinner" style="display: none;" role="status"></div>
                         <button type="submit" name="status" value="approved" class="btn btn-sm btn-success">Approved</button>
                         <button type="submit" name="status" value="dis_approved" class="btn btn-sm btn-danger">Dis-Approved</button>
                     </div>
@@ -45,7 +46,6 @@ $("#form-applyLeave").on('submit',function(e){
     e.preventDefault();
     var formData = new FormData(this);
     const clickButton = document.activeElement;
-    const status = (clickButton.value == 'approved') ? 'approved' : "dis_approved";
     formData.append('leave_id','<?=$_REQUEST['leave_id']?>');
     formData.append('formType','updateLeaveStatus');
     formData.append('status',clickButton.value);
@@ -59,6 +59,7 @@ $("#form-applyLeave").on('submit',function(e){
         confirmButtonText: 'Yes, Process.'
     }).then((isConfirm) => {
         if (isConfirm.value === true) {
+            $("#spinner").css('display','block');
             $.ajax({
                 url: this.action,
                 type: 'post',
@@ -75,6 +76,7 @@ $("#form-applyLeave").on('submit',function(e){
                     } else {
                         toastr.error(data.message);
                     }
+                    $("#spinner").css('display','none');
                 }
             });     
         } else {

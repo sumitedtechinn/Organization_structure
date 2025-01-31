@@ -38,10 +38,10 @@ function getUpperHierarchyUser($user_details) {
         $searchQuery .= "AND Branch_id = '".$user_details['Branch_id']."'";
         $searchQuery .= "AND Organization_id = '".$user_details['Organization_id']."'";
     } elseif ($user_details['role'] == '3') {
-        $searchQuery .= "AND Department_id IS NULL";    
-        $searchQuery .= ($user_details['inside'] >= '3') ? "AND Vertical_id = '".$user_details['Vertical_id']."'" : "AND Vertical_id IS NULL";
-        $searchQuery .= ($user_details['inside'] >= '2') ? "AND Branch_id = '".$user_details['Branch_id']."'" : "AND Branch_id IS NULL";
-        $searchQuery .= ($user_details['inside'] >= '1') ? "AND Organization_id = '".$user_details['Organization_id']."'" : "AND Organization_id IS NULL";
+        $searchQuery .= " AND Department_id IS NULL";    
+        $searchQuery .= ($user_details['inside'] >= '3') ? " AND Vertical_id = '".$user_details['Vertical_id']."'" : " AND Vertical_id IS NULL";
+        $searchQuery .= ($user_details['inside'] >= '2') ? " AND Branch_id = '".$user_details['Branch_id']."'" : " AND Branch_id IS NULL";
+        $searchQuery .= ($user_details['inside'] >= '1') ? " AND Organization_id = '".$user_details['Organization_id']."'" : " AND Organization_id IS NULL";
     }
     $delete_query = "Deleted_At IS NULL";
     $upperHierarchyUsers = $conn->query("SELECT `ID`, `Name` , `Email` FROM `users`  WHERE $delete_query $searchQuery AND Hierarchy_value < '".$user_details['Hierarchy_value']."'");

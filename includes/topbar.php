@@ -40,7 +40,6 @@
                 </div>
               </a>
           </li>
-          <?php if( $_SESSION['role'] == '1') { ?>
           <li>
               <a class="dropdown-item" href="javascript:void(0)" onclick="changePassword()">
                 <div class="d-flex align-items-center">
@@ -49,7 +48,6 @@
                 </div>
               </a>
           </li>
-          <?php } ?>
           <li><hr class="dropdown-divider"></li>
             <li>
               <a class="dropdown-item" href="\logout">
@@ -81,8 +79,8 @@ function changePassword() {
       url : '/app/changePassword/changePassword', 
       type : 'get',
       success : function(data){
-        $('#sm-modal-content').html(data);
-        $('#smmodal').modal('show');
+        $('#md-modal-content').html(data);
+        $('#mdmodal').modal('show');
       }
   });
 }

@@ -97,6 +97,9 @@ function updateLeaveStatus($status,$leave_id) {
         'widthdraw' => '4'   
     };   
     $approved_by = $_SESSION['ID'];
+    if ($status_value == '1' || $status_value == '2') {
+        sendConfirmMail($leave_id,$status);
+    }
     $update_query = $conn->query("UPDATE leave_record SET status = '$status_value' , approved_by = '$approved_by' WHERE id = '$leave_id'");
     showResponse($update_query,'status Updated'); 
 }
@@ -122,8 +125,8 @@ function checkAndUploadImage($image_name) : bool|string {
 }
 
 function generateMail($user_name,$mail_to,$mail_cc) {
+    
     global $conn;
-
     $mail_cc_list = [];
     if(!is_null($mail_cc)) {
         $mail_cc = json_decode($mail_cc,true);
@@ -141,6 +144,7 @@ function generateMail($user_name,$mail_to,$mail_cc) {
         $request['receiver_name'] = $receiver_name;
         $request['receiver_email'] = $receiver_email;
         $request['mail_cc'] = implode(',',$mail_cc_list);
+        $request['method'] = "leaveRequestMail";
         $request = json_encode($request);
         $opt = array(
             'http' => array(
@@ -157,5 +161,37 @@ function generateMail($user_name,$mail_to,$mail_cc) {
         showResponse(false,$e->getMessage());
         die;
     } 
+}
+
+function sendConfirmMail($leave_id,$status) {
+
+    global $conn;
+    $userInfo = $conn->query("SELECT users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '$leave_id'");
+    $userInfo = mysqli_fetch_assoc($userInfo);
+    $url = "http://edtechstrucure.local/app/leaveRecord/sendLeaveMail";
+    try {
+        $request = [];
+        $request['receiver_name'] = $userInfo['name'];
+        $request['receiver_email'] = $userInfo['email'];
+        $request['start_date'] = $userInfo['start_date'];
+        $request['end_date'] = $userInfo['end_date'];
+        $request['status'] = $status;
+        $request['method'] = "confirmLeaveMail";
+        $request = json_encode($request);
+        $opt = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => 'Content-Type: application/json',
+                'content' => $request , 
+                'timeout' => 60
+            )
+        );
+        $context = stream_context_create($opt);
+        $response = file_get_contents($url,false,$context);
+        return $response;
+    } catch (Error $e) {
+        showResponse(false,$e->getMessage());
+        die;
+    }
 }
 ?>

@@ -113,13 +113,13 @@ if(isset($_REQUEST['leave_id'])) {
 <script>
 
 $(function(){
-    $('#form-branch').validate({
+    $('#form-applyLeave').validate({
     rules: {
         leave_type: {required:true},
         start_date : {required:true},
         end_date : {required:true},
         mail_to : {required:true},
-        mail_cc : {required:true},
+        //mail_cc : {required:true},
         mail_subject : {
             required:true,
             maxlength: 100,
@@ -133,6 +133,15 @@ $(function(){
     unhighlight: function (element) {
         $(element).removeClass('error');
         $(element).closest('.form-control').removeClass('has-error');
+    },
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else if (element.is('select')) {
+            error.insertAfter(element.next('.select2'));
+        } else {
+            error.insertAfter(element);
+        }
     }
     });
 })

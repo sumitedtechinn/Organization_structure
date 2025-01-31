@@ -45,7 +45,7 @@ thead {
                 <h5 class="mb-0">Leave Record</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-6">
                     <?php if(in_array('Leave Record Create',$_SESSION['permission'])) { ?>
-                    <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded" title="Apply Leave" onclick="applyLeave()" data-bs-toggle = "tooltip">
+                    <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded gap-2 bg-primary" title="Apply Leave" style="color: white;" onclick="applyLeave()" data-bs-toggle = "tooltip"><span>Apply Leave</span>
                         <i class="bi bi-plus-circle-fill" id="apply_leave"></i>
                     </div>
                     <?php } ?>
