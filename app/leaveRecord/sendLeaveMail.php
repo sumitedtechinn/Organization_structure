@@ -13,20 +13,26 @@ call_user_func($data_field['method'],$data_field);
 
 function leaveRequestMail($data_field) {
 
+    $approveToken = base64_encode(json_encode(array('leave_id'=>1,'user_id'=>1,'action'=>'approve')));
+    $rejectToken = array('leave_id'=>1,'user_id'=>1,'action'=>'reject');
     // echo "<pre>";
     // print_r($data_field);
-    $receiver_name = $data_field['receiver_name'];
-    $receiver_email = $data_field['receiver_email'];
-    $sender_name = $data_field['user_name'];
+    // $receiver_name = $data_field['receiver_name'];
+    // $receiver_email = $data_field['receiver_email'];
+    // $sender_name = $data_field['user_name'];
+    $user_id = $data_field['user_id'];
     $mail_cc = null;
     if(isset($data_field['mail_cc']) && !empty($data_field['mail_cc'])) {
         $mail_cc = $data_field['mail_cc'];
     }
-    // $sender_name = "Sumit Kumar";
-    // $receiver_name = "Vikash";
-    // $receiver_email = "sumitpathak901@gmail.com";
-
-    $message = "Dear <b>Reporting Manager</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
+    $sender_name = "Sumit Kumar";
+    $receiver_name = "Vikash";
+    $receiver_email = "sumitpathak901@gmail.com";
+    $approveUrl = "http://edtechstrucure.local/app/leaveRecord/getMailResponse?token={$approveToken}";
+    $rejectUrl = "http://edtechstrucure.local/app/leaveRecord/getMailResponse?token={$rejectToken}";
+    $approveButton = "<a href= {$url} class = \"button\" style = \"display: block;width: 115px;height: 25px;background:rgb(83, 157, 96);padding: 10px;text-align: center;border-radius: 5px;color: white;font-weight: bold;line-height: 25px;\">Approve</a>";
+    $disapproveButton = "<a href= {$url} class = \"button\" style = \"display: block;width: 115px;height: 25px;background:rgb(208, 89, 89);padding: 10px;text-align: center;border-radius: 5px;color: white;font-weight: bold;line-height: 25px;\">DisApprove</a>";
+    $message = "Dear <b>Reporting Manager</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><p><b>Action Required :</b></p><br><br><div class = \"display:flex;gap:0.5rem;\">{$approveButton}{$disapproveButton}</div><br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
     $subject = "Leave Request Submitted by {$sender_name}";
     sendMail($message,$sender_name,$receiver_email,$subject,$mail_cc);
 }
@@ -58,7 +64,7 @@ function sendMail($message,$sender_name,$receiver_email,$subject,$mail_cc) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'no-reply@edtechinnovate.com';
-        $mail->Password   = 'ypjpmutmkhitbfgn';
+        $mail->Password   = 'qftsisgdjjafqsvi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 

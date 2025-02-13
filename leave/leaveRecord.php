@@ -236,7 +236,7 @@ var myLeaveSetting = {
             render : function (data,type,row) {
                 let message = row.mail_body.replace(/[\r\n]+/g, '<br>');
                 let file_path = row.supported_document;
-                let view = '<div class="badge rounded-pill bg-info badgeStyle d-flex align-items-center justify-content-center p-2" style="cursor: pointer; margin-left: 0.5rem;margin-right: 3rem;padding-top: 0.5rem;" onclick="viewLeaveDetails('+row.ID+', &#39;'+row.mail_subject+'&#39;, &#39;'+message+'&#39;, &#39;'+file_path+'&#39;,&#39;myleave&#39;,&#39;'+row.status+'&#39;)"><i class="bi bi-chat-square-dots-fill me-1"></i><span>View</span></div>';
+                let view = '<div class="badge rounded-pill bg-info badgeStyle d-flex align-items-center justify-content-center p-2" style="cursor: pointer; margin-left: 0.5rem;margin-right: 3rem;padding-top: 0.5rem;" onclick="viewLeaveDetails('+row.ID+', &#39;'+row.mail_subject+'&#39;, &#34;'+message+'&#34;, &#39;'+file_path+'&#39;,&#39;myleave&#39;,&#39;'+row.status+'&#39;)"><i class="bi bi-chat-square-dots-fill me-1"></i><span>View</span></div>';
                 return view;
             }
         },{         
@@ -332,7 +332,7 @@ var requestedLeaveSetting = {
             render : function (data,type,row) {
                 let message = row.mail_body.replace(/[\r\n]+/g, '<br>');
                 let file_path = row.supported_document;
-                let view = '<div class="badge rounded-pill bg-info badgeStyle d-flex align-items-center justify-content-center p-2" style="cursor: pointer; margin-left: 0.5rem;margin-right: 3rem;padding-top: 0.5rem;" onclick="viewLeaveDetails('+row.ID+', &#39;'+row.mail_subject+'&#39;, &#39;'+message+'&#39;, &#39;'+file_path+'&#39;,&#39;requestedLeave&#39;,&#39;'+row.status+'&#39;)"><i class="bi bi-chat-square-dots-fill me-1"></i><span>View</span></div>';
+                let view = '<div class="badge rounded-pill bg-info badgeStyle d-flex align-items-center justify-content-center p-2" style="cursor: pointer; margin-left: 0.5rem;margin-right: 3rem;padding-top: 0.5rem;" onclick="viewLeaveDetails('+row.ID+', &#39;'+row.mail_subject+'&#39;, &#34;'+message+'&#34;, &#39;'+file_path+'&#39;,&#39;requestedLeave&#39;,&#39;'+row.status+'&#39;)"><i class="bi bi-chat-square-dots-fill me-1"></i><span>View</span></div>';
                 return view;
             }
         }
@@ -361,7 +361,7 @@ $(document).ready(function(){
     getFilterData();
     activeTab();
     getUserLeaveDetails();
-    updateUserLeaveStatus();
+    //updateUserLeaveStatus();
 });
 
 function activeTab() {
@@ -466,15 +466,6 @@ async function getUserLeaveDetails() {
         for (const key in data) {
             $("#"+key).text(data[key]);
         }
-    } 
-}
-
-async function updateUserLeaveStatus() {
-    const url = "/app/leaveRecord/getUserLeaveDetails";
-    const option = {"requestType" : "userLeaveStatus"};
-    const data = await fetchData(url,option);
-    if(data.status == 200) {
-        console.log(data.message);
     } 
 }
 

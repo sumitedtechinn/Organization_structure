@@ -1,0 +1,22 @@
+2025-01-31T07:42:44+01:00 :: CRON Run Date : 31-01-2025 
+
+2025-01-31T07:42:44+01:00 :: getPendingLeaveRecordQuery => SELECT leave_record.id as `leave_id` , users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.start_date < CURRENT_DATE() AND leave_record.status = '3' 
+
+2025-01-31T07:42:44+01:00 :: No leave present for auto disapprove. 
+
+ ============ End Of Script ================== 
+
+2025-01-31T07:50:04+01:00 :: CRON Run Date : 31-01-2025 
+
+2025-01-31T07:50:04+01:00 :: getPendingLeaveRecordQuery => SELECT leave_record.id as `leave_id` , users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.start_date < CURRENT_DATE() AND leave_record.status = '3' 
+
+2025-01-31T07:50:04+01:00 :: pendingLeaveRecord Data => [{"leave_id":"12","name":"Deepak Singh Rawat","email":"deepak@edtechinnovate.com","start_date":"30-Jan-2025","end_date":"30-Jan-2025"}] 
+
+2025-01-31T07:50:04+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"receiver_name":"Deepak Singh Rawat","receiver_email":"deepak@edtechinnovate.com","start_date":"30-Jan-2025","end_date":"30-Jan-2025","status":"dis_approved","method":"confirmLeaveMail"} 
+
+2025-01-31T07:50:09+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-01-31T07:50:09+01:00 :: updateQuery => UPDATE leave_record SET `status` = '2' , `approved_by` = '1' WHERE id IN (12) 
+
+ ============ End Of Script ================== 
+

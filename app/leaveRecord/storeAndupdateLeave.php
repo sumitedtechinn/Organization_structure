@@ -30,7 +30,7 @@ function insertLeave() {
         $end_date = mysqli_real_escape_string($conn,$_REQUEST['end_date']);
         $mail_to = mysqli_real_escape_string($conn,$_REQUEST['mail_to']);
         $mail_subject = mysqli_real_escape_string($conn,$_REQUEST['mail_subject']);
-        $mail_reason = $_REQUEST['leave_reason'];
+        $mail_reason = mysqli_real_escape_string($conn,$_REQUEST['leave_reason']);
         $mail_cc = null;
         if (isset($_REQUEST['mail_cc'])) {
             $mail_cc = json_encode($_REQUEST['mail_cc']);
@@ -51,8 +51,9 @@ function insertLeave() {
         $response = generateMail($user_name,$mail_to,$mail_cc);
         $response = json_decode($response,true);
         if ($response['status'] == '200') {
-            $insert_query = $conn->query("INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('$user_id','$leave_type','$start_date','$end_date','$mail_to','$mail_cc','$mail_subject','$mail_reason','$path_name','3')");
-            showResponse($insert_query,'applied');
+            //$insert_query = $conn->query("INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('$user_id','$leave_type','$start_date','$end_date','$mail_to','$mail_cc','$mail_subject','$mail_reason','$path_name','3')");
+            //showResponse($insert_query,'applied');
+            showResponse(true,'applied');
         }
     }
 }
