@@ -39,7 +39,11 @@ function userLeaveDetails() : string {
         $halfDayLeaveUsed = mysqli_fetch_column($halfDayLeave);
         $halfDayLeaveAvailable = ($halfDayLeaveUsed == 0) ? '1' : '0';
     
-        return json_encode(['status' => 200, 'halfDayLeaveUsed' => $halfDayLeaveUsed , 'halfDayLeaveAvailiable' => $halfDayLeaveAvailable , 'fullDayLeaveUsed' => $currentMonthLeaveUsed , 'fullDayLeaveAvailable' => "$totalAavailiableLeave" ]);
+        $restrictedLeave = $conn->query(restrictedLeaveQuery());
+        $restrictedLeaveUsed = mysqli_fetch_column($restrictedLeave);
+        $restrictedLeaveAvailiable = 2- intval($restrictedLeaveUsed);
+
+        return json_encode(['status' => 200, 'halfDayLeaveUsed' => $halfDayLeaveUsed , 'halfDayLeaveAvailiable' => $halfDayLeaveAvailable , 'fullDayLeaveUsed' => $currentMonthLeaveUsed , 'fullDayLeaveAvailable' => "$totalAavailiableLeave"  , "restrictedLeaveUsed" => $restrictedLeaveUsed , "restrictedLeaveAvailiable" => $restrictedLeaveAvailiable]);
     
     } catch (Error $e) {
         return json_encode(['status' => 400, 'message' => $e->getMessage() ]);
@@ -49,6 +53,11 @@ function userLeaveDetails() : string {
 function halfDayLeaveQuery() : string {
 
     $query = "SELECT SUM(CASE WHEN leave_type = '3' AND MONTH(start_date) = MONTH(CURRENT_DATE()) AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND status = '1' THEN DATEDIFF(end_date,start_date) + 1 ELSE 0 END) AS `half_day_used` FROM `leave_record` WHERE user_id = '".$_SESSION['ID']."'";
+    return $query;
+}
+
+function restrictedLeaveQuery() : string {
+    $query = "SELECT SUM(CASE WHEN leave_type = '4' AND YEAR(start_date) = YEAR(CURRENT_DATE()) THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `restricted_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
     return $query;
 }
 

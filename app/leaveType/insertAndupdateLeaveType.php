@@ -14,6 +14,16 @@ if (isset($_REQUEST['leaveType_id'])) {
 ?>
 
 <!-- Modal -->
+<style>
+
+label{
+    font-weight: 400;
+}
+.error {
+    color: red;
+    font-size: small;
+}
+</style>
 <div class="card-body">
     <div class="border p-4 rounded">
         <div class="card-title d-flex align-items-center justify-content-between">
@@ -40,6 +50,19 @@ if (isset($_REQUEST['leaveType_id'])) {
                     <input type="text" class="form-control form-control-sm" name="leave_carryforward" value="<?php echo (!empty($leaveType_details)) ? $leaveType_details['leaveCarryForward'] : '' ?>" placeholder="eg: 10">
                 </div>
             </div>
+            <div class="row mb-1">
+                <label class="col-sm-4 col-form-label">Leave Weightage</label>
+                <div class="col-sm-8 d-flex" style="margin-top: 0.4rem;gap: 0.7rem;">
+                    <div>
+                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_full_day" value="full_day">
+                        <label class="form-check-label" value = "leave_full_day">Full Day</label>    
+                    </div>
+                    <div>
+                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_half_day" value="half_day">
+                        <label class="form-check-label" for="leave_half_day">Half Day</label>
+                    </div>
+                </div>
+            </div>
             <hr/>
             <div class="row mb-2">
                 <div class="col-sm-12">
@@ -60,6 +83,7 @@ $(function(){
         leave_name: {required:true},
         numofleave : {required:true},
         leave_carryforward : {required:true},
+        leave_weightage : {required:true}
     },
     highlight: function (element) {
         $(element).addClass('error');
@@ -68,6 +92,15 @@ $(function(){
     unhighlight: function (element) {
         $(element).removeClass('error');
         $(element).closest('.form-control').removeClass('has-error');
+    },
+    errorPlacement: function (error, element) {
+        if (element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else if (element.is('select')) {
+            error.insertAfter(element.next('.select2'));
+        } else {
+            error.insertAfter(element);
+        }
     }
     });
 })

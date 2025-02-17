@@ -89,7 +89,7 @@ function getDataTableData() : array{
     $pendingRequest = 0;$pendingNumberOfDay = 0;
     $approvalRequest = 0;$approvalNumberOfDay = 0;
     ## Fetch Record
-    $leaveRecords = $conn->query("SELECT leave_record.* , leaveType.leaveName as `leave_type`, CONCAT(DATE_FORMAT(leave_record.start_date,'%d%b%Y'),' - ',DATE_FORMAT(leave_record.end_date,'%d%b%Y')) as `leave_date` , DATEDIFF(leave_record.end_date,leave_record.start_date) + 1 as `numOfDays` , DATE_FORMAT(DATE(leave_record.created_at),'%d%b%Y') as `applied_on` , users.Name as `user_name` , users.role as `user_role` , users.Photo as `image` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.start_date IS NOT NULL $filterQuery $searchQuery $orderby LIMIT $row , $rowperpage");
+    $leaveRecords = $conn->query("SELECT leave_record.* , leaveType.leaveName as `leave_type`, CONCAT(DATE_FORMAT(leave_record.start_date,'%d%b%Y'),' - ',DATE_FORMAT(leave_record.end_date,'%d%b%Y')) as `leave_date` , (DATEDIFF(leave_record.end_date,leave_record.start_date) + 1) * leaveType.leaveWeightage as `numOfDays` , DATE_FORMAT(DATE(leave_record.created_at),'%d%b%Y') as `applied_on` , users.Name as `user_name` , users.role as `user_role` , users.Photo as `image` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.start_date IS NOT NULL $filterQuery $searchQuery $orderby LIMIT $row , $rowperpage");
     if($leaveRecords->num_rows > 0) {
         $lastRow = $leaveRecords->num_rows;
         $i = 1;

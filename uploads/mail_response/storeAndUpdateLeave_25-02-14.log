@@ -1,0 +1,142 @@
+2025-02-14T17:59:45+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T17:59:45+01:00 :: Request  => {"leave_id":"50","status":"approved","formType":"updateLeaveStatus"}
+
+2025-02-14T17:59:45+01:00 :: details query => SELECT leave_record.id , leave_record.user_id , leave_record.supported_document , users.Name as `name` , leave_record.mail_to , leave_record.mail_cc FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T17:59:45+01:00 :: Inside the updateLeaveStatus 
+
+2025-02-14T17:59:45+01:00 :: update Query => UPDATE leave_record SET status = '1' , approved_by = 'SUBSTRING_INDEX(mail_to, '####', -1)' WHERE id = '50' 
+
+2025-02-14T17:59:45+01:00 :: Inside sendConfirmMail 
+
+2025-02-14T17:59:45+01:00 :: userInfo query => SELECT users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T17:59:45+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"receiver_name":"Sumit kumar","receiver_email":"sumit@edtechinnovate.com","start_date":"21-Feb-2025","end_date":"21-Feb-2025","status":"approved","method":"confirmLeaveMail"} 
+
+2025-02-14T17:59:52+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T17:59:52+01:00 :: response from sendConfirmMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:07:27+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:07:27+01:00 :: Request  => {"leave_id":"50","status":"approved","formType":"updateLeaveStatus"}
+
+2025-02-14T18:07:27+01:00 :: details query => SELECT leave_record.id , leave_record.user_id , leave_record.supported_document , users.Name as `name` , leave_record.mail_to , leave_record.mail_cc FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T18:07:27+01:00 :: Inside the updateLeaveStatus 
+
+2025-02-14T18:07:27+01:00 :: update Query => UPDATE leave_record SET status = '1' , approved_by = SUBSTRING_INDEX(mail_to, '####', -1) WHERE id = '50' 
+
+2025-02-14T18:07:27+01:00 :: Inside sendConfirmMail 
+
+2025-02-14T18:07:27+01:00 :: userInfo query => SELECT users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T18:07:27+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"receiver_name":"Sumit kumar","receiver_email":"sumit@edtechinnovate.com","start_date":"21-Feb-2025","end_date":"21-Feb-2025","status":"approved","method":"confirmLeaveMail"} 
+
+2025-02-14T18:07:33+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:07:33+01:00 :: response from sendConfirmMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:09:26+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:09:26+01:00 :: Request  => {"leave_id":"50","status":"approved","formType":"updateLeaveStatus"}
+
+2025-02-14T18:09:26+01:00 :: details query => SELECT leave_record.id , leave_record.user_id , leave_record.supported_document , users.Name as `name` , leave_record.mail_to , leave_record.mail_cc FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T18:09:26+01:00 :: Inside the updateLeaveStatus 
+
+2025-02-14T18:09:26+01:00 :: update Query => UPDATE leave_record SET status = '1' , approved_by = SUBSTRING_INDEX(mail_to, '####', -1) WHERE id = '50' 
+
+2025-02-14T18:09:26+01:00 :: Inside sendConfirmMail 
+
+2025-02-14T18:09:26+01:00 :: userInfo query => SELECT users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '50' 
+
+2025-02-14T18:09:26+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"receiver_name":"Sumit kumar","receiver_email":"sumit@edtechinnovate.com","start_date":"21-Feb-2025","end_date":"21-Feb-2025","status":"approved","method":"confirmLeaveMail"} 
+
+2025-02-14T18:09:33+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:09:33+01:00 :: response from sendConfirmMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:18:28+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:18:28+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-18","end_date":"2025-02-27","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dsjnjdbjjbdjbjnjc"}
+
+2025-02-14T18:18:28+01:00 :: Inside the insertLeave Method 
+
+2025-02-14T18:18:28+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-18','2025-02-27','mahinder@edtechinnovate.com####19','','Leave Request','dsjnjdbjjbdjbjnjc','','3') 
+
+2025-02-14T18:18:28+01:00 :: Inside generateMail function 
+
+2025-02-14T18:18:28+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":51,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-14T18:18:35+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:18:35+01:00 :: response came from generateMail => Array 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:18:44+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:18:44+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-18","end_date":"2025-02-27","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dsjnjdbjjbdjbjnjc"}
+
+2025-02-14T18:18:44+01:00 :: Inside the insertLeave Method 
+
+2025-02-14T18:18:44+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-18','2025-02-27','mahinder@edtechinnovate.com####19','','Leave Request','dsjnjdbjjbdjbjnjc','','3') 
+
+2025-02-14T18:18:44+01:00 :: Inside generateMail function 
+
+2025-02-14T18:18:44+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":52,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-14T18:18:51+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:18:51+01:00 :: response came from generateMail => Array 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:19:34+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:19:34+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-18","end_date":"2025-02-27","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dsjnjdbjjbdjbjnjc"}
+
+2025-02-14T18:19:34+01:00 :: Inside the insertLeave Method 
+
+2025-02-14T18:19:34+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-18','2025-02-27','mahinder@edtechinnovate.com####19','','Leave Request','dsjnjdbjjbdjbjnjc','','3') 
+
+2025-02-14T18:19:34+01:00 :: Inside generateMail function 
+
+2025-02-14T18:19:34+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":53,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-14T18:19:42+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:19:42+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-14T18:21:32+01:00 :: StoreAndUpate Script start 
+
+2025-02-14T18:21:32+01:00 :: Request  => {"leave_id":"53","formType":"updateLeaveStatus","status":"approved"}
+
+2025-02-14T18:21:32+01:00 :: details query => SELECT leave_record.id , leave_record.user_id , leave_record.supported_document , users.Name as `name` , leave_record.mail_to , leave_record.mail_cc FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '53' 
+
+2025-02-14T18:21:32+01:00 :: Inside the updateLeaveStatus 
+
+2025-02-14T18:21:32+01:00 :: update Query => UPDATE leave_record SET status = '1' , approved_by = '19' WHERE id = '53' 
+
+2025-02-14T18:21:32+01:00 :: Inside sendConfirmMail 
+
+2025-02-14T18:21:32+01:00 :: userInfo query => SELECT users.Name as `name` , users.Email as `email` , DATE_FORMAT(leave_record.start_date,'%d-%b-%Y') as `start_date` , DATE_FORMAT(leave_record.end_date,'%d-%b-%Y') as `end_date` FROM `leave_record` LEFT JOIN users ON users.ID = leave_record.user_id WHERE leave_record.id = '53' 
+
+2025-02-14T18:21:32+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"receiver_name":"Sumit kumar","receiver_email":"sumit@edtechinnovate.com","start_date":"18-Feb-2025","end_date":"27-Feb-2025","status":"approved","method":"confirmLeaveMail"} 
+
+2025-02-14T18:21:39+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-14T18:21:39+01:00 :: response from sendConfirmMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+

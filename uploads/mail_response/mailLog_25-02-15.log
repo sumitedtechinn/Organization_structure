@@ -1,0 +1,84 @@
+2025-02-15T06:12:48+01:00 :: Script Start -> Inside checkAllCases function 
+
+2025-02-15T06:12:48+01:00 :: Inside the decodeJWTToken 
+
+2025-02-15T06:12:48+01:00 :: Data came in token => {"leave_id":55,"action":"approve","iat":1739596347,"exp":1739682747} 
+
+2025-02-15T06:12:48+01:00 :: Inside the checkExpireDateAndTime 
+
+2025-02-15T06:12:48+01:00 :: expireDateAndTime => 16-02-2025 06:12:27 and currentTime => 15-02-2025 06:12:48 
+
+2025-02-15T06:12:48+01:00 :: timeDifference between current and expire => 86379 
+
+2025-02-15T06:12:48+01:00 :: Inside the checkActionPerformOrNot 
+
+2025-02-15T06:12:48+01:00 :: checkActionQuery => SELECT IF(status=3,'Not Perform','Action Perform') as `status` FROM `leave_record` WHERE id = '55' 
+
+2025-02-15T06:12:48+01:00 :: output from query => Not Perform 
+
+2025-02-15T06:12:48+01:00 :: response get from getAllCases method => {"status":200,"title":"Please Wait..","message":"Please login to portal for see all details.","leave_id":55,"action":"approved"}
+
+2025-02-15T06:12:48+01:00 :: Inside the sendResponse 
+
+2025-02-15T06:12:48+01:00 :: request => "eyJ0aXRsZSI6IlBsZWFzZSBXYWl0Li4iLCJtZXNzYWdlIjoiUGxlYXNlIGxvZ2luIHRvIHBvcnRhbCBmb3Igc2VlIGFsbCBkZXRhaWxzLiIsInN0YXR1cyI6MjAwLCJsZWF2ZV9pZCI6NTUsImFjdGlvbiI6ImFwcHJvdmVkIn0=" 
+
+2025-02-15T06:12:48+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendMailResponse 
+
+ ============ End Of Script ================== 
+
+2025-02-15T06:13:57+01:00 :: Script Start -> Inside checkAllCases function 
+
+2025-02-15T06:13:57+01:00 :: Inside the decodeJWTToken 
+
+2025-02-15T06:13:57+01:00 :: Data came in token => {"leave_id":55,"action":"reject","iat":1739596347,"exp":1739682747} 
+
+2025-02-15T06:13:57+01:00 :: Inside the checkExpireDateAndTime 
+
+2025-02-15T06:13:57+01:00 :: expireDateAndTime => 16-02-2025 06:12:27 and currentTime => 15-02-2025 06:13:57 
+
+2025-02-15T06:13:57+01:00 :: timeDifference between current and expire => 86310 
+
+2025-02-15T06:13:57+01:00 :: Inside the checkActionPerformOrNot 
+
+2025-02-15T06:13:57+01:00 :: checkActionQuery => SELECT IF(status=3,'Not Perform','Action Perform') as `status` FROM `leave_record` WHERE id = '55' 
+
+2025-02-15T06:13:57+01:00 :: output from query => Action Perform 
+
+2025-02-15T06:13:57+01:00 :: response get from getAllCases method => {"status":400,"title":"Action already perform","message":"Please login to portal for see all details.","leave_id":null,"action":null}
+
+2025-02-15T06:13:57+01:00 :: Inside the sendResponse 
+
+2025-02-15T06:13:57+01:00 :: request => "eyJ0aXRsZSI6IkFjdGlvbiBhbHJlYWR5IHBlcmZvcm0iLCJtZXNzYWdlIjoiUGxlYXNlIGxvZ2luIHRvIHBvcnRhbCBmb3Igc2VlIGFsbCBkZXRhaWxzLiIsInN0YXR1cyI6NDAwLCJsZWF2ZV9pZCI6bnVsbCwiYWN0aW9uIjpudWxsfQ==" 
+
+2025-02-15T06:13:57+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendMailResponse 
+
+ ============ End Of Script ================== 
+
+2025-02-15T07:59:51+01:00 :: Script Start -> Inside checkAllCases function 
+
+2025-02-15T07:59:51+01:00 :: Inside the decodeJWTToken 
+
+2025-02-15T07:59:51+01:00 :: Data came in token => {"leave_id":55,"action":"reject","iat":1739596347,"exp":1739682747} 
+
+2025-02-15T07:59:51+01:00 :: Inside the checkExpireDateAndTime 
+
+2025-02-15T07:59:51+01:00 :: expireDateAndTime => 16-02-2025 06:12:27 and currentTime => 15-02-2025 07:59:51 
+
+2025-02-15T07:59:51+01:00 :: timeDifference between current and expire => 79956 
+
+2025-02-15T07:59:51+01:00 :: Inside the checkActionPerformOrNot 
+
+2025-02-15T07:59:51+01:00 :: checkActionQuery => SELECT IF(status=3,'Not Perform','Action Perform') as `status` FROM `leave_record` WHERE id = '55' 
+
+2025-02-15T07:59:51+01:00 :: output from query =>  
+
+2025-02-15T07:59:51+01:00 :: response get from getAllCases method => {"status":200,"title":"Please Wait..","message":"Please login to portal for see all details.","leave_id":55,"action":"dis_approved"}
+
+2025-02-15T07:59:51+01:00 :: Inside the sendResponse 
+
+2025-02-15T07:59:51+01:00 :: request => "eyJ0aXRsZSI6IlBsZWFzZSBXYWl0Li4iLCJtZXNzYWdlIjoiUGxlYXNlIGxvZ2luIHRvIHBvcnRhbCBmb3Igc2VlIGFsbCBkZXRhaWxzLiIsInN0YXR1cyI6MjAwLCJsZWF2ZV9pZCI6NTUsImFjdGlvbiI6ImRpc19hcHByb3ZlZCJ9" 
+
+2025-02-15T07:59:51+01:00 :: url => http://edtechstrucure.local/app/leaveRecord/sendMailResponse 
+
+ ============ End Of Script ================== 
+

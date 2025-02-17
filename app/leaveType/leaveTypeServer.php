@@ -58,6 +58,7 @@ if($leaveTypes->num_rows > 0) {
             'ID' => $row['id'],
             'leaveName' => $row['leaveName'],
             'numOfLeave' => $row['numOfLeave'],
+            'leaveWeightage' => $row['leaveWeightage'],
             'leaveCarryForward' => $row['leaveCarryForward']
         );
         $a++;

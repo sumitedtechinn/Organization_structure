@@ -7,6 +7,9 @@ $leaveTypeData = $conn->query("SELECT id,leaveName FROM leaveType WHERE Deleted_
 if($leaveTypeData->num_rows > 0) {
     $leaveTypeData = mysqli_fetch_all($leaveTypeData,MYSQLI_ASSOC);
     $leaveType = array_column($leaveTypeData,'leaveName','id');
+    if(removeRestrictedLeave()) {
+        unset($leaveType['4']);
+    }
     echo makeoptionTag($leaveType);
 }
 
@@ -21,6 +24,15 @@ function makeoptionTag($leaveType) : string {
         $option .= (!empty($selected_id) && $selected_id == $id) ? '<option value = "'.$id.'" selected >'.$name.'</option>' : '<option value = "'.$id.'">'.$name.'</option>';
     }
     return $option;
+}
+
+function removeRestrictedLeave() : bool {
+
+    global $conn;
+    $query = "SELECT SUM(CASE WHEN leave_type = '4' AND YEAR(start_date) = YEAR(CURRENT_DATE()) THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `restricted_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
+    $restrictedLeave = $conn->query($query);
+    $restrictedLeave = mysqli_fetch_column($restrictedLeave);
+    return ($restrictedLeave >= 2 ) ? true : false;     
 }
 
 ?>

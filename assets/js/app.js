@@ -81,16 +81,14 @@ $(function() {
 	// switcher 
 	
 	$(".dark-mode").on("click", function() {
-
-			if($(".dark-mode-icon i").attr("class") == 'bi bi-brightness-high-fill') {
-				$(".dark-mode-icon i").attr("class", "bi bi-moon-fill");
-				$("html").attr("class", "")
-			} else {
-				$(".dark-mode-icon i").attr("class", "bi bi-brightness-high-fill");
-				$("html").attr("class", "dark-theme")
-			}
-
-		}), 
+		if($(".dark-mode-icon i").attr("class") == 'bi bi-brightness-high-fill') {
+			$(".dark-mode-icon i").attr("class", "bi bi-moon-fill");
+			$("html").attr("class", "")
+		} else {
+			$(".dark-mode-icon i").attr("class", "bi bi-brightness-high-fill");
+			$("html").attr("class", "dark-theme")
+		}
+	}), 
 
 	$("#LightTheme").on("click", function() {
 		$("html").attr("class", "light-theme")
@@ -128,9 +126,7 @@ $(function() {
 	})
 
 
-	// new PerfectScrollbar(".header-message-list")
-    // new PerfectScrollbar(".header-notifications-list")
-
-
+	new PerfectScrollbar(".header-message-list")
+    new PerfectScrollbar(".header-notifications-list")
 
 });

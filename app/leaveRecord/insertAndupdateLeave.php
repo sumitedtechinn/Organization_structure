@@ -51,7 +51,7 @@ if(isset($_REQUEST['leave_id'])) {
                 </div>
                 <div class="col-md-6">
                     <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" class="form-control form-control-sm" name="start_date" id="start_date" value="<?php echo !empty($leave_record) ? $leave_record['start_date'] : '' ?>" min="<?php echo date('Y-m-d'); ?>">
+                    <input type="date" class="form-control form-control-sm" name="start_date" id="start_date" value="<?php echo !empty($leave_record) ? $leave_record['start_date'] : '' ?>" onchange="setEndDate(this.value)" min="<?php echo date('Y-m-d'); ?>">
                 </div>
             </div>
 
@@ -64,7 +64,6 @@ if(isset($_REQUEST['leave_id'])) {
                 <div class="col-md-6">
                     <label for="mail_to" class="form-label">Mail To</label>
                     <select class="form-select form-select-sm single-select select2" name="mail_to" id="mail_to" onchange="makeMAilCCUserList(this.value)" <?php if(!empty($leave_record)) { ?> disabled <?php } ?>>
-                        <!-- Options will be dynamically loaded -->
                     </select>
                 </div>
             </div>
@@ -175,6 +174,10 @@ function getLeaveType() {
     });
 }
 
+function setEndDate(start_date) {
+    if($("#leave_type").val() == '3') $("#end_date").val(start_date);
+}
+
 function getUserList() {
     let user_id = '<?=$_SESSION['ID']?>';
     let mail_to = ''; 
@@ -242,6 +245,7 @@ $("#form-applyLeave").on('submit',function(e){
                     toastr.success(data.message);
                     $('.table').DataTable().ajax.reload(null, false);
                 } else {
+                    $('.modal').modal('hide');
                     toastr.error(data.message);
                 }
             }

@@ -59,7 +59,7 @@ thead {
                             <div class="card-body" style="background-color: #dcdee21a;">
                                 <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                                     <div>
-                                        <div class="cardleave">Full Day Leave</div>
+                                        <div class="cardleave">Full Day Leave <span style="font-size: small;">(Monthly)</span></div>
                                         <div style="color: gray;">Used : <span id="fullDayLeaveUsed"></span> | Available : <span id="fullDayLeaveAvailable"></span></div>
                                     </div>
                                 </div>
@@ -71,8 +71,20 @@ thead {
                             <div class="card-body" style="background-color: #dcdee21a;">
                                 <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                                     <div>
-                                        <div class="cardleave">Half Day Leave</div>
+                                        <div class="cardleave">Half Day Leave <span style="font-size: small;">(Monthly)</span></div>
                                         <div style="color: gray;">Used : <span id="halfDayLeaveUsed"></span> | Available : <span id="halfDayLeaveAvailiable"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card overflow-hidden radius-5">
+                            <div class="card-body" style="background-color: #dcdee21a;">
+                                <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
+                                    <div>
+                                        <div class="cardleave">Restricted Leave <span style="font-size: small;">( Yearly ) </span></div>
+                                        <div style="color: gray;">Used : <span id="restrictedLeaveUsed"></span> | Available : <span id="restrictedLeaveAvailiable"></span></div>
                                     </div>
                                 </div>
                             </div>
