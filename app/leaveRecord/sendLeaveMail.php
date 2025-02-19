@@ -108,3 +108,5 @@ function generateJWTToken($leave_id, $action)
     $jwt = JWT::encode($payload, $key, 'HS256');
     return $jwt;
 }
+
+?>

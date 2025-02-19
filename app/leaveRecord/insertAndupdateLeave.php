@@ -90,7 +90,7 @@ if(isset($_REQUEST['leave_id'])) {
 
             <!-- File Upload -->
             <div class="mb-3">
-                <label for = "supporting_document" class="form-label">Supporting Doc's <span class="text-primary" style="font-size: x-small;">(If avilable)</span></label>
+                <label for = "supporting_document" class="form-label">Supporting Doc's <span class="text-primary" style="font-size: x-small;">(If available)</span></label>
                 <input type="file" class="form-control" name="supporting_document" id="supporting_document" accept="image/*,application/pdf">
             </div>
 

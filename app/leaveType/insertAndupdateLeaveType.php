@@ -54,11 +54,11 @@ label{
                 <label class="col-sm-4 col-form-label">Leave Weightage</label>
                 <div class="col-sm-8 d-flex" style="margin-top: 0.4rem;gap: 0.7rem;">
                     <div>
-                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_full_day" value="full_day">
+                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_full_day" value="full_day" <?php if(!empty($leaveType_details) && $leaveType_details['leaveWeightage'] == '1') { ?> checked <?php }  ?>>
                         <label class="form-check-label" value = "leave_full_day">Full Day</label>    
                     </div>
                     <div>
-                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_half_day" value="half_day">
+                        <input class="form-check-input" type="radio" name="leave_weightage" id="leave_half_day" value="half_day" <?php if(!empty($leaveType_details) && $leaveType_details['leaveWeightage'] == '0.5') { ?> checked <?php }?>> 
                         <label class="form-check-label" for="leave_half_day">Half Day</label>
                     </div>
                 </div>

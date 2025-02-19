@@ -29,7 +29,7 @@ function makeoptionTag($leaveType) : string {
 function removeRestrictedLeave() : bool {
 
     global $conn;
-    $query = "SELECT SUM(CASE WHEN leave_type = '4' AND YEAR(start_date) = YEAR(CURRENT_DATE()) THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `restricted_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
+    $query = "SELECT SUM(CASE WHEN leave_type = '4' AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND status = '1' THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `restricted_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
     $restrictedLeave = $conn->query($query);
     $restrictedLeave = mysqli_fetch_column($restrictedLeave);
     return ($restrictedLeave >= 2 ) ? true : false;     
