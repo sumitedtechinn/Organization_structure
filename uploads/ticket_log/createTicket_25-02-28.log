@@ -1,0 +1,120 @@
+2025-02-28T06:52:49+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-28T06:52:49+01:00 :: method inside the InsertComment 
+
+2025-02-28T06:52:49+01:00 :: requested data : comment => In the Exam System points to remmeber\r\n1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-apprear fee is received in the amount.\r\n3) Automatically show all the student list from the 1st day of the month. and attachment => [{"name":"Exam_system_flowchart.drawio.pdf","full_path":"Exam_system_flowchart.drawio.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php7A34.tmp","error":0,"size":40382}]
+
+ ============ End Of Script ================== 
+
+2025-02-28T06:53:21+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-28T06:53:21+01:00 :: method inside the InsertComment 
+
+2025-02-28T06:53:21+01:00 :: requested data : comment => In the Exam System points to remmeber\r\n1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-apprear fee is received in the amount.\r\n3) Automatically show all the student list from the 1st day of the month. and attachment => [{"name":"Ticketing_system.pdf","full_path":"Ticketing_system.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\phpF977.tmp","error":0,"size":57640},{"name":"Result-3.pdf","full_path":"Result-3.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\phpF978.tmp","error":0,"size":89675},{"name":"Result-2.pdf","full_path":"Result-2.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\phpF979.tmp","error":0,"size":89675},{"name":"Admission.pdf","full_path":"Admission.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\phpF98A.tmp","error":0,"size":89675}]
+
+ ============ End Of Script ================== 
+
+2025-02-28T06:54:29+01:00 :: update query =>  UPDATE ticket_record SET comment = '{"1":{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 06:54:29","comment":"In the Exam System points to remmeber\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-apprear fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month.","attachment":"[\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Ticketing_system.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Result-3.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Result-2.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Admission.pdf\"]"}}' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:16:41+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:16:41","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":"[\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Ticketing_system.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Result-3.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Result-2.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Admission.pdf\"]"}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:32:19+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:32:19","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":"[]"}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:33:30+01:00 :: update query =>  UPDATE ticket_record SET comment = '{"1":{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:33:30","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf","..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf","..\/..\/uploads\/ticket_attachment\/Admission.pdf"]}}' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:36:48+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:36:48","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf","..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf","..\/..\/uploads\/ticket_attachment\/Admission.pdf"]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:39:28+01:00 :: update query =>  UPDATE ticket_record SET comment = '{"1":{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:39:28","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":["..\/..\/uploads\/ticket_attachment\/1716830612-center.pdf"]}}' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:41:33+01:00 :: update query =>  UPDATE ticket_record SET comment = '{"1":{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:41:33","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":[]}}' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:43:59+01:00 :: update query =>  UPDATE ticket_record SET comment = '[]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:45:05+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:45:05","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":[]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:45:13+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:45:05","comment":"In the Exam System points to remember\r\n1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount.\r\n3) Automatically show all the student list from the 1st day of the month","attachment":[]},{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:45:13","comment":"In the Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.\\r\\n3) Automatically show all the student list from the 1st day of the month","attachment":["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf","..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf","..\/..\/uploads\/ticket_attachment\/Admission.pdf"]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:47:12+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:47:12","comment":"Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.","attachment":[]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:48:35+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:47:12","comment":"Exam System points to remember\r\n1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount.","attachment":[]},{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:48:35","comment":"Exam System points to remember\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount.","attachment":["..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf","..\/..\/uploads\/ticket_attachment\/Admission.pdf"]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:54:10+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:54:10","comment":"Exam Sysytem\\r\\n1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount","attachment":[]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T07:54:21+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:54:10","comment":"Exam Sysytem\r\n1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount","attachment":[]},{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 07:54:21","comment":"1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount","attachment":["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf","..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf"]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T08:09:06+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 08:09:06","comment":"1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount","attachment":[]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T08:09:50+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 08:09:06","comment":"1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount","attachment":[]},{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 08:09:50","comment":"1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount","attachment":[]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T08:11:25+01:00 :: update query =>  UPDATE ticket_record SET comment = '[{"user_id":"1","user_name":"Super Admin","timestamp":"2025-02-28 08:11:25","comment":"1) Student are applicable to fill the form till 3 month\\r\\n2) But only show the data when re-appears fee is received in the amount","attachment":["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf","..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf"]}]' WHERE id = '1' 
+
+ ============ End Of Script ================== 
+
+2025-02-28T08:46:27+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-28T08:46:27+01:00 :: method inside the InsertComment 
+
+2025-02-28T08:46:27+01:00 :: requested data : comment => 1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount and attachment => [{"name":"Result-3.pdf","full_path":"Result-3.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php8207.tmp","error":0,"size":89675},{"name":"Result-2.pdf","full_path":"Result-2.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php8208.tmp","error":0,"size":89675}]
+
+2025-02-28T08:46:27+01:00 :: store_attachement => ["..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf"] 
+
+2025-02-28T08:46:27+01:00 :: insert comment query =>  INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES ('1','1','Super Admin','/../../assets/images/sample_user.jpeg','1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount','["..\/..\/uploads\/ticket_attachment\/Result-3.pdf","..\/..\/uploads\/ticket_attachment\/Result-2.pdf"]') 
+
+ ============ End Of Script ================== 
+
+2025-02-28T09:00:16+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-28T09:00:16+01:00 :: method inside the InsertComment 
+
+2025-02-28T09:00:16+01:00 :: requested data : comment => 1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount and attachment => [{"name":"Ticketing_system.pdf","full_path":"Ticketing_system.pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php2A45.tmp","error":0,"size":57640}]
+
+2025-02-28T09:00:16+01:00 :: store_attachement => ["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf"] 
+
+2025-02-28T09:00:16+01:00 :: insert comment query =>  INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES ('1','1','Super Admin','/../../assets/images/sample_user.jpeg','1) Student are applicable to fill the form till 3 month\r\n2) But only show the data when re-appears fee is received in the amount','["..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf"]') 
+
+ ============ End Of Script ================== 
+
+2025-02-28T10:47:45+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-28T10:47:45+01:00 :: method inside the InsertComment 
+
+2025-02-28T10:47:45+01:00 :: requested data : comment => Devlope the mobile application which is use for both android and ios develpment and attachment => []
+
+2025-02-28T10:47:45+01:00 :: store_attachement => [] 
+
+2025-02-28T10:47:45+01:00 :: insert comment query =>  INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES ('2','1','Super Admin','/../../assets/images/sample_user.jpeg','Devlope the mobile application which is use for both android and ios develpment','[]') 
+
+ ============ End Of Script ================== 
+

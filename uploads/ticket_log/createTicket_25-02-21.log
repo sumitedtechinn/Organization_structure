@@ -1,0 +1,40 @@
+2025-02-21T06:13:05+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-21T06:13:05+01:00 :: method inside the InsertTicket 
+
+2025-02-21T06:13:05+01:00 :: requested data => {"task_name":"Exam System","status":"1","category":"1","person_name":"Rohit Raj","priority":"3","department":"12","task_description":"Create the Exam System for Glocal Vocational","person_email":"rohit@gmail.com","person_contact":"7004855388","attachment":"..\/..\/uploads\/ticket_attachment\/Admisssion.png"}
+
+2025-02-21T06:13:05+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `raised_by`, `status`, `priority`, `category`, `department`, `person_name`, `person_contact`, `person_email`, `attachment`) VALUES ('ED-1','Exam System','Create the Exam System for Glocal Vocational','1','1','3','1','12','Rohit Raj','7004855388','rohit@gmail.com','../../uploads/ticket_attachment/Admisssion.png') 
+
+ ============ End Of Script ================== 
+
+2025-02-21T06:15:32+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-21T06:15:32+01:00 :: method inside the InsertTicket 
+
+2025-02-21T06:15:32+01:00 :: requested data => {"task_name":"Skill App ","status":"1","category":"1","person_name":"Shubham ","priority":"3","department":"12","task_description":"Skill App api for all the operation including the setup and modification","person_email":"shubham899@gmail.com","person_contact":"7004855388","attachment":"..\/..\/uploads\/ticket_attachment\/Admisssion.png"}
+
+2025-02-21T06:15:32+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `raised_by`, `status`, `priority`, `category`, `department`, `person_name`, `person_contact`, `person_email`, `attachment`) VALUES ('ED-1','Skill App ','Skill App api for all the operation including the setup and modification','1','1','3','1','12','Shubham ','7004855388','shubham899@gmail.com','../../uploads/ticket_attachment/Admisssion.png') 
+
+ ============ End Of Script ================== 
+
+2025-02-21T06:20:01+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-21T06:20:01+01:00 :: method inside the InsertTicket 
+
+2025-02-21T06:20:01+01:00 :: requested data => {"task_name":"Logo Added","status":"1","category":"3","person_name":"Vividh","priority":"2","department":"12","task_description":"Update the Logo in the Glocal Website Panel ","person_email":"vivdh122@gmail.com","person_contact":"7004855388","attachment":"..\/..\/uploads\/ticket_attachment\/Admisssion.png"}
+
+2025-02-21T06:20:01+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `raised_by`, `status`, `priority`, `category`, `department`, `person_name`, `person_contact`, `person_email`, `attachment`) VALUES ('ED-2','Logo Added','Update the Logo in the Glocal Website Panel ','1','1','2','3','12','Vividh','7004855388','vivdh122@gmail.com','../../uploads/ticket_attachment/Admisssion.png') 
+
+ ============ End Of Script ================== 
+
+2025-02-21T06:33:39+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-02-21T06:33:39+01:00 :: method inside the InsertTicket 
+
+2025-02-21T06:33:39+01:00 :: requested data => {"task_name":"Guide Tutorial","status":"1","category":"1","contact_person_name":"Shubham ","priority":"2","department":"12","task_description":"Update the tutorial video in the respective section along with the topics","contact_person_email":"shubham899@gmail.com","contact_person_number":"70034124672","attachment":"..\/..\/uploads\/ticket_attachment\/Exam_system.jpg"}
+
+2025-02-21T06:33:39+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `raised_by`, `status`, `priority`, `category`, `department`, `contact_person_name`, `contact_person_number`, `contact_person_email`, `attachment`) VALUES ('ED-3','Guide Tutorial','Update the tutorial video in the respective section along with the topics','1','1','2','1','12','Shubham ','70034124672','shubham899@gmail.com','../../uploads/ticket_attachment/Exam_system.jpg') 
+
+ ============ End Of Script ================== 
+

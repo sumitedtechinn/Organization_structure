@@ -1,6 +1,6 @@
 
 <!-- Modals -->
-<div class="modal fade slide-up" id="smmodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="false">
+<div class="modal fade slide-up" id="smmodal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="false">
   <div class="modal-dialog modal-sm">
     <div class="modal-content-wrapper">
       <div class="modal-content" id="sm-modal-content">
@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div class="modal fade slide-up" id="mdmodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="false">
+<div class="modal fade slide-up" id="mdmodal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="false">
   <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
       <div class="modal-content" id="md-modal-content">
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<div class="modal fade slide-up" id="lgmodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="false">
+<div class="modal fade slide-up" id="lgmodal" tabindex="-1" role="dialog" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
       <div class="modal-content" id="lg-modal-content">
@@ -36,7 +36,6 @@
     </div>
 </div>
 
-
 <div class="modal fade fill-in" id="fullmodal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true">
   <button aria-label="" type="button" class="close" data-dismiss="modal" aria-hidden="true">
     <i class="pg-icon">close</i>
@@ -50,7 +49,7 @@
 
 <!-- Modal this theme -->
 <div class="modal fade" id="extraLargeModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content" id = "extra-large-modal-content"></div>
     </div>
 </div>

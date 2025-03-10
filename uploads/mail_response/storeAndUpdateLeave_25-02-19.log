@@ -1,0 +1,154 @@
+2025-02-19T10:45:54+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T10:45:54+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-20","end_date":"2025-02-22","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"hdbbdbdhbhdbhbdc"}
+
+2025-02-19T10:45:54+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T10:45:54+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-20','2025-02-22','mahinder@edtechinnovate.com####19','','Leave Request','hdbbdbdhbhdbhbdc','','3') 
+
+2025-02-19T10:45:54+01:00 :: Inside generateMail function 
+
+2025-02-19T10:45:54+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":51,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T10:46:01+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T10:46:01+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T10:49:08+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T10:49:08+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-20","end_date":"2025-02-21","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dhbvdbbdbdcbdc"}
+
+2025-02-19T10:49:08+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T10:49:08+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-20','2025-02-21','mahinder@edtechinnovate.com####19','','Leave Request','dhbvdbbdbdcbdc','','3') 
+
+2025-02-19T10:49:08+01:00 :: Inside generateMail function 
+
+2025-02-19T10:49:08+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":52,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T10:49:13+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T10:49:13+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T10:59:13+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T10:59:13+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-20","end_date":"2025-02-21","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"sfeqf"}
+
+2025-02-19T10:59:13+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T10:59:13+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-20','2025-02-21','mahinder@edtechinnovate.com####19','','Leave Request','sfeqf','','3') 
+
+2025-02-19T10:59:13+01:00 :: Inside generateMail function 
+
+2025-02-19T10:59:13+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":53,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T10:59:18+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T10:59:18+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:14:43+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:14:43+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-20","end_date":"2025-02-27","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"dsfdejdvfebbvjfbjfv","leave_reason":"Dear Maam\/sir\r\nI am requesting three days of leave for a family trip to Udaipur.\r\nI would like to utilize:\r\n- 1 carry forwarded CL from December\r\n- 1 carry forwarded CL from January\r\n- 1 CL from my February allocation\r\nPlease approve my request.\r\nAdditionally, if I return home on time on the 19th, I will join the office on the same day (19th).\r\nIf I join the office on the 19th, I kindly request that my January carry forwarded CL be canceled."}
+
+2025-02-19T11:14:43+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:14:43+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-20','2025-02-27','mahinder@edtechinnovate.com####19','','dsfdejdvfebbvjfbjfv','Dear Maam/sir\r\nI am requesting three days of leave for a family trip to Udaipur.\r\nI would like to utilize:\r\n- 1 carry forwarded CL from December\r\n- 1 carry forwarded CL from January\r\n- 1 CL from my February allocation\r\nPlease approve my request.\r\nAdditionally, if I return home on time on the 19th, I will join the office on the same day (19th).\r\nIf I join the office on the 19th, I kindly request that my January carry forwarded CL be canceled.','','3') 
+
+2025-02-19T11:14:43+01:00 :: Inside generateMail function 
+
+2025-02-19T11:14:43+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":54,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T11:14:50+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T11:14:50+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:19:38+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:19:38+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-27","end_date":"2025-02-28","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dhvbfbbvfw wbdcbcdbwbcd"}
+
+2025-02-19T11:19:38+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:19:38+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-27','2025-02-28','mahinder@edtechinnovate.com####19','','Leave Request','dhvbfbbvfw wbdcbcdbwbcd','','3') 
+
+2025-02-19T11:19:38+01:00 :: Inside generateMail function 
+
+2025-02-19T11:19:38+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":55,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T11:19:44+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T11:19:44+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:22:27+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:22:27+01:00 :: Request  => {"leave_type":"4","start_date":"2025-02-20","end_date":"2025-02-21","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"Dear Maam\/sir\r\nI am requesting three days of leave for a family trip to Udaipur.\r\nI would like to utilize:\r\n- 1 carry forwarded CL from December\r\n- 1 carry forwarded CL from January\r\n- 1 CL from my February allocation\r\nPlease approve my request."}
+
+2025-02-19T11:22:27+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:22:27+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','4','2025-02-20','2025-02-21','mahinder@edtechinnovate.com####19','','Leave Request','Dear Maam/sir\r\nI am requesting three days of leave for a family trip to Udaipur.\r\nI would like to utilize:\r\n- 1 carry forwarded CL from December\r\n- 1 carry forwarded CL from January\r\n- 1 CL from my February allocation\r\nPlease approve my request.','','3') 
+
+2025-02-19T11:22:27+01:00 :: Inside generateMail function 
+
+2025-02-19T11:22:27+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":56,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T11:22:33+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T11:22:33+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:27:45+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:27:45+01:00 :: Request  => {"leave_type":"3","start_date":"2025-02-20","end_date":"2025-02-20","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"Leave Request","leave_reason":"dsnbvdbwb"}
+
+2025-02-19T11:27:45+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:27:45+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','3','2025-02-20','2025-02-20','mahinder@edtechinnovate.com####19','','Leave Request','dsnbvdbwb','','3') 
+
+2025-02-19T11:27:45+01:00 :: Inside generateMail function 
+
+2025-02-19T11:27:45+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":57,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T11:27:53+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T11:27:53+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:29:29+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:29:29+01:00 :: Request  => {"leave_type":"4","start_date":"2025-02-22","end_date":"2025-02-24","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"fvbjfvbjbvd","leave_reason":"fvbhbhfvbbfvbvf"}
+
+2025-02-19T11:29:29+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:29:29+01:00 :: Only two restricted leave are allowed annually 
+
+ ============ End Of Script ================== 
+
+2025-02-19T11:29:59+01:00 :: StoreAndUpate Script start 
+
+2025-02-19T11:29:59+01:00 :: Request  => {"leave_type":"2","start_date":"2025-02-27","end_date":"2025-02-28","mail_to":"mahinder@edtechinnovate.com####19","mail_subject":"dbvhbhbdcb","leave_reason":"dbcddjdc bdjcjdjjd  djcjnjdndc"}
+
+2025-02-19T11:29:59+01:00 :: Inside the insertLeave Method 
+
+2025-02-19T11:29:59+01:00 :: insert query => INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('21','2','2025-02-27','2025-02-28','mahinder@edtechinnovate.com####19','','dbvhbhbdcb','dbcddjdc bdjcjdjjd  djcjnjdndc','','3') 
+
+2025-02-19T11:29:59+01:00 :: Inside generateMail function 
+
+2025-02-19T11:29:59+01:00url => http://edtechstrucure.local/app/leaveRecord/sendLeaveMail , request => {"user_name":"Sumit kumar","receiver_name":"Mahinder Nautiyal","receiver_email":"mahinder@edtechinnovate.com","leave_id":58,"mail_cc":"","method":"leaveRequestMail"} 
+
+2025-02-19T11:30:05+01:00 :: response => {"status":200,"message":"Mail send successfully"} 
+
+2025-02-19T11:30:05+01:00 :: response came from generateMail => {"status":200,"message":"Mail send successfully"} 
+
+ ============ End Of Script ================== 
+

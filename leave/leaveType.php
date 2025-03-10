@@ -199,3 +199,4 @@ function updateDetails(leaveType_id) {
     });
 }
 </script>
+<?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-bottom.php');?>

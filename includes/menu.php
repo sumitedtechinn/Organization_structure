@@ -91,6 +91,23 @@ function checkPageTypePermission($type) : bool {
             </ul>
         </li>
         <?php } ?>
+        <?php if(checkPageTypePermission('task_allotment')) { ?>
+        <li>
+        <a href="javascript:;" class="has-arrow">
+            <div class="parent-icon"><i class="lni lni-ticket"></i></div>
+            <div class="menu-title">Task Allotment</div>
+        </a>
+            <ul>
+            <?php foreach ($page_type['task_allotment'] as $page) { ?>
+                <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+                <li>
+                    <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                </li>
+                <?php } ?>
+            <?php } ?>
+            </ul>
+        </li>
+        <?php } ?>
         <?php if(checkPageTypePermission('projection')) { 
             $show = true;
             if ($_SESSION['role'] == '2') {

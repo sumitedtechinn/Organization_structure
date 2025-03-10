@@ -27,14 +27,25 @@ if(!empty($_SESSION['current_url'])) {
 $url_arr = array_filter(explode('/',$_SERVER['SCRIPT_NAME']));
 $url_page = explode('.',$url_arr[count($url_arr)])[0];
 if (stripos($url_page,'_')) {
-    $arr = explode("_",$url_page);
-    for($i=0 ; $i < count($arr) ; $i++) {
-        $word = ucfirst($arr[$i]);
-        $arr[$i] = $word;
-    }
-    $url_page = implode(" ",$arr);
+  $arr = explode("_",$url_page);
+  for($i=0 ; $i < count($arr) ; $i++) {
+    $word = ucfirst($arr[$i]);
+    $arr[$i] = $word;
+  }
+  $url_page = implode(" ",$arr);
 } else {
-    $url_page = ucfirst($url_page);
+  $url_page = ucfirst($url_page);
+}
+
+function setPageHeader() : string {
+  $page_heading = "";
+  $url = array_filter(explode("/",$_SERVER['REQUEST_URI']));
+  if (str_contains(end($url),"_")) {
+    $page_heading = implode(" ",array_map("ucfirst",explode("_",end($url))));
+  } else {
+    $page_heading = ucfirst(end($url));
+  }
+  return $page_heading;
 }
 
 ?>

@@ -23,7 +23,11 @@ if (isset($_REQUEST['id']) && isset($_REQUEST['search'])) {
     } elseif ($_REQUEST['search'] == 'user_role') {
         $assing_response = checkUserAssignOrganization();
     } elseif ($_REQUEST['search'] == 'Projection_type') {
-        $assing_response = checkAssignProjectionType();
+        $assing_response = checkAssignProjectionType(); 
+    } elseif ($_REQUEST['search'] == 'ticket_status') {
+        $assing_response = checkAssignTicketStatus();
+    } elseif ($_REQUEST['search'] == 'ticket_category') {
+        $assing_response = checkAssignTicketCategory();
     }
 }
 
@@ -369,6 +373,36 @@ function checkAssignProjectionType() {
         }
         
     }
+}
+ 
+/**
+ * for delete 
+ * 1) Only allow if that ticket status not present in any ticket_record
+ * 
+ */
+function checkAssignTicketStatus() : string {
+    
+    global $conn;
+    $ticketStatus_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $checkTicketStatus = $conn->query("SELECT COUNT(status) as `ticketStatus` FROM `ticket_record` WHERE status = '$ticketStatus_id'");
+    $checkTicketStatus = mysqli_fetch_column($checkTicketStatus);
+    if($checkTicketStatus > 0) {
+        return json_encode(['status' => 400 , 'text' => 'Status Assign to Ticket' , 'title' => "Sorry.. Status can't delete"]);
+    } else {
+        return json_encode(['status' => 200 , 'text' => "Status can delete"]);
+    }
+}
 
+function checkAssignTicketCategory() : string {
+
+    global $conn;
+    $ticketCategory_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $checkTicketCategory = $conn->query("SELECT COUNT(category) FROM `ticket_record` WHERE category = '$ticketCategory_id'");
+    $checkTicketCategory = mysqli_fetch_column($checkTicketCategory);
+    if($checkTicketCategory > 0) {
+        return json_encode(['status' => 400 , 'text' => 'Category Assign to Ticket' , 'title' => "Sorry..Category can't delete"]);
+    } else {
+        return json_encode(['status' => 200 , 'text' => "Category can delete"]);
+    }
 }
 ?>

@@ -1,0 +1,34 @@
+2025-03-03T11:49:30+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-03T11:49:30+01:00 :: method inside the InsertComment 
+
+2025-03-03T11:49:30+01:00 :: requested data : comment => GVGVVGYG VVH and attachment => [{"name":"Ticketing_system (1).pdf","full_path":"Ticketing_system (1).pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php36E2.tmp","error":0,"size":57640}]
+
+2025-03-03T11:49:30+01:00 :: store_attachement => ["..\/..\/uploads\/ticket_attachment\/Ticketing_system (1).pdf"] 
+
+2025-03-03T11:49:30+01:00 :: insert comment query =>  INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES ('1','1','Super Admin','/../../assets/images/sample_user.jpeg','GVGVVGYG VVH','["..\/..\/uploads\/ticket_attachment\/Ticketing_system (1).pdf"]') 
+
+ ============ End Of Script ================== 
+
+2025-03-03T12:13:25+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-03T12:13:25+01:00 :: method inside the InsertComment 
+
+2025-03-03T12:13:25+01:00 :: requested data : comment => DSHVBHBFEBVFBVBNBVBVN and attachment => [{"name":"Ticketing_system (1).pdf","full_path":"Ticketing_system (1).pdf","type":"application\/pdf","tmp_name":"C:\\xampp\\tmp\\php1A28.tmp","error":0,"size":57640}]
+
+2025-03-03T12:13:25+01:00 :: store_attachement => ["..\/..\/uploads\/ticket_attachment\/Ticketing_system (1).pdf"] 
+
+2025-03-03T12:13:25+01:00 :: insert comment query =>  INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES ('1','1','Super Admin','/../../assets/images/sample_user.jpeg','DSHVBHBFEBVFBVBNBVBVN','["..\/..\/uploads\/ticket_attachment\/Ticketing_system (1).pdf"]') 
+
+ ============ End Of Script ================== 
+
+2025-03-03T13:29:16+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-03T13:29:16+01:00 :: method inside the InsertTicket 
+
+2025-03-03T13:29:16+01:00 :: requested data => {"task_name":"Primus Vidya","status":"1","category":"2","priority":"1","department":"12","task_description":"Update the following task \\r\\n1) Change the website logo \\r\\n2) Add Content\\r\\n3) Remove extra spaces","attachment":null}
+
+2025-03-03T13:29:16+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES ('ED-4','Primus Vidya','Update the following task \r\n1) Change the website logo \r\n2) Add Content\r\n3) Remove extra spaces','1','1','1','2','12','Super Admin','','superadmin@edtechinnovate.com','') 
+
+ ============ End Of Script ================== 
+

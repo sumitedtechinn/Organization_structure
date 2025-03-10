@@ -32,9 +32,10 @@ function leaveRequestMail($data_field)
     $receiver_email = "sumitpathak901@gmail.com";
     $approveUrl = "http://edtechstrucure.local/app/leaveRecord/getMailResponse?token={$approveToken}";
     $rejectUrl = "http://edtechstrucure.local/app/leaveRecord/getMailResponse?token={$rejectToken}";
-    $approveButton = "<a href= {$approveUrl} class = \"button\" style = \"margin: 4px 2px;display: block;width: 80px;height: 25px;background: #40ca58eb;padding: 10px 20px;text-align: center;border-radius: 16px;color: white;font-weight: bold;line-height: 25px;\">Approve</a>";
-    $disapproveButton = "<a href= {$rejectUrl} class = \"button\" style = \"margin: 4px 2px;display: block;width: 80px;height: 25px;background: #e63333db;padding: 10px 20px;text-align: center;border-radius: 16px;color: white;font-weight: bold;line-height: 25px;\">DisApprove</a>";
-    $message = "Dear <b>Reporting Manager</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><p><b>Action Required :</b></p><br><div style = \"display:flex;gap:0.5rem;\">{$approveButton}{$disapproveButton}</div><br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
+    $message = createMessage($leave_id,$sender_name,$approveUrl,$rejectUrl);
+    // $approveButton = "<a href= {$approveUrl} class = \"button\" style = \"margin: 4px 2px;display: block;width: 80px;height: 25px;background: #40ca58eb;padding: 10px 20px;text-align: center;border-radius: 16px;color: white;font-weight: bold;line-height: 25px;\">Approve</a>";
+    // $disapproveButton = "<a href= {$rejectUrl} class = \"button\" style = \"margin: 4px 2px;display: block;width: 80px;height: 25px;background: #e63333db;padding: 10px 20px;text-align: center;border-radius: 16px;color: white;font-weight: bold;line-height: 25px;\">DisApprove</a>";
+    // $message = "Dear <b>Reporting Manager</b>,<br><br>This is to inform you that <b> {$sender_name} </b> has submitted a leave request through the portal.<br>Please log in to the portal to review the application.<br><p><b>Action Required :</b></p><br><div style = \"display:flex;gap:0.5rem;\">{$approveButton}{$disapproveButton}</div><br><br><small><i>  *This is a system-generated email. No reply is required.</i></small>";
     $subject = "Leave Request Submitted by {$sender_name}";
     sendMail($message, $sender_name, $receiver_email, $subject, $mail_cc);
 }
@@ -109,4 +110,29 @@ function generateJWTToken($leave_id, $action)
     return $jwt;
 }
 
+function createMessage($leave_id,$sender_name,$approveUrl,$rejectUrl) {
+
+    $url = "http://edtechstrucure.local/app/leaveRecord/createMessage";
+    try {
+        $request = [];
+        $request['leave_id'] = $leave_id;
+        $request['sender_name'] = $sender_name;
+        $request['approval_url'] = $approveUrl;
+        $request['reject_url'] = $rejectUrl;
+        $request = json_encode($request);
+        $opt = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => 'Content-Type: application/json',
+                'content' => $request , 
+                'timeout' => 60
+            )
+        );
+        $context = stream_context_create($opt);
+        $response = file_get_contents($url,false,$context);
+        return $response;
+    } catch (Error $e) {
+        return json_encode(['status'=>400,'message'=>"Error : ".$e->getMessage()]);
+    }
+}
 ?>
