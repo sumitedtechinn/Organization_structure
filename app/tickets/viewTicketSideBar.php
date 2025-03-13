@@ -6,23 +6,23 @@
     <div class="border-bottom p-3">
         <div class="mb-3">
             <label class="form-label sidebarHeader">Priority</label>
-            <select type="text" class="form-control form-control-sm single-select select2" name="priority" id="priority" data-custom-value = "<?=$ticket_details['priority_value']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updatePriority')" <?=$validationForNewStatus?>></select>
+            <select type="text" class="form-control form-control-sm single-select select2" name="priority" id="priority" data-custom-value = "<?=$ticket_details['priority_value']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updatePriority')" <?=$validationForNewStatus?> <?=$validationOnCategoryDepartmentAndPriority?>></select>
         </div>
         <div class="mb-3">
             <label class="form-label sidebarHeader">Ticket Status</label>
-            <select type="text" class="form-control form-control-sm single-select select2" name="status" id="status" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['status_value']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateStatus')" <?=$validationForNewStatus?>></select>
+            <select type="text" class="form-control form-control-sm single-select select2" name="status" id="status" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['status_value']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateStatus')" <?=$validationForNewStatus?> <?=$validationForStatus?> ></select>
         </div>
         <div class="mb-3">
             <label class="form-label sidebarHeader">Ticket Category</label>
-            <select type="text" class="form-control form-control-sm single-select select2" name="category" id="category" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['category']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateCategory')" <?=$validationForNewStatus?> <?=$validationOnCategoryAndDepartment?>></select>
+            <select type="text" class="form-control form-control-sm single-select select2" name="category" id="category" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['category']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateCategory')" <?=$validationForNewStatus?> <?=$validationOnCategoryDepartmentAndPriority?>></select>
         </div>
         <div class="mb-3">
             <label class="form-label sidebarHeader">Department</label>
-            <select type="text" class="form-control form-control-sm single-select select2" name="department" id="department" data-custom-value="<?=$ticket_details['department']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateDepartment')" <?=$validationForNewStatus?> <?=$validationOnCategoryAndDepartment?>></select>
+            <select type="text" class="form-control form-control-sm single-select select2" name="department" id="department" data-custom-value="<?=$ticket_details['department']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateDepartment')" <?=$validationForNewStatus?> <?=$validationOnCategoryDepartmentAndPriority?>></select>
         </div>
         <div class="mb-0">
             <label class="form-label sidebarHeader">Assign To</label>
-            <select type="text" class="form-control form-control-sm single-select select2" name="assignTo" id="assignTo" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['assign_to']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateAssignToUser')" <?=$validationForNewStatus?>></select>
+            <select type="text" class="form-control form-control-sm single-select select2" name="assignTo" id="assignTo" data-custom-value = "<?=$ticket_details['department']?>_<?=$ticket_details['assign_to']?>" onchange="updateTicketInfo(this.value,'<?=$id?>','updateAssignToUser')" <?=$validationForNewStatus?> <?=$validationForAssignTo?>></select>
         </div>
     </div>
     <div class="d-flex align-items-center border-bottom p-3 gap-3">

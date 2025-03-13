@@ -26,7 +26,13 @@ function getStatus($selected_status) {
     if(empty($status)) {
         $status = '1';
     }
-    $option .= createOption($allStatus,$status);
+    $disabled_filed = ['1','7'];
+    $option = "";
+    foreach ($allStatus as $id => $name) {
+        $isSelected = ($id == $status) ? "selected" : "";
+        $isDisabled = (in_array($id,$disabled_filed)) ? "disabled" : "";
+        $option .= "<option value='$id' $isSelected $isDisabled >$name</option>";
+    }
     return $option;
 }
 

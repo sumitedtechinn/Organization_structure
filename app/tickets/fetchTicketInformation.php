@@ -1,50 +1,75 @@
 <?php
 ## Database configuration
+
 include '../../includes/db-config.php';
 session_start();
 
 $data_field = file_get_contents('php://input'); // by this we get raw data
 $data_field = json_decode($data_field,true);
 
-$ticket_details = [];
-$assignToUser_details = [];
-$assignByUser_details = [];
-$validationForNewStatus = '';
-$validationOnCategoryAndDepartment = '';
-if(isset($data_field['id'])) {
-    $id = mysqli_real_escape_string($conn,$data_field['id']);
-    $ticket = $conn->query(getTicketData($id));
-    $ticket_details = mysqli_fetch_assoc($ticket);
-    // validation if ticket status is New
-    if ($ticket_details['status_value'] == '1' && $_SESSION['role'] != '1') {
-        $validationForNewStatus = "disabled";
-        $current_user = $_SESSION['ID'];
-        $all_user_ids = explode(",",getTopMostUserDetails($ticket_details['department']));
-        if (in_array($current_user,$all_user_ids)) {
-            $validationForNewStatus = "";
+$ticket_details = $assignToUser_details = $assignByUser_details =[];
+$validationForNewStatus = $validationOnCategoryDepartmentAndPriority = $validationForAssignTo = $validationForStatus = '';
+
+if (!isset($data_field['id'])) return;
+
+$id = mysqli_real_escape_string($conn, $data_field['id']);
+$ticket = $conn->query(getTicketData($id));
+$ticket_details = mysqli_fetch_assoc($ticket);
+$current_user = $_SESSION['ID'];
+
+switch ($ticket_details['status_value']) {
+    case '1': // New Status
+        if ($_SESSION['role'] != '1') {
+            $validationForNewStatus = 'disabled';
+            $allowed_users = explode(",", getTopMostUserDetails($ticket_details['department']));
+            if (in_array($current_user, $allowed_users)) {
+                $validationForNewStatus = '';
+            }
         }
-    }
-    // if status change from new to any other then 
-    if ($ticket_details['status_value'] != '1' && $_SESSION['role'] != '1') {
-        $validationOnCategoryAndDepartment = 'disabled';
-    }
-    $priority_color = match($ticket_details['priority']) {
-        'Low' => "bg-success",
-        'Medium' => "bg-warning",
-        'High' => "bg-danger"
-    };
-    $numOfComment = 0;
-    $comments = checkComments($id);
-    $ticket_comment_style = '';
-    if(!empty($comments)) {   
-        $numOfComment = count($comments);
-        if($numOfComment > 2) {
-            $ticket_comment_style = 'style="height: 500px;overflow-y: auto;"';
+        break;
+
+    case '4': // Status in review state
+        $validationForAssignTo = $validationForStatus = 'disabled';
+        if ($ticket_details['raised_by'] == $current_user || $current_user == '1') {
+            $validationForStatus = '';
         }
-    }
-    $assignToUser_details = getAssignUserDetails($ticket_details['assign_to']);
-    $assignByUser_details = getAssignUserDetails($ticket_details['assign_by']);
+        break;
+
+    case '5': // Status in close state
+        $validationForAssignTo = $validationForStatus = 'disabled';
+        break;
+
+    default:
+        if ($_SESSION['role'] != '1') {
+            $validationForAssignTo = $validationForStatus = 'disabled';
+            $allowed_users = array_merge(
+                explode(",", getAboveTheDeaprtmentLevelUser($ticket_details['department'])),
+                explode(",", assignToUserParent($ticket_details['assign_to']))
+            );
+            if (in_array($current_user, $allowed_users)) {
+                $validationForAssignTo = $validationForStatus = '';
+            }
+        }
+        break;
 }
+
+if ($ticket_details['status_value'] != '1') {
+    $validationOnCategoryDepartmentAndPriority = 'disabled';
+}
+
+$priority_color = match ($ticket_details['priority']) {
+    'Low' => 'bg-success',
+    'Medium' => 'bg-warning',
+    'High' => 'bg-danger'
+};
+
+$comments = checkComments($id);
+$numOfComment = count($comments) ?? 0;
+$ticket_comment_style = $numOfComment > 2 ? 'style="height: 500px; overflow-y: auto;"' : '';
+
+$assignToUser_details = getAssignUserDetails($ticket_details['assign_to']);
+$assignByUser_details = getAssignUserDetails($ticket_details['assign_by']);
+
 
 function getTicketData($id) {
 
@@ -61,7 +86,7 @@ function getTicketData($id) {
     ticket_record.category as `category`, 
     ticket_category.name as `category_name`,
     ticket_record.department as `department`, 
-    department.department_name as `department_name`,
+    Department.department_name as `department_name`,
     ticket_record.create_person_name, 
     ticket_record.create_person_number,
     ticket_record.create_person_email,
@@ -202,5 +227,74 @@ function getTopMostUserDetails($departmentId) {
     $all_user_ids = implode(',', $all_users);
     $all_user_ids = '1,'. $all_user_ids;
     return $all_user_ids;
+}
+
+function getAboveTheDeaprtmentLevelUser($departmentId) {
+
+    global $conn;
+    $department_details = $conn->query("SELECT * FROM `Department` WHERE id = '$departmentId'");
+    $department_details = mysqli_fetch_assoc($department_details);
+    if ($department_details['vertical_id'] == '1' || $department_details['vertical_id'] == '2' || $department_details['vertical_id'] == '3') {
+        $vertical = "'1','2','3'";  
+    } else {
+        $vertical =  $_SESSION['Vertical_id'];
+    }    
+    // Fetch users for different scopes in a single query
+    $query = "
+        SELECT 
+            GROUP_CONCAT(CASE WHEN Vertical_id IN ($vertical) AND Department_id IS NULL THEN ID END) AS vertical_users,
+            GROUP_CONCAT(CASE WHEN Vertical_id IS NULL AND Department_id IS NULL AND Branch_id IN (" . implode(',', json_decode($department_details['branch_id'], true)) . ") THEN ID END) AS branch_users,
+            GROUP_CONCAT(CASE WHEN Vertical_id IS NULL AND Department_id IS NULL AND Branch_id IS NULL AND Organization_id = '" . $department_details['organization_id'] . "' THEN ID END) AS organization_users
+        FROM `users`
+        WHERE Deleted_At IS NULL;
+    ";
+    $result = $conn->query($query);
+    $users = mysqli_fetch_assoc($result);
+
+    // Combine all user IDs
+    $all_users = array_filter([
+        $users['vertical_users'],
+        $users['branch_users'],
+        $users['organization_users']
+    ]);
+
+    $all_user_ids = implode(',', $all_users);
+    $all_user_ids = '1,'. $all_user_ids;
+    return $all_user_ids;
+}
+
+function assignToUserParent($assignTo_id) {
+
+    global $conn;
+
+    $departmentUser = [];
+    $userDetails_query = "
+        WITH RECURSIVE user_hierarchy AS (
+        SELECT 
+            u1.ID AS `user_id`, 
+            u1.Name AS `user_name`, 
+            u1.Assinged_Person_id AS `parent_id`
+        FROM 
+            `users` AS `u1`
+        WHERE 
+            u1.ID = '$assignTo_id'
+        UNION ALL
+        SELECT 
+            u2.ID AS `user_id`, 
+            u2.Name AS `user_name`, 
+            u2.Assinged_Person_id AS `parent_id`
+        FROM 
+            `users` AS `u2`
+        JOIN 
+            user_hierarchy AS `uh` ON u2.ID = uh.parent_id
+        )
+        SELECT user_id FROM user_hierarchy
+    ";
+    $userDetails = $conn->query($userDetails_query);
+    if($userDetails->num_rows > 0) {
+        $userDetails = mysqli_fetch_all($userDetails,MYSQLI_ASSOC);
+        $departmentUser = array_column($userDetails,'user_id');
+    }
+    return implode(',',$departmentUser);
 }
 ?>

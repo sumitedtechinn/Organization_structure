@@ -302,6 +302,46 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
             await fetchData("/app/tickets/storeAndupdateTicket",{"selectedValue" : updateSelectedValue,ticket_id,"method":"updateStatus"});
         }
     }
+    if(methodName == 'updateStatus') {
+        let status = document.getElementById("status").value;
+        if (status == '4') {
+            //Give one alert notice to user before updating the status
+            const response = await passReConfirmationMessage();
+            if(!response) {
+                viewTicketDetails(ticket_id);
+                return;
+            }
+        } else if (status == '5') {
+            /**
+             * 1) First check request user is assign by user or not
+             * 2) If assign_by then one notice for confermation and if not then just pass the message  
+             */
+            const userStatus = await fetchData("/app/tickets/storeAndupdateTicket",{ticket_id,"method":"checkUserIsAssignByUserOrNot"});
+            if (userStatus.status == 200) {
+                const response = await passReConfirmationMessage();
+                if(!response) {
+                    viewTicketDetails(ticket_id);
+                    return;
+                }
+            } else {
+                passWarningMessage("Not Allow To Close",data.message);
+                viewTicketDetails(ticket_id);
+                return ;    
+            }
+        } else if (status == '6') {
+            /**
+             * 1) Need to pass the reason and Person Name
+             */
+            const holdTicketFormResponse = await holdTicketForm(ticket_id,status);
+            if (holdTicketFormResponse.status == '200') {
+                toastr.success(holdTicketFormResponse.message);
+            } else {
+                toastr.error(holdTicketFormResponse.message);
+                viewTicketDetails(ticket_id);
+                return;
+            }
+        } 
+    }
     const data = await fetchData("/app/tickets/storeAndupdateTicket",{selectedValue,ticket_id,"method":methodName});
     if( data != null) {
         if (data.status == 200) {
@@ -313,54 +353,128 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
     }
 }
 
+async function holdTicketForm(ticket_id,status){
+    const data = await getMethod("/app/tickets/viewHoldTicketForm");
+    if( data != null) {
+        return new Promise((resolve,reject) => {
+
+            $('#md-modal-content').html(data);
+            $('#mdmodal').modal('show');
+
+            // Handle form submission
+            $("#form-holdTicket").off("submit").on("submit", function (e) {
+                e.preventDefault();
+                if ($("#form-holdTicket").valid()) {
+                    let comment = document.getElementById("comment").value;
+                    let user_name = document.getElementById("user_name").value;
+                    let final_comment = `${comment} <br> Instructed Person Name : ${user_name}`;
+                    $("#spinner").css("display", "block");
+                    $.ajax({
+                        url: this.action,
+                        type: "POST",
+                        contentType : "application/json" , 
+                        data: JSON.stringify({
+                            comment: final_comment,
+                            method: "insertComment",
+                            ticket_id: ticket_id
+                        }),
+                        dataType: "json",
+                        success: function (response) {
+                            $("#spinner").css("display", "none");
+                            if (response.status == 200) {
+                                $(".modal").modal("hide");
+                                resolve(response);
+                            } else {
+                                toastr.error(response.message);
+                                reject(response);
+                            }
+                        },
+                        error: function (err) {
+                            toastr.error("Something went wrong!");
+                            reject(err);
+                        }
+                    });
+                }
+            });
+
+            // Handle Cancel form submission
+            $("#cancelsetDeadline").on('click',function(){
+                let response = {status : 400 , message : "Hold Comment not insert"};
+                resolve(response);
+            });
+        });
+    }
+}
+
+async function passReConfirmationMessage() {
+    let result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Process.'
+    });
+    return (result.isConfirmed) ? true : false;
+}
+
+function passWarningMessage(title,text) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+    });
+}
+
 let countDownInterval;
 
 function showDeadLine() {   
-    const [deadline_date,status] = document.getElementById("timer").getAttribute("data-custom-value").split("_");
-    if (deadline_date != "deadLine not set") {
-        countDownDate = new Date(deadline_date).getTime();
-        if(countDownInterval) {
-            clearInterval(countDownInterval);
-        }
-
-        // If status is close then only show message
-        if (status == '5') {
-            document.getElementById("timer").classList.add("bg-danger");
-            document.getElementById("timer").innerHTML = "Ticket Close";
-            return;
-        }
-
-        countDownInterval = setInterval(function() {
-        let now = new Date().getTime();
-        let distance = countDownDate - now;
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(countDownInterval);
-            document.getElementById("timer").innerHTML = "DeadLine Exceed";
-            document.getElementById("timer").classList.add("bg-danger","show");
-            return;
-        }
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        document.getElementById("timer").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
-        
-        // set backgound color
-        if(days > 1) {
-            document.getElementById("timer").classList.add("bg-success","show");
-        } else {
-            document.getElementById("timer").classList.add("bg-warning","show");
-        }
-        }, 1000);
-    } else {
-        document.getElementById("timer").style.display = "none";
+    let timer = document.getElementById("timer");
+    const countDownMessage  = {
+        '5' : {class : "bg-success" , message : "Ticket Close"} , 
+        '4' : {class : "bg-warning" , message : "Ticket In-review"} ,
     }
+    const [deadline_date,status] = timer.getAttribute("data-custom-value").split("_");
+    if (deadline_date == "deadLine not set") {
+        timer.style.display = "none";
+        return;
+    }
+    countDownDate = new Date(deadline_date).getTime();
+    if(countDownInterval) {
+        clearInterval(countDownInterval);
+    }
+
+    if( status == '5' || status == '4') {
+        timer.classList.add( countDownMessage[status]['class'],"show");
+        timer.innerHTML = countDownMessage[status]['message'];
+        return;
+    }
+
+    countDownInterval = setInterval(function() {
+    let now = new Date().getTime();
+    let distance = countDownDate - now;
+
+    // If the count down is finished, write some text
+    if (distance < 0) {
+        clearInterval(countDownInterval);
+        timer.innerHTML = "DeadLine Exceed";
+        timer.classList.add("bg-danger","show");
+        return;
+    }
+
+    // Time calculations for days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    timer.innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+
+    timer.classList.add((days > 1) ? "bg-success" : "bg-warning" ,"show");
+    }, 1000);
 }
 
 async function viewTicketHistory(ticket_id) {

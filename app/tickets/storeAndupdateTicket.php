@@ -67,6 +67,11 @@ if(isset($_REQUEST['task_name']) && isset($_REQUEST['ticket_category']) && isset
     $deadline_date = mysqli_real_escape_string($conn,$_REQUEST['deadline_date']);
     $ticket_id = mysqli_real_escape_string($conn,$_REQUEST['ticket_id']);
     insertAndUpdateDeadLine($deadline_date,$ticket_id); 
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == "checkUserIsAssignByUserOrNot" && isset($_REQUEST['ticket_id'])) {
+
+    $ticket_id = mysqli_real_escape_string($conn,$_REQUEST['ticket_id']);
+    $method = mysqli_real_escape_string($conn,$_REQUEST['method']);
+    $method($ticket_id);
 } else {
     $stepsLog .= date(DATE_ATOM) . " :: All required keys are not present \n\n";
     saveLog(showResponse(false,"All required keys are not present"));
@@ -222,7 +227,12 @@ function updateStatus($ticket_id,$status) {
     $stepsLog .= date(DATE_ATOM). " :: method inside the updateStatus \n\n";
     $stepsLog .= date(DATE_ATOM). " :: requested data : ticket_id => $ticket_id and status => $status \n\n";
     try {
-        $updateTicketRecord_query = "UPDATE ticket_record SET status = '$status' WHERE id = '$ticket_id'";
+        $timer_query = "";
+        if ($status == '4') {
+            $timer_stop = date("Y-m-d");
+            $timer_query = " , timer_stop = '$timer_stop'";
+        }
+        $updateTicketRecord_query = "UPDATE ticket_record SET status = '$status' $timer_query WHERE id = '$ticket_id'";
         $updateTicketRecord = $conn->query($updateTicketRecord_query);
         $stepsLog .= date(DATE_ATOM) . " :: updateTicketRecord_query => $updateTicketRecord_query \n\n";
         insertTicketHistory($ticket_id);
@@ -252,7 +262,7 @@ function updatePriority($ticket_id,$priority) {
 function insertAndUpdateDeadLine($deadline_date,$ticket_id) {
 
     global $stepsLog, $conn;
-    $stepsLog .= date(DATE_ATOM). " :: method inside the updateCategory \n\n";
+    $stepsLog .= date(DATE_ATOM). " :: method inside the insertAndUpdateDeadLine \n\n";
     $stepsLog .= date(DATE_ATOM). " :: requested data : ticket_id => $ticket_id and deadline_date => $deadline_date \n\n";
     try {
         $updateTicketRecord_query = "UPDATE ticket_record SET deadline_date = '$deadline_date' WHERE id = '$ticket_id'";
@@ -265,27 +275,58 @@ function insertAndUpdateDeadLine($deadline_date,$ticket_id) {
     } 
 }
 
+/**
+ * This function is for check that only Super admin and user who raised ticket are allow to close the ticket 
+ */
+function checkUserIsAssignByUserOrNot($ticket_id) {
+
+    global $conn,$stepsLog;
+    $stepsLog .= date(DATE_ATOM). " :: method inside the checkUserIsAssignByUserOrNot \n\n";
+    $stepsLog .= date(DATE_ATOM). " :: requested data : ticket_id => $ticket_id \n\n";
+    try {
+        $user_id = mysqli_real_escape_string($conn,$_SESSION['ID']);
+        $user_role = mysqli_real_escape_string($conn,$_SESSION['role']);
+        if ($user_role == '1') {
+            exit(saveLog(showResponse(true,"User allowed to close the Ticket")));    
+        }
+        $checkUser_query = "SELECT IF(raised_by = '$user_id','Yes','No') as `same_user` FROM `ticket_record` WHERE id = '$ticket_id'";
+        $checkUser = $conn->query($checkUser_query);
+        $checkUser = mysqli_fetch_column($checkUser);
+        if($checkUser == 'Yes') {
+            saveLog(showResponse(true,"User allowed to close the Ticket"));
+        } else {
+            saveLog(showResponse(false,"User who raised the ticket are allowed to close"));            
+        }
+    } catch(Exception $e) {
+        saveLog(showResponse(false,"Error : ". $e->getMessage()));
+    }
+}
+
 function insertTicketHistory($ticket_id) {
     
     global $conn,$stepsLog;
     $stepsLog .= date(DATE_ATOM). " :: method inside the insertTicketHistory \n\n";
     $stepsLog .= date(DATE_ATOM). " :: requested data : ticket_id => $ticket_id \n\n";
     try {
-        $getUpdatedData_query = "SELECT assign_by , assign_to , status , priority , category , department ,deadline_date FROM `ticket_record` WHERE id = '$ticket_id'";
+        $getUpdatedData_query = "SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '$ticket_id'";
         $getUpdatedData = $conn->query($getUpdatedData_query);
         $stepsLog .= date(DATE_ATOM) . " :: getUpdatedData_query => $getUpdatedData_query \n\n";
         $getUpdatedData = mysqli_fetch_assoc($getUpdatedData);
-        $insertTicketHistory_query = "INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`) VALUES ('$ticket_id','" .$_SESSION['ID']. "','". $getUpdatedData['assign_by'] ."','". $getUpdatedData['assign_to'] ."','". $getUpdatedData['status'] ."','". $getUpdatedData['priority'] ."','". $getUpdatedData['category'] ."','". $getUpdatedData['department'] ."','" . $getUpdatedData['deadline_date'] . "')";
-        $insertTicketHistory = $conn->query($insertTicketHistory_query);
+        $assign_by = !empty($getUpdatedData['assign_by']) ? $getUpdatedData['assign_by'] : 0;
+        $assign_to = !empty($getUpdatedData['assign_to']) ? $getUpdatedData['assign_to'] : 0;
+        $insertTicketHistory_query = "INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('$ticket_id','" .$_SESSION['ID']. "','$assign_by','$assign_to','". $getUpdatedData['status'] ."','". $getUpdatedData['priority'] ."','". $getUpdatedData['category'] ."','". $getUpdatedData['department'] ."','" . $getUpdatedData['deadline_date'] . "','" . $getUpdatedData['timer_stop'] . "')";
         $stepsLog .= date(DATE_ATOM) . " :: insertTicketHistory_query => $insertTicketHistory_query \n\n";
+        $insertTicketHistory = $conn->query($insertTicketHistory_query);
     } catch(Exception $e) {
         saveLog(showResponse(false,"Error : ". $e->getMessage()));
     }
 }
 
-
 function showResponse($response, $message = "Something went wrong!") {
-    return ($response) ? ['status' => 200, 'message' => "$message successfully!"] : ['status' => 400, 'message' => $message];  
+    global $stepsLog;
+    $result = ($response) ? ['status' => 200, 'message' => "$message successfully!"] : ['status' => 400, 'message' => $message]; 
+    $stepsLog .= date(DATE_ATOM) . " :: respose => " . json_encode($result) . "\n\n";
+    return $result;   
 }
 
 function saveLog($response) {

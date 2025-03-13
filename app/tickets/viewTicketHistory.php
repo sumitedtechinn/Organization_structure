@@ -30,6 +30,8 @@ function getTicketHistoryInfoQuery($ticket_id) : string {
     ticket_status.name as `statusName` , 
     ticket_history.status as `statusId` , 
     ticket_history.priority as `priorityId` , 
+    IF ((ticket_history.deadline_date IS NULL OR ticket_history.deadline_date = '') , 'Not Set', ticket_history.deadline_date) as `deadline_date` , 
+    IF ((ticket_history.deadline_date IS NULL OR ticket_history.deadline_date != '') , 'Timer Not Start' , IF ((ticket_history.timer_stop IS NULL OR ticket_history.timer_stop = '') , 'Timer Running' , ticket_history.timer_stop)) as `timer_stop`,
 	CASE 
     	WHEN ticket_history.priority = '1' THEN 'Low' 
     	WHEN ticket_history.priority = '2' THEN 'Medium' 
@@ -37,7 +39,7 @@ function getTicketHistoryInfoQuery($ticket_id) : string {
     	END AS `priority` ,
     ticket_category.name as `categoryName` , 
     ticket_history.category as `categoryId` ,
-    department.department_name ,
+    Department.department_name ,
     ticket_history.department as `departmentId` , 
     CASE 
     WHEN TIMESTAMPDIFF(YEAR,ticket_history.created_at, NOW()) > 0 
@@ -106,10 +108,10 @@ function getAssignUserDetails($assignUserId) : array {
             <div class="card-body">
                 <div class="row fw-semibold" style="position: sticky; top: 0; z-index: 10;">
                     <div class="col-sm-2">Updated By</div>
-                    <div class="col-sm-2">Assigned By</div>
-                    <div class="col-sm-2">Assigned To</div>
+                    <div class="col-sm-2">Assigned</div>
                     <div class="col-sm-2">Department</div>
                     <div class="col-sm-3">Information</div>
+                    <div class="col-sm-2">Timer Details</div>
                     <div class="col-sm-1">Created At</div>
                 </div>
             </div>
@@ -129,20 +131,20 @@ function getAssignUserDetails($assignUserId) : array {
                                 <div class="text-muted small"><?=$value['updateByUserDesignation']?></div>
                             </div>
                             <div class="col-sm-2">
-                                <div><?=$assignByUser_details['name']?></div>
-                                <div class="text-muted small"><?=$assignByUser_details['designation']?></div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div><?=$assignToUser_details['name']?></div>
-                                <div class="text-muted small"><?=$assignToUser_details['designation']?></div>
+                                <div><strong> By :</strong><?=$assignByUser_details['name']?></div>
+                                <div><strong> To :</strong><?=$assignToUser_details['name']?></div>
                             </div>
                             <div class="col-sm-2">
                                 <div><?=$value['department_name']?></div>
                             </div>
                             <div class="col-sm-3">
                                 <div><strong>Category:</strong> <?=$value['categoryName']?></div>
-                                <div><strong>Priority:</strong> <?=$value['statusName']?></div>
-                                <div><strong>Status:</strong> <?=$value['priority']?></div>
+                                <div><strong>Status:</strong> <?=$value['statusName']?></div>
+                                <div><strong>Priority:</strong> <?=$value['priority']?></div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div><strong>DeadLine :</strong> <?=$value['deadline_date']?></div>
+                                <div><strong>Timer Stop :</strong> <?=$value['timer_stop']?></div>
                             </div>
                             <div class="col-sm-1">
                                 <div><?=$value['update']?></div>
