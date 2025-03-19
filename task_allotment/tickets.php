@@ -111,7 +111,7 @@
                     <table class="table align-middle w-100" id="ticketTable">
                         <thead class="table-primary">
                             <tr>
-                                <th>Ticket Id</th>
+                                <th>Id</th>
                                 <th>Ticket Name</th>
                                 <th>Status</th>
                                 <th>Ticket Details</th>
@@ -293,6 +293,12 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
     if (methodName == "updateAssignToUser") {
         let status = document.getElementById("status").getAttribute("data-custom-value").split("_").filter((param,index,array) => (index == array.length-1)).join(" ");
         if (status == '1') {
+            const checkAssignUserTicket = await checkUserAssignTicketStatus(selectedValue);
+            if (checkAssignUserTicket.status == '400') {
+                passWarningMessage("Assignation Not Allow",checkAssignUserTicket.message);
+                viewTicketDetails(ticket_id);
+                return;
+            }
             const deadLine_response =  await setDeadLineDate(ticket_id);
             if (deadLine_response.status == '400') {
                 toastr.error(deadLine_response.message);
@@ -304,14 +310,35 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
     }
     if(methodName == 'updateStatus') {
         let status = document.getElementById("status").value;
-        if (status == '4') {
+        let previousStatus = document.getElementById("status").getAttribute("data-custom-value").split("_").filter((param,index,array) => (index == array.length-1)).join(" ");
+        // Condition for change the Status from Hold to Any Other Stats 
+        if (previousStatus == '6') {
+            /**
+             * 1) If status in hold then Review and Close Not Possible
+             * 2) And for other then that show Privious Deadline with update option 
+             */
+            if ( status == '4' || status == '5') {
+                passWarningMessage("Status Change Not Allow","Status change from hold to review or close are Nnot allowed");
+                viewTicketDetails(ticket_id);
+                return ;
+            }
+            const deadLine_response =  await setDeadLineDate(ticket_id);
+            if (deadLine_response.status == '400') {
+                toastr.error(deadLine_response.message);
+                return viewTicketDetails(ticket_id);
+            }
+
+        } // Condition for status change to review
+        else if (status == '4') {
             //Give one alert notice to user before updating the status
             const response = await passReConfirmationMessage();
             if(!response) {
                 viewTicketDetails(ticket_id);
                 return;
             }
-        } else if (status == '5') {
+
+        }  // Condition for status change to close
+        else if (status == '5') {
             /**
              * 1) First check request user is assign by user or not
              * 2) If assign_by then one notice for confermation and if not then just pass the message  
@@ -328,7 +355,9 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
                 viewTicketDetails(ticket_id);
                 return ;    
             }
-        } else if (status == '6') {
+         
+        }  // Condition for status change to hold
+        else if (status == '6') {
             /**
              * 1) Need to pass the reason and Person Name
              */
@@ -340,13 +369,24 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
                 viewTicketDetails(ticket_id);
                 return;
             }
-        } 
+        } // Condition for status change to Re-open
+        else if (status == '8') {
+            /**
+             * 1) Show Privious Deadline with update option 
+             */
+            const deadLine_response =  await setDeadLineDate(ticket_id);
+            if (deadLine_response.status == '400') {
+                toastr.error(deadLine_response.message);
+                return viewTicketDetails(ticket_id);
+            }
+        }  
     }
     const data = await fetchData("/app/tickets/storeAndupdateTicket",{selectedValue,ticket_id,"method":methodName});
     if( data != null) {
         if (data.status == 200) {
             toastr.success(data.message);
             viewTicketDetails(ticket_id);
+            $('.table').DataTable().ajax.reload(null, false);
         } else {
             toastr.error(data.message);
         }
@@ -365,9 +405,9 @@ async function holdTicketForm(ticket_id,status){
             $("#form-holdTicket").off("submit").on("submit", function (e) {
                 e.preventDefault();
                 if ($("#form-holdTicket").valid()) {
-                    let comment = document.getElementById("comment").value;
-                    let user_name = document.getElementById("user_name").value;
-                    let final_comment = `${comment} <br> Instructed Person Name : ${user_name}`;
+                    let comment = document.getElementById("hold_ticket_comment").value;
+                    let user_name = document.getElementById("hold_by").value;
+                    let final_comment = `${comment} \nHold By : ${user_name}`;
                     $("#spinner").css("display", "block");
                     $.ajax({
                         url: this.action,
@@ -428,6 +468,16 @@ function passWarningMessage(title,text) {
     });
 }
 
+/**
+ *  Check User Already Assign the New Development on Any Ticket
+ */
+async function checkUserAssignTicketStatus(params) {
+    const data = await fetchData("/app/tickets/storeAndupdateTicket",{"assignTo" : params,"method":"checkUserStatusAsDevelopment"});
+    if(data != null) {
+        return data;
+    }
+}
+
 let countDownInterval;
 
 function showDeadLine() {   
@@ -485,19 +535,12 @@ async function viewTicketHistory(ticket_id) {
     }
 }
 
-async function setDeadLineDate() {
-    const data = await getMethod("/app/tickets/setDeadLineDate");
-    if( data != null) {
-        $('#lg-modal-content').html(data);
-        $('#lgmodal').modal('show');
-    }
-}
-
 async function setDeadLineDate(ticked_id) {
     return new Promise((resolve, reject) => {
         $.ajax({
             url: "/app/tickets/setDeadLineDate",
-            type: "GET",
+            type: "POST",
+            data : {ticked_id} ,
             success: function (data) {
                 if (data) {
                     $('#md-modal-content').html(data);

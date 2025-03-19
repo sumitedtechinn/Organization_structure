@@ -72,6 +72,11 @@ if(isset($_REQUEST['task_name']) && isset($_REQUEST['ticket_category']) && isset
     $ticket_id = mysqli_real_escape_string($conn,$_REQUEST['ticket_id']);
     $method = mysqli_real_escape_string($conn,$_REQUEST['method']);
     $method($ticket_id);
+} elseif ( isset($_REQUEST['method']) && $_REQUEST['method'] == "checkUserStatusAsDevelopment" && isset($_REQUEST['assignTo'])) {
+
+    $assign_to = mysqli_real_escape_string($conn,$_REQUEST['assignTo']);
+    $method = mysqli_real_escape_string($conn,$_REQUEST['method']);
+    $method($assign_to);
 } else {
     $stepsLog .= date(DATE_ATOM) . " :: All required keys are not present \n\n";
     saveLog(showResponse(false,"All required keys are not present"));
@@ -317,6 +322,27 @@ function insertTicketHistory($ticket_id) {
         $insertTicketHistory_query = "INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('$ticket_id','" .$_SESSION['ID']. "','$assign_by','$assign_to','". $getUpdatedData['status'] ."','". $getUpdatedData['priority'] ."','". $getUpdatedData['category'] ."','". $getUpdatedData['department'] ."','" . $getUpdatedData['deadline_date'] . "','" . $getUpdatedData['timer_stop'] . "')";
         $stepsLog .= date(DATE_ATOM) . " :: insertTicketHistory_query => $insertTicketHistory_query \n\n";
         $insertTicketHistory = $conn->query($insertTicketHistory_query);
+    } catch(Exception $e) {
+        saveLog(showResponse(false,"Error : ". $e->getMessage()));
+    }
+}
+
+function checkUserStatusAsDevelopment($assign_to) {
+
+    global $conn,$stepsLog;
+    $stepsLog .= date(DATE_ATOM). " :: method inside the checkUserStatusAsDevelopment \n\n";
+    $stepsLog .= date(DATE_ATOM). " :: requested data : assign_to => $assign_to \n\n";
+    try {
+        $checkUserStatus_query = "SELECT COUNT(id) FROM `ticket_record` WHERE assign_to = '$assign_to' AND status = '2'";
+        $checkUserStatus = $conn->query($checkUserStatus_query);
+        $stepsLog .= date(DATE_ATOM) . " :: checkUserStatus_query => $checkUserStatus_query \n\n";
+        $checkUserStatus = mysqli_fetch_column($checkUserStatus);
+        $stepsLog .= date(DATE_ATOM) . " :: checkUserStatus fetch Data => $checkUserStatus \n\n";
+        if($checkUserStatus > 0) {
+            saveLog(showResponse(false,"User Already Assign On New Development"));
+        } else {
+            saveLog(showResponse(true,"Assign User"));
+        }
     } catch(Exception $e) {
         saveLog(showResponse(false,"Error : ". $e->getMessage()));
     }

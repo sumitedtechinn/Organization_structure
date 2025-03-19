@@ -13,15 +13,15 @@
         <hr/>
         <form role="form" id="form-holdTicket" action="/app/tickets/storeAndupdateTicket" method="POST">
             <div class="row mb-1">
-                <label class="col-sm-12 col-form-label label_text">User Name</label>
+                <label class="col-sm-12 col-form-label label_text">Hold By</label>
                 <div class="col-sm-12">
-                    <input class="form-control" name="user_name" id="user_name"></input>
+                    <input class="form-control" name="hold_by" id="hold_by"></input>
                 </div>
             </div>
             <div class="row mb-1">
                 <label class="col-sm-12 col-form-label label_text">Comment</label>
                 <div class="col-sm-12">
-                    <textarea class="form-control" name="comment" id="comment" rows="3"></textarea>
+                    <textarea class="form-control" name="hold_ticket_comment" id="hold_ticket_comment" rows="3"></textarea>
                 </div>
             </div>
             <hr/>
@@ -45,8 +45,8 @@ $('#hide-modal').click(function() {
 $(function(){
     $('#form-holdTicket').validate({
     rules: {
-        comment: {required:true} , 
-        user_name : {required:true}
+        hold_ticket_comment: {required:true} , 
+        hold_by : {required:true}
     },
     highlight: function (element) {
         $(element).addClass('error');
