@@ -31,7 +31,7 @@ function getTicketHistoryInfoQuery($ticket_id) : string {
     ticket_history.status as `statusId` , 
     ticket_history.priority as `priorityId` , 
     IF ((ticket_history.deadline_date IS NULL OR ticket_history.deadline_date = '') , 'Not Set', ticket_history.deadline_date) as `deadline_date` , 
-    IF ((ticket_history.deadline_date IS NULL OR ticket_history.deadline_date != '') , 'Timer Not Start' , IF ((ticket_history.timer_stop IS NULL OR ticket_history.timer_stop = '') , 'Timer Running' , ticket_history.timer_stop)) as `timer_stop`,
+    IF ((ticket_history.deadline_date IS NULL OR ticket_history.deadline_date = '') , 'Timer Not Start' , IF ((ticket_history.timer_stop IS NULL OR ticket_history.timer_stop = '') , 'Timer Running' , ticket_history.timer_stop)) as `timer_stop`,
 	CASE 
     	WHEN ticket_history.priority = '1' THEN 'Low' 
     	WHEN ticket_history.priority = '2' THEN 'Medium' 
@@ -69,7 +69,7 @@ function getTicketHistoryInfoQuery($ticket_id) : string {
     LEFT JOIN users ON users.ID = ticket_history.updated_by
     LEFT JOIN Designation ON Designation.ID = users.Designation_id
     LEFT JOIN Department ON Department.id = ticket_history.department
-    WHERE ticket_id = '$ticket_id' ORDER BY ticket_history.created_at DESC
+    WHERE ticket_id = '$ticket_id' ORDER BY ticket_history.id DESC
     ";
 }
 

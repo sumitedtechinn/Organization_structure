@@ -19,6 +19,7 @@ $current_user = $_SESSION['ID'];
 
 switch ($ticket_details['status_value']) {
     case '1': // New Status
+        $validationForStatus = 'disabled';
         if ($_SESSION['role'] != '1') {
             $validationForNewStatus = 'disabled';
             $allowed_users = explode(",", getTopMostUserDetails($ticket_details['department']));

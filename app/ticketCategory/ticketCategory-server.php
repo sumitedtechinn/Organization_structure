@@ -26,21 +26,23 @@ $searchValue = mysqli_real_escape_string($conn, $_POST['search']['value']); // S
 
 $searchQuery = "";
 if (!empty($searchValue)) {
-    $searchQuery = "WHERE (name LIKE '%$searchValue%')"; 
+    $searchQuery = "AND (name LIKE '%$searchValue%')"; 
 }
 
+$filterQuery = isset($_REQUEST['ticketCategoryType']) ? "Deleted_at IS NOT NULL" : "Deleted_at IS NULL";
+
 ## Total number of records without filtering
-$all_count = $conn->query("SELECT COUNT(id) as `allcount` FROM ticket_category $searchQuery");
+$all_count = $conn->query("SELECT COUNT(id) as `allcount` FROM ticket_category WHERE $filterQuery");
 $records = mysqli_fetch_assoc($all_count);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering    
-$filter_count = $conn->query("SELECT COUNT(id) as `filtered` FROM ticket_category  $searchQuery");
+$filter_count = $conn->query("SELECT COUNT(id) as `filtered` FROM ticket_category WHERE $filterQuery $searchQuery");
 $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
 ## Fetch Record
-$tickets = $conn->query("SELECT * FROM ticket_category  $searchQuery $orderby LIMIT $row , $rowperpage");
+$tickets = $conn->query("SELECT * FROM ticket_category WHERE $filterQuery $searchQuery $orderby LIMIT $row , $rowperpage");
 
 $data = [];
 if ($tickets->num_rows > 0) {
@@ -52,6 +54,7 @@ if ($tickets->num_rows > 0) {
             "ID" => $row["id"],
             "sqNo" => $i,
             "name" => $row['name'],
+            "multiple_assignation" => $row['multiple_assignation'],
             "department" => $departmentList,
             "created_at" => $row['created_at'],
         );

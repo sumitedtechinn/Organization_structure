@@ -54,6 +54,15 @@ if(isset($data_field['ticketCategory_id'])) {
                     </select>
                 </div>
             </div>
+            <div class="row mb-2">
+                <label class="col-sm-4 col-form-label">Multiple Assignation</label>
+                <div class="col-sm-8 mt-3 gap-1">
+                    <input class="form-check-input" type="radio" name="multiple_assignation" value="1" <?php if(!empty($ticketCategory_details) && $ticketCategory_details['multiple_assignation'] == '1') : ?> checked <?php endif;?>>
+                    <label class="form-check-label">Allow</label>
+                    <input class="form-check-input" type="radio" name="multiple_assignation" value="0" <?php if(!empty($ticketCategory_details) && $ticketCategory_details['multiple_assignation'] == '0') : ?> checked <?php endif;?>>
+                    <label class="form-check-label">Not Allow</label>
+                </div>
+            </div>
             <hr/>
             <div class="row mb-2">
                 <div class="col-sm-12 text-end">
@@ -113,6 +122,7 @@ $(function(){
     rules: {
         name: {required:true},
         department : {required:true},
+        multiple_assignation : {required:true}, 
     },
     highlight: function (element) {
         $(element).addClass('error');

@@ -1,0 +1,1004 @@
+2025-03-24T07:21:57+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:21:57+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:21:57+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:21:57+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:22:01+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:22:01+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:22:01+01:00 :: requested data : assign_to => 27 
+
+2025-03-24T07:22:01+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:22:04+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:22:04+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:22:04+01:00 :: requested data : assign_to => 24 
+
+2025-03-24T07:22:04+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:22:23+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:22:23+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:22:23+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:22:23+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:22:44+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:22:44+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:22:44+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:22:44+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:28:36+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:28:36+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:28:36+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:28:36+01:00 :: checkUserStatus_query => SELECT COUNT(id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:28:36+01:00 :: respose => {"status":400,"message":"Error : Column 'id' in field list is ambiguous"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:30:16+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:30:16+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:30:16+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:30:16+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:30:16+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:30:16+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:30:57+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:30:57+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:30:57+01:00 :: requested data : assign_to => 27 
+
+2025-03-24T07:30:57+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:30:57+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:30:57+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:31:34+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:31:34+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:31:34+01:00 :: requested data : assign_to => 25 
+
+2025-03-24T07:31:34+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:31:34+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:31:34+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:31:39+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:31:39+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:31:39+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:31:39+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:31:39+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:31:39+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:32:40+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:32:40+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:32:40+01:00 :: requested data : assign_to => 25 
+
+2025-03-24T07:32:40+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '25' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:32:40+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:32:40+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:33:35+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:33:35+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:33:35+01:00 :: requested data : assign_to => 28 
+
+2025-03-24T07:33:35+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '28' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:33:35+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:33:35+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:33:40+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:33:40+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:33:40+01:00 :: requested data : assign_to => 27 
+
+2025-03-24T07:33:40+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '27' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:33:40+01:00 :: checkUserStatus fetch Data => 2 
+
+2025-03-24T07:33:40+01:00 :: respose => {"status":400,"message":"User Already Assign On New Development"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:33:43+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:33:43+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:33:43+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:33:43+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:33:43+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:33:43+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:39:11+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:39:11+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:39:11+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:39:11+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:39:11+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:39:11+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:40:10+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:40:10+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:40:10+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:40:10+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:40:10+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:40:10+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:41:36+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:41:36+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:41:36+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:41:36+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:41:36+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:41:36+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:43:12+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:43:12+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:43:12+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:43:12+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:43:12+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:43:12+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:45:21+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:45:21+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:45:21+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:45:21+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:45:21+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:45:21+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:46:47+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:46:47+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:46:47+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:46:47+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:46:47+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:46:47+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:47:17+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:47:17+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:47:17+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:47:17+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:47:17+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:47:17+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:51:59+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:51:59+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:51:59+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:51:59+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:51:59+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:51:59+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:52:47+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:52:47+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:52:47+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:52:47+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:52:47+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:52:47+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:53:27+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:53:27+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:53:27+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:53:27+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:53:27+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:53:27+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:53:58+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:53:58+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:53:58+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:53:58+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:53:58+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:53:58+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:54:17+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:54:17+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:54:17+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:54:17+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:54:17+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:54:17+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:54:49+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:54:49+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:54:49+01:00 :: requested data : assign_to => 23 
+
+2025-03-24T07:54:49+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '23' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:54:49+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:54:49+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:55:03+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:55:03+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:55:03+01:00 :: requested data : assign_to => 23 
+
+2025-03-24T07:55:03+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '23' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:55:03+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:55:03+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:55:45+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:55:45+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:55:45+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:55:45+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:55:45+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:55:45+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:56:13+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:56:13+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:56:13+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:56:13+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:56:13+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:56:13+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:57:03+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:57:03+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:57:03+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:57:03+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:57:03+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:57:03+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:57:27+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:57:27+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:57:27+01:00 :: requested data : assign_to => 75 
+
+2025-03-24T07:57:27+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '75' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:57:27+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:57:27+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:57:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:57:46+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:57:46+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:57:46+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:57:46+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:57:46+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:58:00+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:58:00+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:58:00+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:58:00+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:58:00+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:58:00+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:58:17+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:58:17+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:58:17+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:58:17+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:58:17+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:58:17+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:58:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:58:46+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:58:46+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:58:46+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:58:46+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:58:46+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T07:59:14+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T07:59:14+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T07:59:14+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T07:59:14+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T07:59:14+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T07:59:14+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:01:26+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:01:26+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:01:26+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:01:26+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:01:26+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:01:26+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:01:58+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:01:58+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:01:58+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:01:58+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:01:58+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:01:58+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:03:18+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:03:18+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:03:18+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:03:18+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:03:18+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:03:18+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:06:30+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:06:30+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:06:30+01:00 :: requested data : assign_to => 23 
+
+2025-03-24T08:06:30+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '23' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:06:30+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:06:30+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:14:09+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:14:09+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:14:09+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:14:09+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:14:09+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:14:09+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:17:29+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:17:29+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:17:29+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:17:29+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:17:29+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:17:29+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:19:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:19:46+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:19:46+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:19:46+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:19:46+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:19:46+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:21:56+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:21:56+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:21:56+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:21:56+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:21:56+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:21:56+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:26:26+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:26:26+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:26:26+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:26:26+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:26:26+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:26:26+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:27:14+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:27:14+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:27:14+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:27:14+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:27:14+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:27:14+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:29:20+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:29:20+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:29:20+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:29:20+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:29:20+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:29:20+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:39:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:39:06+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:39:06+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:39:06+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:39:06+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:39:06+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:39:59+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:39:59+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:39:59+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:39:59+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:39:59+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:39:59+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:40:44+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:40:44+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:40:44+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:40:44+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:40:44+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:40:44+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:42:25+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:42:25+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:42:25+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:42:25+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:42:25+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:42:25+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:47:36+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:47:36+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:47:36+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:47:36+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:47:36+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:47:36+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:49:03+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:49:03+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:49:03+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:49:03+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:49:03+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:49:03+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:49:43+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:49:43+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:49:43+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:49:43+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:49:43+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:49:43+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:50:07+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:50:07+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:50:07+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:50:07+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:50:07+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:50:07+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:51:01+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:51:01+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:51:01+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:51:01+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:51:01+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:51:01+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:56:33+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:56:33+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:56:33+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:56:33+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:56:33+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:56:33+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T08:58:25+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T08:58:25+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T08:58:25+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T08:58:25+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T08:58:25+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T08:58:25+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T09:01:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T09:01:06+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T09:01:06+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T09:01:06+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T09:01:06+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T09:01:06+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T09:46:39+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T09:46:39+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T09:46:39+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T09:46:39+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T09:46:39+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T09:46:39+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T09:47:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T09:47:06+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T09:47:06+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T09:47:06+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T09:47:06+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T09:47:06+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T09:49:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T09:49:06+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T09:49:06+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T09:49:06+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T09:49:06+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T09:49:06+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T09:49:50+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T09:49:50+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T09:49:50+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T09:49:50+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T09:49:50+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T09:49:50+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:07:22+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:07:22+01:00 :: All required keys are not present 
+
+2025-03-24T10:07:22+01:00 :: respose => {"status":400,"message":"All required keys are not present"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:07:30+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:07:30+01:00 :: All required keys are not present 
+
+2025-03-24T10:07:30+01:00 :: respose => {"status":400,"message":"All required keys are not present"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:10:25+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:10:25+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-24T10:10:25+01:00 :: requested data : assign_to => 21 
+
+2025-03-24T10:10:25+01:00 :: checkUserStatus_query => SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '21' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%' 
+
+2025-03-24T10:10:25+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-24T10:10:25+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:10:40+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:10:40+01:00 :: method inside the insertAndUpdateDeadLine 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 and deadline_date => 2025-03-25 16:30:28 
+
+2025-03-24T10:10:40+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET deadline_date = '2025-03-25 16:30:28' WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: method inside the insertTicketHistory 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 
+
+2025-03-24T10:10:40+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('5','1','0','0','1','3','2','12','2025-03-25 16:30:28','') 
+
+2025-03-24T10:10:40+01:00 :: respose => {"status":200,"message":"DeadLine Updated successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:10:40+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:10:40+01:00 :: method inside the updateStatus 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 and status => 7 
+
+2025-03-24T10:10:40+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET status = '7'  WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: method inside the insertTicketHistory 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 
+
+2025-03-24T10:10:40+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('5','1','0','0','7','3','2','12','2025-03-25 16:30:28','') 
+
+2025-03-24T10:10:40+01:00 :: respose => {"status":200,"message":"Status Updated successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:10:40+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:10:40+01:00 :: method inside the updateAssignToUser 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 and assignBy_user => 1 , assignTo_user => 21 
+
+2025-03-24T10:10:40+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET assign_by = '1' , assign_to = '21' WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: method inside the insertTicketHistory 
+
+2025-03-24T10:10:40+01:00 :: requested data : ticket_id => 5 
+
+2025-03-24T10:10:40+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '5' 
+
+2025-03-24T10:10:40+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('5','1','1','21','7','3','2','12','2025-03-25 16:30:28','') 
+
+2025-03-24T10:10:40+01:00 :: respose => {"status":200,"message":"User Assign successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:12:35+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:12:35+01:00 :: method inside the updateStatus 
+
+2025-03-24T10:12:35+01:00 :: requested data : ticket_id => 5 and status => 2 
+
+2025-03-24T10:12:35+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET status = '2'  WHERE id = '5' 
+
+2025-03-24T10:12:35+01:00 :: method inside the insertTicketHistory 
+
+2025-03-24T10:12:35+01:00 :: requested data : ticket_id => 5 
+
+2025-03-24T10:12:35+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '5' 
+
+2025-03-24T10:12:35+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('5','1','1','21','2','3','2','12','2025-03-25 16:30:28','') 
+
+2025-03-24T10:12:35+01:00 :: respose => {"status":200,"message":"Status Updated successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-24T10:12:41+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-24T10:12:41+01:00 :: method inside the updateStatus 
+
+2025-03-24T10:12:41+01:00 :: requested data : ticket_id => 5 and status => 4 
+
+2025-03-24T10:12:41+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET status = '4'  , timer_stop = '2025-03-24' WHERE id = '5' 
+
+2025-03-24T10:12:41+01:00 :: method inside the insertTicketHistory 
+
+2025-03-24T10:12:41+01:00 :: requested data : ticket_id => 5 
+
+2025-03-24T10:12:41+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '5' 
+
+2025-03-24T10:12:41+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('5','1','1','21','4','3','2','12','2025-03-25 16:30:28','2025-03-24 00:00:00') 
+
+2025-03-24T10:12:41+01:00 :: respose => {"status":200,"message":"Status Updated successfully!"}
+
+ ============ End Of Script ================== 
+

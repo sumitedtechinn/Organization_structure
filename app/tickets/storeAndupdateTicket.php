@@ -234,7 +234,7 @@ function updateStatus($ticket_id,$status) {
     try {
         $timer_query = "";
         if ($status == '4') {
-            $timer_stop = date("Y-m-d");
+            $timer_stop = date("Y-m-d h:i:s");
             $timer_query = " , timer_stop = '$timer_stop'";
         }
         $updateTicketRecord_query = "UPDATE ticket_record SET status = '$status' $timer_query WHERE id = '$ticket_id'";
@@ -333,9 +333,9 @@ function checkUserStatusAsDevelopment($assign_to) {
     $stepsLog .= date(DATE_ATOM). " :: method inside the checkUserStatusAsDevelopment \n\n";
     $stepsLog .= date(DATE_ATOM). " :: requested data : assign_to => $assign_to \n\n";
     try {
-        $checkUserStatus_query = "SELECT COUNT(id) FROM `ticket_record` WHERE assign_to = '$assign_to' AND status = '2'";
-        $checkUserStatus = $conn->query($checkUserStatus_query);
+        $checkUserStatus_query = "SELECT COUNT(ticket_record.id) FROM `ticket_record` LEFT JOIN ticket_status ON ticket_status.id = ticket_record.status LEFT JOIN ticket_category ON ticket_category.id = ticket_record.category WHERE ticket_record.assign_to = '$assign_to' AND ticket_category.multiple_assignation = '0' AND ticket_status.name NOT LIKE '%review%' AND ticket_status.name NOT LIKE '%close%'";
         $stepsLog .= date(DATE_ATOM) . " :: checkUserStatus_query => $checkUserStatus_query \n\n";
+        $checkUserStatus = $conn->query($checkUserStatus_query);
         $checkUserStatus = mysqli_fetch_column($checkUserStatus);
         $stepsLog .= date(DATE_ATOM) . " :: checkUserStatus fetch Data => $checkUserStatus \n\n";
         if($checkUserStatus > 0) {

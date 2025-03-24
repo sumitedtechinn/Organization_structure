@@ -13,6 +13,8 @@ if (isset($_REQUEST['ticked_id'])) {
 }
 
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.min.css"/>
+
 <!-- Modal -->
 <div class="card-body" >
     <div class="border p-4 rounded">
@@ -22,8 +24,8 @@ if (isset($_REQUEST['ticked_id'])) {
         <hr/>
         <form role="form" id="form-deadline" action="/app/tickets/storeAndupdateTicket" method="POST">
             <div class="mb-3">
-                <label class="form-label">Pick a Date</label>
-                <input type="date" class="form-control" name="deadline_date" id="deadline_date" value="<?php echo !empty($deadLine_date) ? $deadLine_date : '' ?>" >
+                <label class="form-label">Pick a Date & Time</label>
+                <input type="text" id="deadline_date" name="deadline_date" class="form-control" placeholder="date-time .."/>
             </div>
             <hr/>
             <div class="row mb-2">
@@ -35,12 +37,17 @@ if (isset($_REQUEST['ticked_id'])) {
         </form>
     </div>
 </div>
-
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
 <script type="text/javascript">  
 
 $('#hide-modal').click(function() {
     $('.modal').modal('hide');
+});
+
+$('#deadline_date').datetimepicker({
+    format: 'Y-m-d H:i:s',
+    step: 30, 
+    minDate : 0,
 });
 
 $(function(){

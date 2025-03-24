@@ -1,0 +1,98 @@
+2025-03-22T07:38:11+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T07:38:11+01:00 :: method inside the checkUserIsAssignByUserOrNot 
+
+2025-03-22T07:38:11+01:00 :: requested data : ticket_id => 9 
+
+2025-03-22T07:38:11+01:00 :: respose => {"status":200,"message":"User allowed to close the Ticket successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-22T08:12:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T08:12:46+01:00 :: method inside the InsertTicket 
+
+2025-03-22T08:12:46+01:00 :: requested data => {"task_name":"Testing Ticket System ","status":"1","category":"2","priority":"1","department":"12","task_description":"Test the ticket history record ","attachment":null}
+
+2025-03-22T08:12:46+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`,`requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES ('ED-10','Testing Ticket System ','Test the ticket history record ','edtech','1','1','1','2','12','Super Admin','','superadmin@edtechinnovate.com','') 
+
+2025-03-22T08:12:46+01:00 insert history query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`status`,`priority`, `category`, `department`) VALUES ('11','1','1','1','2','12') 
+
+2025-03-22T08:12:46+01:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-22T08:15:22+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T08:15:22+01:00 :: method inside the checkUserStatusAsDevelopment 
+
+2025-03-22T08:15:22+01:00 :: requested data : assign_to => 24 
+
+2025-03-22T08:15:22+01:00 :: checkUserStatus_query => SELECT COUNT(id) FROM `ticket_record` WHERE assign_to = '24' AND status = '2' 
+
+2025-03-22T08:15:22+01:00 :: checkUserStatus fetch Data => 0 
+
+2025-03-22T08:15:22+01:00 :: respose => {"status":200,"message":"Assign User successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-22T08:17:42+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T08:17:42+01:00 :: method inside the insertAndUpdateDeadLine 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 and deadline_date => 2025-03-24 
+
+2025-03-22T08:17:42+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET deadline_date = '2025-03-24' WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: method inside the insertTicketHistory 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 
+
+2025-03-22T08:17:42+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('11','19','0','0','1','1','2','12','2025-03-24','') 
+
+2025-03-22T08:17:42+01:00 :: respose => {"status":200,"message":"DeadLine Updated successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-22T08:17:42+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T08:17:42+01:00 :: method inside the updateStatus 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 and status => 7 
+
+2025-03-22T08:17:42+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET status = '7'  WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: method inside the insertTicketHistory 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 
+
+2025-03-22T08:17:42+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('11','19','0','0','7','1','2','12','2025-03-24','') 
+
+2025-03-22T08:17:42+01:00 :: respose => {"status":200,"message":"Status Updated successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-22T08:17:42+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-22T08:17:42+01:00 :: method inside the updateAssignToUser 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 and assignBy_user => 19 , assignTo_user => 24 
+
+2025-03-22T08:17:42+01:00 :: updateTicketRecord_query => UPDATE ticket_record SET assign_by = '19' , assign_to = '24' WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: method inside the insertTicketHistory 
+
+2025-03-22T08:17:42+01:00 :: requested data : ticket_id => 11 
+
+2025-03-22T08:17:42+01:00 :: getUpdatedData_query => SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '11' 
+
+2025-03-22T08:17:42+01:00 :: insertTicketHistory_query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('11','19','19','24','7','1','2','12','2025-03-24','') 
+
+2025-03-22T08:17:42+01:00 :: respose => {"status":200,"message":"User Assign successfully!"}
+
+ ============ End Of Script ================== 
+

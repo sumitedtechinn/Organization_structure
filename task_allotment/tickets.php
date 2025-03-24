@@ -152,7 +152,7 @@ var ticketSetting = {
             data: "task_name",
             render : function(data,type,row) {
                 let task_name = '<div class="text-medium fw-medium text-secondary mb-1">'+data+'</div>';
-                return '<div class ="col-sm-12">'+task_name+'</div><div class = "d-flex justify-content-between"><span class="text-muted small">Created At: '+row.create_date+'</span></div>';
+                return '<div class ="col-sm-12" style = "text-wrap: auto;">'+task_name+'</div><div class = "d-flex justify-content-between"><span class="text-muted small">Created At: '+row.create_date+'</span></div>';
             } 
         },{
             data: "status",
