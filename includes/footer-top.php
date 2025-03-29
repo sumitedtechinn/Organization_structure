@@ -206,13 +206,13 @@ function restoreDetails(id,table) {
 
 function parmanentDeleteDetails(id,table) {
   Swal.fire({
-        title: 'Are you sure?',
-        text: "Data completely remove from record!",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Process.'
+    title: 'Are you sure?',
+    text: "Data completely remove from record!",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Process.'
     }).then((isConfirm) => {
         if (isConfirm.value === true) {
           $.ajax({
@@ -279,7 +279,119 @@ function setNodeColor(color,table) {
     });
 }
 
+async function seeAllNotification() {
+  let session_fetchData = await fetchSessionData(["numOfTicketNotSeen","notificationCount"]);
+  let notification_badge = session_fetchData.notificationCount;
+  let ticket_notification = session_fetchData.numOfTicketNotSeen;
+  let data = {heading:"",message:"",url:"",logo:""};
+  let showAllNotification = [];
+  if(ticket_notification > 0) {
+    data.heading = "New Ticket";
+    data.message = `${ticket_notification} new ticket generated`;
+    data.url = "/task_allotment/tickets";
+    data.logo = ["lni","lni-ticket"];
+    let ticket_anchor = addAnchorTag(data);
+    showAllNotification.push(ticket_anchor);
+  }
+  let notificationListTag = document.getElementsByClassName("header-notifications-list")[0];
+  let notificationBadgeEle = document.getElementById("notify_badge_number");
+  if (notification_badge > 0) {
+    notificationBadgeEle.innerText = notification_badge;
+    showAndHideBadge(notificationBadgeEle,"showBadge","hideBadge");
+  } else {
+    showAndHideBadge(notificationBadgeEle,"hideBadge","showBadge");
+  }
+  const itemsToRemove = notificationListTag.querySelectorAll('a.list_of_notification');
+  itemsToRemove.forEach(item => item.remove());
+  showAllNotification.map((param) => notificationListTag.append(param));
+}
 
+function addAnchorTag(data) {
+  let anchor = makeElement("a",["dropdown-item","list_of_notification"]);
+  anchor.href = data.url;
+  let firstdiv = makeElement("div",["d-flex", "align-items-center"]);
+  let notificationLogoDiv = makeElement("div",["notification-box", "bg-light-primary", "text-primary"]);
+  let icon =  makeElement("i",data.logo);
+  notificationLogoDiv.append(icon);
+  let notificationContentDiv = makeElement("div",["ms-3","flex-grow-1"]);
+  let header = makeElement("h6",["mb-0","dropdown-msg-user"]);
+  header.innerText = data.heading;
+  let message = makeElement("small",["mb-0", "dropdown-msg-text", "text-secondary" ,  "d-flex" ,  "align-items-center"]);
+  message.innerText = data.message;
+  notificationContentDiv.append(header,message);
+  firstdiv.append(notificationLogoDiv,notificationContentDiv);
+  anchor.append(firstdiv);
+  return anchor;
+}
+
+function makeElement(tag,listClass) {
+  let ele = document.createElement(tag);
+  listClass.map((param) => ele.classList.add(param));
+  return ele;
+}
+
+(function(){
+  let notification_badge = <?=$_SESSION['notificationCount']?>;
+  let notificationBadgeEle = document.getElementById("notify_badge_number");
+  if (notification_badge > 0) {
+    notificationBadgeEle.innerText = notification_badge;
+    showAndHideBadge(notificationBadgeEle,"showBadge","hideBadge");
+  } else {
+    showAndHideBadge(notificationBadgeEle,"hideBadge","showBadge");
+  }
+})()
+
+async function checkNotificationBadge() {
+  let session_fetchData = await fetchSessionData(["notificationCount"]);
+  let notification_badge = session_fetchData.notificationCount;
+  let notificationBadgeEle = document.getElementById("notify_badge_number");
+  if (notification_badge > 0) {
+    document.getElementById("notify_badge_number").innerText = notification_badge;
+    showAndHideBadge(notificationBadgeEle,"showBadge","hideBadge");
+  } else {
+    showAndHideBadge(notificationBadgeEle,"hideBadge","showBadge");
+  }
+}
+
+function showAndHideBadge(notificationBadgeEle,addClass,removeClass) {
+  if(notificationBadgeEle.classList.contains(removeClass)) {
+    notificationBadgeEle.classList.remove(removeClass);
+    notificationBadgeEle.classList.add(addClass);
+  } else if (!notificationBadgeEle.classList.contains(addClass)) {
+    notificationBadgeEle.classList.add(addClass);
+  }
+}
+
+function fetchSessionData(sessionRequiredKey) {
+  return new Promise((resolve,reject) => {
+    $.ajax({
+      url: "/app/common/getSessionData", 
+      type: 'POST',
+      data : {sessionRequiredKey},
+      dataType: 'json',
+      success: function(response) {
+        resolve(response);
+      },
+      error : function(response) {
+        reject("Issue to get the data");
+      }
+    });
+  });
+}
+
+function checkNewData() {
+  $.ajax({
+    url: '/app/common/notificationUpdate',
+    type: 'POST',
+    data : {searchNotification : "Ticket"},
+    dataType: 'json',
+    success: function(data) {
+      seeAllNotification();
+    }
+  });
+}
+
+setInterval(checkNewData, 5000); // Check every 5 seconds
 </script>
 
 <style>

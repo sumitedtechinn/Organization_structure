@@ -19,15 +19,14 @@ if (isset($_POST['order'])) {
 if (isset($columnSortOrder)) {
     $orderby = "ORDER BY $columnName $columnSortOrder";
 } else {
-    $orderby = "ORDER BY created_at DESC";
+    $orderby = "ORDER BY ticket_record.created_at DESC";
 }
 
 $searchValue = mysqli_real_escape_string($conn, $_POST['search']['value']); // Search value
 
-
 $searchQuery = "";
 if (!empty($searchValue)) {
-    $searchQuery = "AND (task_name LIKE '%$searchValue%')"; 
+    $searchQuery = "AND (ticket_record.task_name LIKE '%$searchValue%')"; 
 }
 
 $filter_query = '';
@@ -49,14 +48,16 @@ $filter_count = $conn->query("SELECT COUNT(id) as `filtered` FROM ticket_record 
 $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
-## Fetch Record
-$tickets = $conn->query("SELECT * , DATE_FORMAT(created_at,'%d-%b-%Y') as `create_date` FROM ticket_record WHERE ticket_record.task_name IS NOT NULL $filter_query $searchQuery $orderby LIMIT $row , $rowperpage");
+## Fetch Record 
+$tickets = $conn->query("SELECT ticket_record.* , DATE_FORMAT(ticket_record.created_at,'%d-%b-%Y') as `create_date` FROM ticket_record WHERE ticket_record.task_name IS NOT NULL $filter_query $searchQuery $orderby LIMIT $row , $rowperpage");
 $data = [];
 if ($tickets->num_rows > 0) {
     $i = 1;
     while($row = mysqli_fetch_assoc($tickets)) {
         $statusInfo = $conn->query("SELECT name , color FROM `ticket_status` WHERE id = '". $row['status'] ."'");
         $statusInfo = mysqli_fetch_assoc($statusInfo);
+        $notification_record = $conn->query("SELECT id FROM notifications WHERE ticket_id = '". $row["id"] ."' AND user_id = '" .$_SESSION['ID']. "'");
+        $ticketView = ($notification_record->num_rows > 0) ? 'seen' : 'new';
         $data[] = array(
             "ID" => $row["id"],
             "sqNo" => $i,
@@ -64,6 +65,7 @@ if ($tickets->num_rows > 0) {
             "unique_id" => $row['unique_id'],
             "statusName" => $statusInfo['name'],
             "statusColor" => $statusInfo['color'],
+            "ticketSeenStatus" => $ticketView,
             "create_date" => $row['create_date'],
         );
         $i++;

@@ -79,7 +79,7 @@
 }
 
 .nav_course_h::-webkit-scrollbar-track {
-  background-color: #f8f8f8;
+  background-color:rgb(185, 176, 176);
   /* Track color */
 }
 
@@ -151,7 +151,7 @@ var ticketSetting = {
         },{
             data: "task_name",
             render : function(data,type,row) {
-                let task_name = '<div class="text-medium fw-medium text-secondary mb-1">'+data+'</div>';
+                let task_name = '<div class="text-medium fw-medium mb-1" id = "task_name">'+data+'</div>';
                 return '<div class ="col-sm-12" style = "text-wrap: auto;">'+task_name+'</div><div class = "d-flex justify-content-between"><span class="text-muted small">Created At: '+row.create_date+'</span></div>';
             } 
         },{
@@ -170,6 +170,17 @@ var ticketSetting = {
             }
         }
     ],
+    rowCallback: function(row, data) {
+        if (data.ticketSeenStatus == 'new') {
+            Array.from(row?.children).forEach((param) => {
+                param.style.backgroundColor = '#f0f4fb7d';
+                let task_name = param.querySelector("div #task_name");
+                if(task_name !== null) {
+                    task_name.classList.add("text-secondary");
+                }   
+            });       
+        }
+    },  
     "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     "destroy": true,
     "scrollCollapse": true,
@@ -262,7 +273,18 @@ async function viewTicketDetails(id) {
         fitchTicketSideBar("/app/tickets/viewTicketSideBar",id)
     ]);
     showDeadLine();
+    insertNotification(id);
 }
+
+async function insertNotification(ticket_id) {
+    const data = await fetchData("/app/tickets/storeAndupdateTicket",{ticket_id,method:"insertNotification"});
+    if(data != null) {
+        if (data.status == '200' && data.message != "Notification already added") {
+            $("#ticketTable").DataTable(ticketSetting);
+            checkNotificationBadge();
+        }
+    }   
+}   
 
 async function fetchTicketDiscription(url,id) {
     const data = await postMethod(url,{id});
@@ -292,8 +314,9 @@ async function getSideBarInputFieldData() {
 async function updateTicketInfo(selectedValue,ticket_id,methodName) {
     if (methodName == "updateAssignToUser") {
         let status = document.getElementById("status").getAttribute("data-custom-value").split("_").filter((param,index,array) => (index == array.length-1)).join(" ");
+        let category = document.getElementById("category").getAttribute("data-custom-value").split("_").filter((param,index,array) => (index == array.length-1)).join(" ");
         if (status == '1') {
-            const checkAssignUserTicket = await checkUserAssignTicketStatus(selectedValue);
+            const checkAssignUserTicket = await checkUserAssignTicketStatus(selectedValue,category);
             if (checkAssignUserTicket.status == '400') {
                 passWarningMessage("Assignation Not Allow",checkAssignUserTicket.message);
                 viewTicketDetails(ticket_id);
@@ -318,7 +341,7 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
              * 2) And for other then that show Privious Deadline with update option 
              */
             if ( status == '4' || status == '5') {
-                passWarningMessage("Status Change Not Allow","Status change from hold to review or close are Nnot allowed");
+                passWarningMessage("Status Change Not Allow","Status change from hold to review or close are not allowed");
                 viewTicketDetails(ticket_id);
                 return ;
             }
@@ -327,7 +350,7 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
                 toastr.error(deadLine_response.message);
                 return viewTicketDetails(ticket_id);
             }
-
+            document.getElementById("timer").style.display = "block";
         } // Condition for status change to review
         else if (status == '4') {
             //Give one alert notice to user before updating the status
@@ -363,6 +386,7 @@ async function updateTicketInfo(selectedValue,ticket_id,methodName) {
              */
             const holdTicketFormResponse = await holdTicketForm(ticket_id,status);
             if (holdTicketFormResponse.status == '200') {
+                document.getElementById("timer").style.display = "none";
                 toastr.success(holdTicketFormResponse.message);
             } else {
                 toastr.error(holdTicketFormResponse.message);
@@ -471,10 +495,14 @@ function passWarningMessage(title,text) {
 /**
  *  Check User Already Assign the New Development on Any Ticket
  */
-async function checkUserAssignTicketStatus(params) {
-    const data = await fetchData("/app/tickets/storeAndupdateTicket",{"assignTo" : params,"method":"checkUserStatusAsDevelopment"});
-    if(data != null) {
-        return data;
+async function checkUserAssignTicketStatus(params,category) {
+    if(category == '1') {
+        const data = await fetchData("/app/tickets/storeAndupdateTicket",{"assignTo" : params,"method":"checkUserStatusAsDevelopment"});
+        if(data != null) {
+            return data;
+        }
+    } else {
+        return {status : 200};
     }
 }
 
@@ -487,7 +515,7 @@ function showDeadLine() {
         '4' : {class : "bg-warning" , message : "Ticket In-review"} ,
     }
     const [deadline_date,status] = timer.getAttribute("data-custom-value").split("_");
-    if (deadline_date == "deadLine not set") {
+    if (deadline_date == "deadLine not set" || status == '6') {
         timer.style.display = "none";
         return;
     }

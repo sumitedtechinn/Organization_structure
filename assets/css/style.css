@@ -1845,16 +1845,9 @@ a {
 	display: block;
 	
 }
-
-
-
   
 }
-
-
-
   @media screen and (max-width:767px) {
-
 	.top-header .navbar .dropdown-menu::after {
 		display: none
 	}
@@ -1870,9 +1863,6 @@ a {
 	/* .by-device-container {
 		height: 210px;
 	} */
-
-
-
 }
 
 
@@ -1881,4 +1871,18 @@ a {
 	.chat-top-header-menu {
 		display: none
 	}
+}
+.top-header .navbar .nav-link .notify-badge {
+    position: relative !important;
+    top: 10px !important;
+    right: -9px !important;
+}
+
+.showBadge{
+	display: block !important;
+	text-align: center;
+}
+
+.hideBadge{
+	display: none !important;
 }

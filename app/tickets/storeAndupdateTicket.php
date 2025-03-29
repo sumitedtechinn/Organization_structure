@@ -77,6 +77,10 @@ if(isset($_REQUEST['task_name']) && isset($_REQUEST['ticket_category']) && isset
     $assign_to = mysqli_real_escape_string($conn,$_REQUEST['assignTo']);
     $method = mysqli_real_escape_string($conn,$_REQUEST['method']);
     $method($assign_to);
+} elseif ( isset($_REQUEST['method']) && $_REQUEST['method'] == 'insertNotification' && isset($_REQUEST['ticket_id'])) {
+    $ticket_id = mysqli_real_escape_string($conn,$_REQUEST['ticket_id']);
+    $method = mysqli_real_escape_string($conn,$_REQUEST['method']);
+    $method($ticket_id);
 } else {
     $stepsLog .= date(DATE_ATOM) . " :: All required keys are not present \n\n";
     saveLog(showResponse(false,"All required keys are not present"));
@@ -319,13 +323,55 @@ function insertTicketHistory($ticket_id) {
         $getUpdatedData = mysqli_fetch_assoc($getUpdatedData);
         $assign_by = !empty($getUpdatedData['assign_by']) ? $getUpdatedData['assign_by'] : 0;
         $assign_to = !empty($getUpdatedData['assign_to']) ? $getUpdatedData['assign_to'] : 0;
-        $insertTicketHistory_query = "INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('$ticket_id','" .$_SESSION['ID']. "','$assign_by','$assign_to','". $getUpdatedData['status'] ."','". $getUpdatedData['priority'] ."','". $getUpdatedData['category'] ."','". $getUpdatedData['department'] ."','" . $getUpdatedData['deadline_date'] . "','" . $getUpdatedData['timer_stop'] . "')";
-        $stepsLog .= date(DATE_ATOM) . " :: insertTicketHistory_query => $insertTicketHistory_query \n\n";
-        $insertTicketHistory = $conn->query($insertTicketHistory_query);
+        $timer_stop = !empty($getUpdatedData['timer_stop']) ? $getUpdatedData['timer_stop'] : null;
+        
+        $insertTicketHistory_query = "INSERT INTO `ticket_history` (`ticket_id`, `updated_by`, `assign_by`, `assign_to`, `status`, `priority`,`category`, `department`, `deadline_date`, `timer_stop`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($insertTicketHistory_query);
+
+        // Properly bind `$timer_stop` to support `null`
+        $stmt->bind_param("iiiiisssss", 
+            $ticket_id,
+            $_SESSION['ID'],
+            $assign_by,
+            $assign_to,
+            $getUpdatedData['status'],
+            $getUpdatedData['priority'],
+            $getUpdatedData['category'],
+            $getUpdatedData['department'],
+            $getUpdatedData['deadline_date'],
+            $timer_stop
+        );
+
+        if ($stmt->execute()) {
+            $stepsLog .= date(DATE_ATOM) . " :: Insert into ticket_history successful \n\n";
+        } else {
+            throw new Exception("Insert into ticket_history failed: " . $stmt->error);
+        }
     } catch(Exception $e) {
         saveLog(showResponse(false,"Error : ". $e->getMessage()));
     }
 }
+// function insertTicketHistory($ticket_id) {
+    
+//     global $conn,$stepsLog;
+//     $stepsLog .= date(DATE_ATOM). " :: method inside the insertTicketHistory \n\n";
+//     $stepsLog .= date(DATE_ATOM). " :: requested data : ticket_id => $ticket_id \n\n";
+//     try {
+//         $getUpdatedData_query = "SELECT assign_by , assign_to , status , priority , category , department ,deadline_date,timer_stop FROM `ticket_record` WHERE id = '$ticket_id'";
+//         $getUpdatedData = $conn->query($getUpdatedData_query);
+//         $stepsLog .= date(DATE_ATOM) . " :: getUpdatedData_query => $getUpdatedData_query \n\n";
+//         $getUpdatedData = mysqli_fetch_assoc($getUpdatedData);
+//         $assign_by = !empty($getUpdatedData['assign_by']) ? $getUpdatedData['assign_by'] : 0;
+//         $assign_to = !empty($getUpdatedData['assign_to']) ? $getUpdatedData['assign_to'] : 0;
+//         $timer_stop = !empty($getUpdatedData['timer_stop']) ? $getUpdatedData['timer_stop'] : null;
+//       	echo  "fbjnfvjnvjf => ".$timer_stop;
+//         $insertTicketHistory_query = "INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`assign_by`,`assign_to`,`status`,`priority`, `category`, `department`,`deadline_date`,`timer_stop`) VALUES ('$ticket_id','" .$_SESSION['ID']. "','$assign_by','$assign_to','". $getUpdatedData['status'] ."','". $getUpdatedData['priority'] ."','". $getUpdatedData['category'] ."','". $getUpdatedData['department'] ."','" . $getUpdatedData['deadline_date'] . "','$timer_stop')";
+//         $stepsLog .= date(DATE_ATOM) . " :: insertTicketHistory_query => $insertTicketHistory_query \n\n";
+//         $insertTicketHistory = $conn->query($insertTicketHistory_query);
+//     } catch(Exception $e) {
+//         saveLog(showResponse(false,"Error : ". $e->getMessage()));
+//     }
+// }
 
 function checkUserStatusAsDevelopment($assign_to) {
 
@@ -344,6 +390,30 @@ function checkUserStatusAsDevelopment($assign_to) {
             saveLog(showResponse(true,"Assign User"));
         }
     } catch(Exception $e) {
+        saveLog(showResponse(false,"Error : ". $e->getMessage()));
+    }
+}
+
+function insertNotification($ticket_id) {
+
+    global $conn,$stepsLog;
+    $stepsLog .= date(DATE_ATOM). " :: method inside the insertNotification \n\n";
+    $stepsLog .= date(DATE_ATOM). " :: requested data : assign_to => $ticket_id \n\n";
+    try {
+        $user_id = $_SESSION['ID'];
+        $chechNotification_query = "SELECT id FROM `notifications` WHERE ticket_id = '$ticket_id' AND user_id = '$user_id'";
+        $chechNotificationStatus = $conn->query($chechNotification_query);
+        if($chechNotificationStatus->num_rows > 0) {
+            saveLog(showResponse(true,"Notification already added"));
+        } else {
+            $insertNotification = $conn->query("INSERT INTO `notifications`(`ticket_id`, `user_id`) VALUES ('$ticket_id','$user_id')");
+            $_SESSION['numOfTicketNotSeen'] = $_SESSION['numOfTicketNotSeen'] - 1;
+            if ($_SESSION['numOfTicketNotSeen'] < 1) {
+                $_SESSION['notificationCount'] -= 1;
+            }
+            saveLog(showResponse($insertNotification,"Notification added"));
+        }
+    } catch (Exception $e) {
         saveLog(showResponse(false,"Error : ". $e->getMessage()));
     }
 }

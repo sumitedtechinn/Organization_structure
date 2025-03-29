@@ -92,9 +92,13 @@ var ticketCategorySetting = {
                 var del = '';
                 <?php if(in_array('Tickets Category Update',$_SESSION['permission'])) { ?>
                      edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                <?php } else { ?>
+                    edit = '<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Disabled" ><i class="bi bi-pencil-fill"></i></div>';
                 <?php } ?>
                 <?php if(in_array('Tickets Category Delete',$_SESSION['permission'])) { ?>
                      del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;ticket_category&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                <?php } else { ?>
+                    del = '<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Disabled"><i class="bi bi-trash-fill"></i></div>';
                 <?php } ?>
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             }

@@ -39,7 +39,11 @@ switch ($ticket_details['status_value']) {
     case '5': // Status in close state
         $validationForAssignTo = $validationForStatus = 'disabled';
         break;
-
+    case '6':
+        if($_SESSION['ID'] == $ticket_details['assign_to']) {
+            $validationForStatus = 'disabled';
+        }
+        break;
     default:
         if ($_SESSION['role'] != '1') {
             $validationForAssignTo = $validationForStatus = 'disabled';

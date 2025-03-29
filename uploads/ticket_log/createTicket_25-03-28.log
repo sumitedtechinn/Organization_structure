@@ -1,0 +1,538 @@
+2025-03-28T08:46:47+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:46:47+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:46:47+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:46:47+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:48:26+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:48:26+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:48:26+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:48:26+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:50:29+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:50:29+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:50:29+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:50:29+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:51:31+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:51:31+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:51:31+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:51:31+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:53:13+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:53:13+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:53:13+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:53:13+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:54:21+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:54:21+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:54:21+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:54:21+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:54:45+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:54:45+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:54:45+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:54:45+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:55:35+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:55:35+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:55:35+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:55:35+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:39+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:39+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:39+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:56:39+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:45+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:45+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:45+01:00 :: requested data : assign_to => 1 
+
+2025-03-28T08:56:45+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:46+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:46+01:00 :: requested data : assign_to => 9 
+
+2025-03-28T08:56:46+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:47+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:47+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:47+01:00 :: requested data : assign_to => 10 
+
+2025-03-28T08:56:47+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:48+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:48+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:48+01:00 :: requested data : assign_to => 8 
+
+2025-03-28T08:56:48+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:48+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:48+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:48+01:00 :: requested data : assign_to => 7 
+
+2025-03-28T08:56:48+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:50+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:50+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:50+01:00 :: requested data : assign_to => 4 
+
+2025-03-28T08:56:50+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:52+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:52+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:52+01:00 :: requested data : assign_to => 5 
+
+2025-03-28T08:56:52+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:56:54+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:56:54+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:56:54+01:00 :: requested data : assign_to => 2 
+
+2025-03-28T08:56:54+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:57:03+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:57:03+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:57:03+01:00 :: requested data : assign_to => 3 
+
+2025-03-28T08:57:03+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T08:57:22+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T08:57:22+01:00 :: method inside the insertNotification 
+
+2025-03-28T08:57:22+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T08:57:22+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T10:36:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T10:36:06+01:00 :: method inside the insertNotification 
+
+2025-03-28T10:36:06+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T10:36:07+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T10:36:27+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T10:36:27+01:00 :: method inside the insertNotification 
+
+2025-03-28T10:36:27+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T10:36:27+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T10:45:07+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T10:45:07+01:00 :: method inside the insertNotification 
+
+2025-03-28T10:45:07+01:00 :: requested data : assign_to => 5 
+
+2025-03-28T10:45:07+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T10:45:50+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T10:45:50+01:00 :: method inside the InsertTicket 
+
+2025-03-28T10:45:50+01:00 :: requested data => {"task_name":"ios Update ","status":"1","category":"3","priority":"1","department":"12","task_description":"New App in  IOS","attachment":null}
+
+2025-03-28T10:45:50+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`,`requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES ('ED-11','ios Update ','New App in  IOS','edtech','1','1','1','3','12','Super Admin','','superadmin@edtechinnovate.com','') 
+
+2025-03-28T10:45:50+01:00 insert history query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`status`,`priority`, `category`, `department`) VALUES ('12','1','1','1','3','12') 
+
+2025-03-28T10:45:50+01:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T10:45:50+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T10:45:50+01:00 :: method inside the insertNotification 
+
+2025-03-28T10:45:50+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T10:45:50+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:00:02+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:00:02+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:00:02+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:00:02+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:00:13+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:00:13+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:00:13+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:00:13+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:00:58+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:00:58+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:00:58+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:00:58+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:01:06+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:01:06+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:01:06+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:01:06+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:01:12+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:01:12+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:01:12+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:01:12+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:01:21+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:01:21+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:01:21+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:01:21+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:01:42+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:01:42+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:01:42+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:01:42+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:02:31+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:02:31+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:02:31+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:02:31+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:16:39+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:16:39+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:16:39+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:16:39+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:16:46+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:16:46+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:16:46+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:16:46+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:18:35+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:18:35+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:18:35+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:18:35+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T11:18:52+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T11:18:52+01:00 :: method inside the insertNotification 
+
+2025-03-28T11:18:52+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T11:18:52+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:01:54+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:01:54+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:01:54+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:01:54+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:01:59+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:01:59+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:01:59+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:01:59+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:43:59+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:43:59+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:43:59+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:43:59+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:29+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:29+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:29+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:44:29+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:50+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:50+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:50+01:00 :: requested data : assign_to => 1 
+
+2025-03-28T12:44:50+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:52+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:52+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:52+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:44:52+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:53+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:53+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:53+01:00 :: requested data : assign_to => 11 
+
+2025-03-28T12:44:53+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:54+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:54+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:54+01:00 :: requested data : assign_to => 10 
+
+2025-03-28T12:44:54+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:44:55+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:44:55+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:44:55+01:00 :: requested data : assign_to => 9 
+
+2025-03-28T12:44:55+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T12:45:19+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T12:45:19+01:00 :: method inside the insertNotification 
+
+2025-03-28T12:45:19+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T12:45:19+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:10:58+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:10:58+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:10:58+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T13:10:58+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:11:07+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:11:07+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:11:07+01:00 :: requested data : assign_to => 12 
+
+2025-03-28T13:11:07+01:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:11:08+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:11:08+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:11:08+01:00 :: requested data : assign_to => 10 
+
+2025-03-28T13:11:08+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:11:10+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:11:10+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:11:10+01:00 :: requested data : assign_to => 9 
+
+2025-03-28T13:11:10+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:12:07+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:12:07+01:00 :: method inside the InsertTicket 
+
+2025-03-28T13:12:07+01:00 :: requested data => {"task_name":"Skill App ERP System","status":"1","category":"2","priority":"1","department":"12","task_description":"Fix all the issue show in app login page ","attachment":null}
+
+2025-03-28T13:12:07+01:00 insert query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`,`requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES ('ED-12','Skill App ERP System','Fix all the issue show in app login page ','edtech','1','1','1','2','12','Super Admin','','superadmin@edtechinnovate.com','') 
+
+2025-03-28T13:12:07+01:00 insert history query => INSERT INTO `ticket_history`(`ticket_id`, `updated_by`,`status`,`priority`, `category`, `department`) VALUES ('13','1','1','1','2','12') 
+
+2025-03-28T13:12:07+01:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:12:07+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:12:07+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:12:07+01:00 :: requested data : assign_to => 13 
+
+2025-03-28T13:12:07+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-03-28T13:12:20+01:00 :: StoreAndupdateTicket Script Start 
+
+2025-03-28T13:12:20+01:00 :: method inside the insertNotification 
+
+2025-03-28T13:12:20+01:00 :: requested data : assign_to => 13 
+
+2025-03-28T13:12:20+01:00 :: respose => {"status":200,"message":"Notification added successfully!"}
+
+ ============ End Of Script ================== 
+
