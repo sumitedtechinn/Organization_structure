@@ -90,6 +90,18 @@ thead {
                             </div>
                         </div>
                     </div>
+                    <div class="col">
+                        <div class="card overflow-hidden radius-5">
+                            <div class="card-body" style="background-color: #dcdee21a;">
+                                <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
+                                    <div>
+                                        <div class="cardleave">Earned Leave <span style="font-size: small;">( Yearly ) </span></div>
+                                        <div style="color: gray;">Used : <span id="earnedLeaveUsed"></span> | Available : <span id="earnedLeaveAvailiable"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- End row -->

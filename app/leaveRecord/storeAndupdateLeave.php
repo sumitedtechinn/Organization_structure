@@ -77,6 +77,20 @@ function insertLeave() {
             }
         }
 
+        if ($leave_type == '7') {
+            $usedEarnedLeave = usedEarnedLeave();
+            $d1 = strtotime($start_date);
+            $d2 = strtotime($end_date);
+            $diff = $d2 - $d1;
+            $day = $diff / (60*60*24);
+            
+            if  (($day+$usedEarnedLeave) >= 6 ) {
+                $stepsLog .= date(DATE_ATOM) . " :: Only Six Earned leave are allowed annually \n\n";
+                showResponse(false,'Only Six Earned leave are allowed annually');
+                saveLog();
+            }
+        }
+
         $user_name = $_SESSION['Name'];
         $insert = "INSERT INTO `leave_record`(`user_id`, `leave_type`, `start_date`, `end_date`, `mail_to`, `mail_cc`, `mail_subject`, `mail_body`, `supported_document`, `status`) VALUES ('$user_id','$leave_type','$start_date','$end_date','$mail_to','$mail_cc','$mail_subject','$mail_reason','$path_name','3')"; 
         $insert_query = $conn->query($insert);
@@ -287,5 +301,14 @@ function usedRestrictedLeave() {
     $restrictedLeave = $conn->query($query);
     $restrictedLeave = mysqli_fetch_column($restrictedLeave);
     return $restrictedLeave;     
+}
+
+function usedEarnedLeave() {
+
+    global $conn;
+    $query = "SELECT SUM(CASE WHEN leave_type = '7' AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND status = '1' THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `earned_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
+    $earnedLeave = $conn->query($query);
+    $earnedLeave = mysqli_fetch_column($earnedLeave);
+    return $earnedLeave;     
 }
 ?>

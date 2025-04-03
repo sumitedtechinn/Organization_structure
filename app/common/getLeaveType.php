@@ -10,6 +10,9 @@ if($leaveTypeData->num_rows > 0) {
     if(removeRestrictedLeave()) {
         unset($leaveType['4']);
     }
+    if(removeEarnedLeave()) {
+        unset($leaveType['7']);
+    }
     echo makeoptionTag($leaveType);
 }
 
@@ -33,6 +36,15 @@ function removeRestrictedLeave() : bool {
     $restrictedLeave = $conn->query($query);
     $restrictedLeave = mysqli_fetch_column($restrictedLeave);
     return ($restrictedLeave >= 2 ) ? true : false;     
+}
+
+function removeEarnedLeave() : bool {
+
+    global $conn;
+    $query = "SELECT SUM(CASE WHEN leave_type = '7' AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND status = '1' THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `restricted_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
+    $restrictedLeave = $conn->query($query);
+    $restrictedLeave = mysqli_fetch_column($restrictedLeave);
+    return ($restrictedLeave >= 6 ) ? true : false;     
 }
 
 ?>
