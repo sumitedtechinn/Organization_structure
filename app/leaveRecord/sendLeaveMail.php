@@ -12,9 +12,8 @@ $data_field = json_decode($data_field, true);
 
 call_user_func($data_field['method'], $data_field);
 
-function leaveRequestMail($data_field)
-{
-
+function leaveRequestMail($data_field) {
+    
     // echo "<pre>";
     // print_r($data_field);
     // $receiver_name = $data_field['receiver_name'];

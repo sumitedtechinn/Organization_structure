@@ -391,7 +391,7 @@ function checkNewData() {
   });
 }
 
-setInterval(checkNewData, 5000); // Check every 5 seconds
+setInterval(checkNewData, 5000*60); // Check every 5 seconds
 </script>
 
 <style>

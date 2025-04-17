@@ -12,6 +12,11 @@ if(isset($data_field['ticketCategory_id'])) {
     $id = mysqli_real_escape_string($conn,$data_field['ticketCategory_id']);
     $ticket = $conn->query("SELECT * FROM `ticket_category` WHERE id = '$id'");
     $ticketCategory_details = mysqli_fetch_assoc($ticket);
+    $assignErpRole = '';
+    if (!empty($ticketCategory_details['erpRole'])) {
+        $assignErpRole = json_decode($ticketCategory_details['erpRole'],true);
+        $assignErpRole = implode('@@',$assignErpRole);
+    }
 }
 
 ?>
@@ -55,6 +60,13 @@ if(isset($data_field['ticketCategory_id'])) {
                 </div>
             </div>
             <div class="row mb-2">
+                <label class="col-sm-4 col-form-label">Assing ERP Role</label>
+                <div class="col-sm-8">
+                    <select type="text" class="form-control form-control-sm multiple-select select2" multiple="multiple" name="erpRole[]" id="erpRole" <?php if(!empty($ticketCategory_details)) : ?> disabled <?php endif;?>> 
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-2">
                 <label class="col-sm-4 col-form-label">Multiple Assignation</label>
                 <div class="col-sm-8 mt-3 gap-1">
                     <input class="form-check-input" type="radio" name="multiple_assignation" value="1" <?php if(!empty($ticketCategory_details) && $ticketCategory_details['multiple_assignation'] == '1') : ?> checked <?php endif;?>>
@@ -82,6 +94,11 @@ if(isset($data_field['ticketCategory_id'])) {
 
 $(document).ready(function () {
     getDepartmentList();
+    <?php if(!empty($ticketCategory_details) && !empty($assignErpRole)) { ?>
+        createErpRoleOption('<?=$assignErpRole?>');
+    <?php } else { ?>
+        createErpRoleOption();
+    <?php } ?>
 });
 
 async function fetchData(url,params) {
@@ -115,6 +132,24 @@ async function getDepartmentList() {
     for (const key in data) {
         document.getElementById("department").innerHTML = data[key];
     }
+}
+
+function createErpRoleOption(slectedRole = null) {
+    let erprole = ['Administrator','Center','Sub-Center','Student','University Head','Operations','Counsellor','Sub-Counsellor'];
+    let selectedRoleArr = [];
+    if (slectedRole !== null && slectedRole !== "") {
+        selectedRoleArr = slectedRole.split("@@");
+    }
+    let select = document.getElementById("erpRole");
+    let optionTag = erprole.map((param) =>  {
+        let option = document.createElement("option");
+        option.value = param;
+        option.textContent = param;   
+        if(selectedRoleArr.includes(param)) {
+            option.setAttribute("selected","true");
+        }
+        select.append(option);
+    });
 }
 
 $(function(){

@@ -50,11 +50,17 @@ if ($tickets->num_rows > 0) {
     while($row = mysqli_fetch_assoc($tickets)) {
         $departmentList = $conn->query("SELECT department_name FROM `Department` WHERE id = '".$row['department']."'");
         $departmentList = mysqli_fetch_column($departmentList);
+        $assignErpRole = '';
+        if(!empty($row['erpRole']) || $row['erpRole'] != '' || !is_null($row['erpRole']) ) {
+            $erpRole = json_decode($row['erpRole'],true);
+            $assignErpRole = implode("@@",$erpRole);
+        }
         $data[] = array(
             "ID" => $row["id"],
             "sqNo" => $i,
             "name" => $row['name'],
             "multiple_assignation" => $row['multiple_assignation'],
+            "assignErpRole" => $assignErpRole, 
             "department" => $departmentList,
             "created_at" => $row['created_at'],
         );

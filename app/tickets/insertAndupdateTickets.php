@@ -216,7 +216,7 @@ $("#form-ticket").on("submit",function(e){
                         viewTicketDetails(ticket_id);
                     },250);
                 } else {
-                    $('.modal').modal('hide');
+                    //$('.modal').modal('hide');
                     toastr.error(data.message);
                 }
             }

@@ -1,0 +1,21 @@
+2025-04-15T13:57:24+02:00 :: exceuteWorker method start to execute 
+
+2025-04-15T13:57:24+02:00 :: Job run for => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Action Required: Please Review Your Ticket - GLOCAL-4","body":"\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Document<\/title>\r\n    <style>\r\n        .request_button {\r\n            margin: 4px 2px;\r\n            display: block;\r\n            height: 25px;\r\n            padding: 10px 20px;\r\n            text-align: center;\r\n            border-radius: 16px;\r\n            font-weight: bold;\r\n            line-height: 25px;\r\n        }\r\n    <\/style>\r\n<\/head>\r\n<body>\r\n    \r\n<section>\r\n    <p>Hi <\/p>,\r\n    <div>Our support team has reviewed and worked on your ticket <strong><br \/>\n<b>Warning<\/b>:  Undefined array key \"ticket_uniqueId\" in <b>C:\\xampp\\htdocs\\edtech_organizational_structure\\app\\tickets\\createTicketReviewMessage.php<\/b> on line <b>29<\/b><br \/>\n<\/strong><\/div>.\r\n    <div>We believe the issue has been resolved. Please take a moment to review the ticket.<\/div>\r\n    <div>If the issue is resolved, you can go ahead and close the ticket. If not, feel free to re-open the Ticket.<\/div>\r\n    <p><b>Action Required : <\/b><\/p>\r\n    <div style = \"display:flex;gap:0.5rem;\">\r\n        <a href= \"http:\/\/edtechstrucure.local\/app\/tickets\/storeAndupdateTicket\" id=\"closeButton\" class = \"button request_button\" style = \"background: #40ca58eb;color: white;\">Close<\/a>\r\n        <a href= \"http:\/\/edtechstrucure.local\/api\/ticket\/ReopenTicketReviewMessage\" id=\"reopenButton\" class = \"button request_button\" style = \"background:rgba(234, 168, 36, 0.86);color: white;\">Re-open<\/a>\r\n    <\/div>\r\n    <br><br>\r\n    <small><i>  *This is a system-generated email. No reply is required.<\/i><\/small>\r\n<\/section>\r\n\r\n<script type=\"text\/javascript\">\r\n\r\nvar baseUrl = \"http:\/\/edtechstrucure.local\";\r\n\r\ndocument.getElementById(\"reopenButton\").addEventListener(\"click\" , (e) => {\r\n    let openWindowId ;\r\n    let ticket_id = '18';\r\n    ticket_id = base64_encode(ticket_id);\r\n    if(window.confirm(\"Want to Re-open the ticket?\")) {\r\n        openWindowId = window.open(baseUrl+\"\/api\/ticket\/ReopenTicketReviewMessage.php?ticket_id=\"+ticket_id);\r\n    } \r\n})\r\n\r\ndocument.getElementById(\"closeButton\").addEventListener(\"click\" , async function(e){\r\n    let url = baseUrl+\"\/app\/tickets\/storeAndupdateTicket.php\";\r\n    let param = {\r\n        \"method\" : \"updateTicketStatusReviewToClose\" ,\r\n        \"ticket_id\" : '18' \r\n    };\r\n    const response = await fetch(url , {\r\n        method : \"POST\" , \r\n        body : JSON.stringify(params)\r\n    });\r\n    if(!response.ok) {\r\n        console.error(`HTTP error! Status: ${response.status}`);\r\n    }\r\n    const data = response.json();\r\n    if (data != null) {\r\n        alert(data.message);\r\n    }\r\n})\r\n\r\n<\/script>\r\n<\/body>\r\n<\/html>"}
+
+2025-04-15T13:57:24+02:00 :: Start Exceution of Send Mail function 
+2025-04-15T13:57:29+02:00 :: Mail send successfully 
+
+2025-04-15T13:57:29+02:00 :: Queue is empty. Check Empty count => 0 
+
+2025-04-15T13:57:34+02:00 :: Queue is empty. Check Empty count => 1 
+
+2025-04-15T13:57:39+02:00 :: Queue is empty. Check Empty count => 2 
+
+2025-04-15T13:57:44+02:00 :: Queue is empty. Check Empty count => 3 
+
+2025-04-15T13:57:49+02:00 :: Queue is empty. Check Empty count => 4 
+
+2025-04-15T13:57:49+02:00 :: Stopping worker after multiple empty checks.
+
+ ============ End Of Script ================== 
+

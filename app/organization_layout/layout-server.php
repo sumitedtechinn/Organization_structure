@@ -329,6 +329,7 @@ function getUserInsideVertical() {
     if (!empty($vertical_id)) {
         $searchQuery .= "AND ID = '$vertical_id'";
     }
+    //echo "SELECT ID,Branch_id FROM `Vertical` WHERE organization_id = '$organization_id' $searchQuery AND Deleted_At IS NULL";
     $vertical_list = $conn->query("SELECT ID,Branch_id FROM `Vertical` WHERE organization_id = '$organization_id' $searchQuery AND Deleted_At IS NULL");
     if($vertical_list->num_rows > 0) {
         while($vertical = mysqli_fetch_assoc($vertical_list)) {
@@ -340,6 +341,9 @@ function getUserInsideVertical() {
                         continue;
                     }
                 }
+                // echo "<pre>";
+                // echo "Branch id => $branch_id \n";
+                // echo "SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id = '$branch_id' AND users.Organization_id = '$organization_id' AND Designation.added_inside = '3' AND users.Vertical_id = '$id' AND users.Assinged_Person_id IS NOT NULL AND users.Deleted_At IS NULL \n";
                 $vertical_user = $conn->query("SELECT users.* , Designation.designation_name as `designation` , Designation.color as `color` , Designation.code as `designation_code` FROM users LEFT JOIN Designation ON Designation.ID = users.Designation_id WHERE role = '3' AND users.Branch_id = '$vertical_branch' AND users.Organization_id = '$organization_id' AND Designation.added_inside = '3' AND users.Vertical_id = '$id' AND users.Assinged_Person_id IS NOT NULL AND users.Deleted_At IS NULL");       
                 if($vertical_user->num_rows > 0 ) {
                     while ($row = mysqli_fetch_assoc($vertical_user)) {

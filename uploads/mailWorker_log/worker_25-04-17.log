@@ -1,0 +1,57 @@
+2025-04-17T07:59:58+02:00 :: exceuteWorker method start to execute 
+
+2025-04-17T07:59:58+02:00 :: Job run for => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Action Required: Please Review Your Ticket - GLOCAL-4","body":"\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Document<\/title>\r\n    <style>\r\n        .request_button {\r\n            margin: 4px 2px;\r\n            display: block;\r\n            height: 25px;\r\n            padding: 10px 20px;\r\n            text-align: center;\r\n            border-radius: 16px;\r\n            font-weight: bold;\r\n            line-height: 25px;\r\n        }\r\n    <\/style>\r\n<\/head>\r\n<body>\r\n    \r\n<section>\r\n    <p>Hi GUNISHA SHARMA ,<\/p>\r\n    <div>Our support team has reviewed and worked on your ticket <strong>GLOCAL-4<\/strong><\/div>.\r\n    <div>We believe the issue has been resolved. Please take a moment to review the ticket.<\/div>\r\n    <div>If the issue is resolved, you can go ahead and close the ticket. If not, feel free to re-open the Ticket.<\/div>\r\n    <p><b>Action Required : <\/b><\/p>\r\n    <div style = \"display:flex;gap:0.5rem;\">\r\n        <a href= \"http:\/\/edtechstrucure.local\/app\/tickets\/showCloseTicketResponse?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWNrZXRfaWQiOiIxOCIsIm1ldGhvZCI6InVwZGF0ZVRpY2tldFN0YXR1c1Jldmlld1RvQ2xvc2UiLCJpYXQiOjE3NDQ4Njk1ODAsImV4cCI6MTc0NTA0MjM4MH0.wzUlH8150vqY7bOYIEA5hb-q8IA9pHtvzCn_RKgeSYM\" id=\"closeButton\" class = \"button request_button\" style = \"background: #40ca58eb;color: white;\">Close<\/a>\r\n        <a href= \"http:\/\/edtechstrucure.local\/api\/ticket\/ReopenTicketReviewMessage?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWNrZXRfaWQiOiIxOCIsIm1ldGhvZCI6Imluc2VydFJlb3BlblRpY2tldFF1ZXJ5IiwiaWF0IjoxNzQ0ODY5NTgwLCJleHAiOjE3NDUwNDIzODB9.XYfTp4Gg8ypJ-7N4t_EQre9UNF5iZ38TaDSoIPyhIx8\" id=\"reopenButton\" class = \"button request_button\" style = \"background:rgba(234, 168, 36, 0.86);color: white;\">Re-open<\/a>\r\n    <\/div>\r\n    <br><br>\r\n    <small><i>  *This is a system-generated email. No reply is required.<\/i><\/small>\r\n<\/section>\r\n\r\n<!-- <script type=\"text\/javascript\">\r\n\r\nvar baseUrl = \"http:\/\/edtechstrucure.local\";\r\n\r\ndocument.getElementById(\"closeButton\").addEventListener(\"click\" , async function(e){\r\n    let url = baseUrl+\"\/app\/tickets\/storeAndupdateTicket.php\";\r\n    let param = {\r\n        \"method\" : \"updateTicketStatusReviewToClose\" ,\r\n        \"ticket_id\" : '' \r\n    };\r\n    const response = await fetch(url , {\r\n        method : \"POST\" , \r\n        body : JSON.stringify(params)\r\n    });\r\n    if(!response.ok) {\r\n        console.error(`HTTP error! Status: ${response.status}`);\r\n    }\r\n    const data = response.json();\r\n    if (data != null) {\r\n        alert(data.message);\r\n    }\r\n})\r\n\r\n<\/script> -->\r\n<\/body>\r\n<\/html>"}
+
+2025-04-17T07:59:58+02:00 :: Start Exceution of Send Mail function 
+2025-04-17T08:00:03+02:00 :: Mail send successfully 
+
+2025-04-17T08:00:03+02:00 :: Queue is empty. Check Empty count => 0 
+
+2025-04-17T08:00:08+02:00 :: Queue is empty. Check Empty count => 1 
+
+2025-04-17T08:00:14+02:00 :: Queue is empty. Check Empty count => 2 
+
+2025-04-17T08:00:19+02:00 :: Queue is empty. Check Empty count => 3 
+
+2025-04-17T08:00:24+02:00 :: Queue is empty. Check Empty count => 4 
+
+2025-04-17T08:00:24+02:00 :: Stopping worker after multiple empty checks.
+
+ ============ End Of Script ================== 
+
+2025-04-17T09:47:59+02:00 :: exceuteWorker method start to execute 
+
+2025-04-17T09:47:59+02:00 :: Job run for => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Action Required: New Ticket Created - GLOCAL-4","body":"\r\n        <p>Dear Manager,<\/p>\r\n        <p>This is to inform you that a new ticket (Reference ID: <b>GLOCAL-4<\/b>) has been created by <b><\/b> regarding Exam Form Not Show.<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>GLOCAL-4<\/div>\r\n        <div><b>- Subject: <\/b>Exam Form Not Show<\/div>\r\n        <div><b>- Created On: <\/b><\/div>\r\n        <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}
+
+2025-04-17T09:47:59+02:00 :: Start Exceution of Send Mail function 
+2025-04-17T09:48:05+02:00 :: Mail send successfully 
+
+2025-04-17T09:48:05+02:00 :: Job run for => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Ticket Created Successfully Reference - EDTECH-15","body":"<p>Dear Super Admin,<\/p>\r\n            <p>Thank you for reaching out to our support team.<\/p>\r\n            <div>We have received your ticket (Reference ID: EDTECH-15) regarding <b>INE Tech <\/b>.<\/div>\r\n            <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n            <br>\r\n            <div>Best Regards<\/div>\r\n            <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}
+
+2025-04-17T09:48:05+02:00 :: Start Exceution of Send Mail function 
+2025-04-17T09:48:10+02:00 :: Mail send successfully 
+
+2025-04-17T09:48:10+02:00 :: Job run for => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Action Required: New Ticket Created - EDTECH-15","body":"\r\n        <p>Dear Manager,<\/p>\r\n        <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-15<\/b>) has been created by <b>Super Admin<\/b> regarding INE Tech .<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>EDTECH-15<\/div>\r\n        <div><b>- Subject: <\/b>INE Tech <\/div>\r\n        <div><b>- Created On: <\/b>17-Apr-2025 09:33:51<\/div>\r\n        <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}
+
+2025-04-17T09:48:10+02:00 :: Start Exceution of Send Mail function 
+2025-04-17T09:48:14+02:00 :: Mail send successfully 
+
+2025-04-17T09:48:14+02:00 :: Job run for => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Ticket GLOCAL-4 Reopened by Client","body":"\r\n        <p>Dear Manager,<\/p>\r\n        <div>The client has reopened ticket <strong>GLOCAL-4<\/strong> .<\/div>\r\n        <h4>Client's Query\/Message:<\/h4>\r\n        <p>ftffhhvg ggfgvgvgvcvg<\/p>\r\n        <p>Please review the ticket and proceed accordingly.<\/p>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}
+
+2025-04-17T09:48:14+02:00 :: Start Exceution of Send Mail function 
+2025-04-17T09:48:19+02:00 :: Mail send successfully 
+
+2025-04-17T09:48:19+02:00 :: Queue is empty. Check Empty count => 0 
+
+2025-04-17T09:48:24+02:00 :: Queue is empty. Check Empty count => 1 
+
+2025-04-17T09:48:29+02:00 :: Queue is empty. Check Empty count => 2 
+
+2025-04-17T09:48:34+02:00 :: Queue is empty. Check Empty count => 3 
+
+2025-04-17T09:48:39+02:00 :: Queue is empty. Check Empty count => 4 
+
+2025-04-17T09:48:39+02:00 :: Stopping worker after multiple empty checks.
+
+ ============ End Of Script ================== 
+

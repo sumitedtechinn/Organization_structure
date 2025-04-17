@@ -207,7 +207,7 @@ function getTopMostUserDetails($departmentId) {
     if ($department_details['vertical_id'] == '1' || $department_details['vertical_id'] == '2' || $department_details['vertical_id'] == '3') {
         $vertical = "'1','2','3'";  
     } else {
-        $vertical =  $_SESSION['Vertical_id'];
+        $vertical =  $department_details['vertical_id'];
     }    
     // Fetch users for different scopes in a single query
     $query = "

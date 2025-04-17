@@ -1,0 +1,26 @@
+2025-04-14T20:21:52+02:00 :: exceuteWorker method start to execute 
+
+2025-04-14T20:21:52+02:00 :: Job run for => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"New Ticket Assigned: [Ticket GLOCAL-4]","body":"\r\n        <p>Dear Deepak Singh Rawat,<p>\r\n        <p>A new support ticket has been assigned to you. Please review the details below:<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>GLOCAL-4<\/div>\r\n        <div><b>- Subject: <\/b>Exam Form Not Show<\/div>\r\n        <div><b>Priority: <\/b> High<\/div>\r\n        <div><b>Assigned By: <\/b> Mahinder Nautiyal<\/div>\r\n        <div><b>Date Assigned: <\/b>14-Apr-2025 11:51:41<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}
+
+2025-04-14T20:21:52+02:00 :: Start Exceution of Send Mail function 
+2025-04-14T20:22:06+02:00 :: Mail send successfully 
+
+2025-04-14T20:22:06+02:00 :: Job run for => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Ticket Has Been Assigned - GLOCAL-4","body":"\r\n        <p>Dear GUNISHA SHARMA ,<p>\r\n        <p>Your ticket has been successfully assigned. Please find the ticket details below<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>GLOCAL-4<\/div>\r\n        <div><b>- Subject: <\/b>Exam Form Not Show<\/div>\r\n        <div><b>Priority: <\/b> High<\/div>\r\n        <div><b>Assigned To: <\/b> Deepak Singh Rawat<\/div>\r\n        <div><b>Date Assigned: <\/b>14-Apr-2025 11:51:41<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}
+
+2025-04-14T20:22:06+02:00 :: Start Exceution of Send Mail function 
+2025-04-14T20:22:19+02:00 :: Mail send successfully 
+
+2025-04-14T20:22:19+02:00 :: Queue is empty. Check Empty count => 0 
+
+2025-04-14T20:22:24+02:00 :: Queue is empty. Check Empty count => 1 
+
+2025-04-14T20:22:29+02:00 :: Queue is empty. Check Empty count => 2 
+
+2025-04-14T20:22:34+02:00 :: Queue is empty. Check Empty count => 3 
+
+2025-04-14T20:22:39+02:00 :: Queue is empty. Check Empty count => 4 
+
+2025-04-14T20:22:39+02:00 :: Stopping worker after multiple empty checks.
+
+ ============ End Of Script ================== 
+

@@ -1,0 +1,82 @@
+2025-04-09T07:29:20+02:00: request received => {"ticket_heading":"Ticket on ERP ","ticket_category":"5##11","ticket_description":"Add the Book for NEW added Courser \r\n1) TTH\r\n2) DHJN\r\n3) FJDG   ","requestMethod":"insertTicket","requestfrom":"glocal","priority":"3","status":"1","raised_by":"1","create_person_name":"Admin","create_person_email":"admin@osgu.com","create_person_number":"8851920153"} 
+
+2025-04-09T07:29:20+02:00 :: INSERT query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) 
+
+2025-04-09T07:29:20+02:00 :: INSERT param => ["GLOCAL-2","Ticket on ERP ","Add the Book for NEW added Courser \r\n1) TTH\r\n2) DHJN\r\n3) FJDG   ","glocal","1","1","3","5","11","Admin","8851920153","admin@osgu.com","..\/..\/uploads\/ticket_attachment\/Ticketing_system.pdf"] 
+
+2025-04-09T07:29:20+02:00 :: Insert into ticket successful 
+
+2025-04-09T07:29:20+02:00 :: insertTicketHistory_query => INSERT INTO `ticket_history` (`ticket_id`, `updated_by`, `status`, `priority`, `category`, `department`) VALUES (?,?,?,?,?,?) 
+
+2025-04-09T07:29:20+02:00 :: insertTicketHistory_param => [16,"1","1","3","5","11"] 
+
+2025-04-09T07:29:20+02:00 :: Ticket history is inserted successful 
+
+2025-04-09T07:29:20+02:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T09:16:09+02:00: request received => {"comment":"DBVVFHVBHBHDBHBHBDC  DC HHHDCHC","requestMethod":"insertComment","ticket_id":"16","user_id":"1","user_name":"Admin","user_image":"\/..\/..\/assets\/images\/sample_user.jpeg"} 
+
+2025-04-09T09:16:09+02:00 :: method inside the InsertComment 
+
+2025-04-09T09:16:09+02:00 :: store_attachement => [] 
+
+2025-04-09T09:16:09+02:00 :: INSERT comment query => INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES (?,?,?,?,?,?) 
+
+2025-04-09T09:16:09+02:00 :: insert comment param =>  ["16","1","Admin","\/..\/..\/assets\/images\/sample_user.jpeg","DBVVFHVBHBHDBHBHBDC  DC HHHDCHC","[]"] 
+
+2025-04-09T09:16:09+02:00 :: Comment inserted successful 
+
+2025-04-09T09:16:09+02:00 :: respose => {"status":200,"message":"Comment send successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T12:01:35+02:00: got exception => Column 'attachment' cannot be null in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 962025-04-09T12:01:35+02:00 :: respose => {"status":400,"message":"Exception : Column 'attachment' cannot be null"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T12:06:27+02:00: got exception => Column 'attachment' cannot be null in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 962025-04-09T12:06:27+02:00 :: respose => {"status":400,"message":"Exception : Column 'attachment' cannot be null"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T12:06:46+02:00: got exception => Column 'attachment' cannot be null in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 962025-04-09T12:06:46+02:00 :: respose => {"status":400,"message":"Exception : Column 'attachment' cannot be null"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T12:08:51+02:00: request received => {"ticket_heading":"Jamia ERP ","ticket_category":"3##12","ticket_description":" Update the Jamia ERP panel UI \r\nUse only those color which are matched with Logo    ","requestMethod":"insertTicket","requestfrom":"GLOCAL","priority":"3","status":"1","raised_by":"1","create_person_name":"Admin","create_person_email":"admin@osgu.com","create_person_number":"8851920153"} 
+
+2025-04-09T12:08:51+02:00 :: INSERT query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) 
+
+2025-04-09T12:08:51+02:00 :: INSERT param => ["GLOCAL-3","Jamia ERP "," Update the Jamia ERP panel UI \r\nUse only those color which are matched with Logo    ","GLOCAL","1","1","3","3","12","Admin","8851920153","admin@osgu.com",null] 
+
+2025-04-09T12:08:51+02:00 :: Insert into ticket successful 
+
+2025-04-09T12:08:51+02:00 :: insertTicketHistory_query => INSERT INTO `ticket_history` (`ticket_id`, `updated_by`, `status`, `priority`, `category`, `department`) VALUES (?,?,?,?,?,?) 
+
+2025-04-09T12:08:51+02:00 :: insertTicketHistory_param => [17,"1","1","3","3","12"] 
+
+2025-04-09T12:08:51+02:00 :: Ticket history is inserted successful 
+
+2025-04-09T12:08:51+02:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-09T12:53:09+02:00: request received => {"ticket_heading":"Exam Form Not Show","ticket_category":"2##12","ticket_description":"Exam from not show in my panel login , payment already completed","requestMethod":"insertTicket","requestfrom":"GLOCAL","priority":"3","status":"1","raised_by":"5947","create_person_name":"GUNISHA SHARMA ","create_person_email":"sharmagunisha2@gmail.com","create_person_number":"90XXXXXx89"} 
+
+2025-04-09T12:53:09+02:00 :: INSERT query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) 
+
+2025-04-09T12:53:09+02:00 :: INSERT param => ["GLOCAL-4","Exam Form Not Show","Exam from not show in my panel login , payment already completed","GLOCAL","5947","1","3","2","12","GUNISHA SHARMA ","90XXXXXx89","sharmagunisha2@gmail.com",null] 
+
+2025-04-09T12:53:09+02:00 :: Insert into ticket successful 
+
+2025-04-09T12:53:09+02:00 :: insertTicketHistory_query => INSERT INTO `ticket_history` (`ticket_id`, `updated_by`, `status`, `priority`, `category`, `department`) VALUES (?,?,?,?,?,?) 
+
+2025-04-09T12:53:09+02:00 :: insertTicketHistory_param => [18,"5947","1","3","2","12"] 
+
+2025-04-09T12:53:09+02:00 :: Ticket history is inserted successful 
+
+2025-04-09T12:53:09+02:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+

@@ -1,0 +1,74 @@
+2025-04-12T11:21:12+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T11:21:12+02:00 :: data to push => {"cc":null,"to":null,"subject":null,"body":null} 
+
+2025-04-12T11:21:12+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T11:34:04+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T11:34:04+02:00 :: data to push => {"cc":null,"to":null,"subject":null,"body":null} 
+
+2025-04-12T11:34:04+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T11:37:56+02:00 :: request data => {"data":[{"to":"superadmin@edtechinnovate.com","cc":null,"subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Exam System<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Exam System.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Exam System<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 11:37:56<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}]}
+
+2025-04-12T11:37:56+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T11:37:56+02:00 :: data to push => {"cc":null,"to":null,"subject":null,"body":null} 
+
+2025-04-12T11:37:56+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T11:43:46+02:00 :: request data => {"data":[{"to":"superadmin@edtechinnovate.com","cc":null,"subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Exam System<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Exam System.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Exam System<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 11:43:46<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}]}
+
+2025-04-12T11:43:46+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T11:43:46+02:00 :: data to push => {"cc":null,"to":"superadmin@edtechinnovate.com","subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Exam System<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T11:43:46+02:00 :: data to push => {"cc":"","to":"mahinder@edtechinnovate.com","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Exam System.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Exam System<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 11:43:46<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T11:43:46+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T12:23:55+02:00 :: request data => {"data":[{"to":"superadmin@edtechinnovate.com","cc":null,"subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Exam System<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Exam System.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Exam System<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 12:23:55<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}]}
+
+2025-04-12T12:23:55+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T12:23:55+02:00 :: data to push => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Exam System<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T12:23:55+02:00 :: data to push => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Exam System.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Exam System<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 12:23:55<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T12:23:55+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T13:14:58+02:00 :: request data => {"data":[{"to":"superadmin@edtechinnovate.com","cc":null,"subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Logo Added<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Logo Added.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Logo Added<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 01:14:58<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}]}
+
+2025-04-12T13:14:58+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T13:14:58+02:00 :: data to push => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Ticket Created Successfully Reference - EDTECH-13","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-13) regarding <b>Logo Added<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T13:14:58+02:00 :: data to push => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Action Required: New Ticket Created - EDTECH-13","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-13<\/b>) has been created by <b>Super Admin<\/b> regarding Logo Added.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-13<\/div>\r\n    <div><b>- Subject: <\/b>Logo Added<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 01:14:58<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T13:14:58+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-12T13:51:52+02:00 :: request data => {"data":[{"to":"superadmin@edtechinnovate.com","cc":null,"subject":"Ticket Created Successfully Reference - EDTECH-14","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-14) regarding <b>Devine Dev<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - EDTECH-14","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-14<\/b>) has been created by <b>Super Admin<\/b> regarding Devine Dev.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-14<\/div>\r\n    <div><b>- Subject: <\/b>Devine Dev<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 01:51:52<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "}]}
+
+2025-04-12T13:51:52+02:00 :: Inside => insertEmailDataInQueue() 
+
+2025-04-12T13:51:52+02:00 :: data to push => {"cc":null,"to":"sumitpathak901@gmail.com","subject":"Ticket Created Successfully Reference - EDTECH-14","body":"<p>Dear Super Admin,<\/p>\r\n        <p>Thank you for reaching out to our support team.<\/p>\r\n        <div>We have received your ticket (Reference ID: EDTECH-14) regarding <b>Devine Dev<\/b>.<\/div>\r\n        <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n        <br>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T13:51:52+02:00 :: data to push => {"cc":"","to":"sumitpathak901@gmail.com","subject":"Action Required: New Ticket Created - EDTECH-14","body":"\r\n    <p>Dear Manager,<\/p>\r\n    <p>This is to inform you that a new ticket (Reference ID: <b>EDTECH-14<\/b>) has been created by <b>Super Admin<\/b> regarding Devine Dev.<\/p>\r\n    <p>Ticket Details:<\/p>\r\n    <div><b>- Ticket ID: <\/b>EDTECH-14<\/div>\r\n    <div><b>- Subject: <\/b>Devine Dev<\/div>\r\n    <div><b>- Created On: <\/b>12-Apr-2025 01:51:52<\/div>\r\n    <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n    <div>Best Regards<\/div>\r\n    <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n    "} 
+
+2025-04-12T13:51:52+02:00 :: respose => {"status":200,"message":"Worker Start successfully!"}
+
+ ============ End Of Script ================== 
+

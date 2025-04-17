@@ -36,6 +36,7 @@ th{
                             <th>Category Name</th>
                             <th>Department</th>
                             <th>Multiple Assignation</th>
+                            <th>Assign ERP role</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -79,6 +80,15 @@ var ticketCategorySetting = {
             render : function(data,type,row) {
                 let text = (data == '1') ? "Allow" : "Not-Allow";
                 return '<div class="text-medium fw-medium text-secondary mb-1">'+text+'</div>'; 
+            }
+        },{
+            data : "assignErpRole" , 
+            render : function(data,type,row) {
+                let erpRole = (data != '') ? data.split('@@').reduce((acc,param,index,array) => {
+                    acc += '<span class="badge rounded-pill bg-info" style  = "font-size: 12px;font-weight : 500 !important;">'+param+'</span>';
+                    return acc;
+                } , "") : '<span class="badge rounded-pill bg-info" style  = "font-size: 12px;font-weight : 500 !important;">Not Assign</span>';
+                return '<div class="d-flex justify-content-start align-item-center flex-wrap gap-1" style = "50rem;">'+erpRole+'</div>';
             }
         },{
             data : "created_at",

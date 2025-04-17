@@ -1,0 +1,52 @@
+2025-04-08T12:21:55+02:00: got error => strlen(): Argument #1 ($string) must be of type string, array given in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1392025-04-08T12:21:55+02:00 :: respose => {"status":400,"message":"Error : strlen(): Argument #1 ($string) must be of type string, array given"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T12:31:32+02:00: got error => strlen(): Argument #1 ($string) must be of type string, array given in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1392025-04-08T12:31:32+02:00 :: respose => {"status":400,"message":"Error : strlen(): Argument #1 ($string) must be of type string, array given"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T13:08:24+02:00: request received => {"comment":"dsbbdcbcdbcdb","requestMethod":"insertComment","ticket_id":"15","user_id":"1","user_name":"Admin","user_image":"\/assets\/img\/default-user.png"} 
+
+2025-04-08T13:08:24+02:00 :: method inside the InsertComment 
+
+2025-04-08T13:08:24+02:00 :: store_attachement => [] 
+
+2025-04-08T13:08:24+02:00 :: INSERT comment query => INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES (?,?,?,?,?,?) 
+
+2025-04-08T13:08:24+02:00 :: insert comment param =>  ["15","1","Admin","\/assets\/img\/default-user.png","dsbbdcbcdbcdb","[]"] 
+
+2025-04-08T13:08:24+02:00 :: Comment inserted successful 
+
+2025-04-08T13:08:24+02:00 :: respose => {"status":200,"message":"Comment send successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T13:14:19+02:00: got error => strlen(): Argument #1 ($string) must be of type string, array given in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1392025-04-08T13:14:19+02:00 :: respose => {"status":400,"message":"Error : strlen(): Argument #1 ($string) must be of type string, array given"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T13:17:13+02:00: got error => strlen(): Argument #1 ($string) must be of type string, array given in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1392025-04-08T13:17:13+02:00 :: respose => {"status":400,"message":"Error : strlen(): Argument #1 ($string) must be of type string, array given"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T13:18:07+02:00: got error => strlen(): Argument #1 ($string) must be of type string, array given in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1392025-04-08T13:18:07+02:00 :: respose => {"status":400,"message":"Error : strlen(): Argument #1 ($string) must be of type string, array given"}
+
+ ============ End Of Script ================== 
+
+2025-04-08T13:20:48+02:00: request received => {"comment":"dwfhbhcdbhvbhbhvdbhbvfhdnv vdvhhhcwvhvchvhcdvvcdcb","requestMethod":"insertComment","ticket_id":"15","user_id":"1","user_name":"Admin","user_image":"\/assets\/img\/default-user.png"} 
+
+2025-04-08T13:20:48+02:00 :: method inside the InsertComment 
+
+2025-04-08T13:20:48+02:00 :: store_attachement => ["..\/..\/uploads\/ticket_attachment\/Result-2.pdf","..\/..\/uploads\/ticket_attachment\/Admission.pdf"] 
+
+2025-04-08T13:20:48+02:00 :: INSERT comment query => INSERT INTO `ticket_comment`(`ticket_id`, `user_id`, `user_name`, `user_image`, `comment`, `attachment`) VALUES (?,?,?,?,?,?) 
+
+2025-04-08T13:20:48+02:00 :: insert comment param =>  ["15","1","Admin","\/assets\/img\/default-user.png","dwfhbhcdbhvbhbhvdbhbvfhdnv vdvhhhcwvhvchvhcdvvcdcb","[\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Result-2.pdf\",\"..\\\/..\\\/uploads\\\/ticket_attachment\\\/Admission.pdf\"]"] 
+
+2025-04-08T13:20:48+02:00 :: Comment inserted successful 
+
+2025-04-08T13:20:48+02:00 :: respose => {"status":200,"message":"Comment send successfully!"}
+
+ ============ End Of Script ================== 
+

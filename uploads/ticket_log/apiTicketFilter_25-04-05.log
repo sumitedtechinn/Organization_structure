@@ -1,0 +1,104 @@
+2025-04-05T11:16:54+02:00: got error => Cannot access offset of type string on string in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\GetAllInputFiledData.php on line => 14 ============ End Of Script ================== 
+
+2025-04-05T11:17:45+02:00: got error => Cannot access offset of type string on string in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\GetAllInputFiledData.php on line => 14 ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:30:04+02:00: got error => Cannot access offset of type string on string in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\GetAllInputFiledData.php on line => 18 ============ End Of Script ================== 
+
+2025-04-05T11:31:45+02:00: request received =>  
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:31:45+02:00: got error => Cannot access offset of type string on string in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\GetAllInputFiledData.php on line => 19 ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:45:03+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T11:45:03+02:00 :: method inside the getCategory 
+
+2025-04-05T11:45:03+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T11:45:03+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:50:47+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T11:50:47+02:00 :: method inside the getCategory 
+
+2025-04-05T11:50:47+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T11:50:47+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:51:10+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T11:51:10+02:00 :: method inside the getCategory 
+
+2025-04-05T11:51:10+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T11:51:10+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T11:55:02+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T11:55:02+02:00 :: method inside the getCategory 
+
+2025-04-05T11:55:02+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T11:55:02+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T12:26:58+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T12:26:58+02:00 :: method inside the getCategory 
+
+2025-04-05T12:26:58+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T12:26:58+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T12:28:58+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T12:28:58+02:00 :: method inside the getCategory 
+
+2025-04-05T12:28:58+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T12:28:58+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T13:14:06+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T13:14:06+02:00 :: method inside the getCategory 
+
+2025-04-05T13:14:06+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T13:14:06+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T13:15:15+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T13:15:15+02:00 :: method inside the getCategory 
+
+2025-04-05T13:15:15+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T13:15:15+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+
+ ============ End Of Script ================== 
+
+2025-04-05T13:20:19+02:00: request received => {"0":{"name":"category"}} 
+
+2025-04-05T13:20:19+02:00 :: method inside the getCategory 
+
+2025-04-05T13:20:19+02:00 allCategory query => SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department GROUP BY ticket_category.department 
+2025-04-05T13:20:19+02:00 Response received from getCategory => <optgroup label = "Academic"><option value="5##11">Book</option><option value="6##11">Syllabus</option></optgroup><optgroup label = "Information Technology "><option value="1##12">New Development</option><option value="2##12">Bug</option><option value="3##12">Impliment</option><option value="4##12">Online Training</option></optgroup> 
+ ============ End Of Script ================== 
+

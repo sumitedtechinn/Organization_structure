@@ -78,13 +78,17 @@ function insertLeave() {
         }
 
         if ($leave_type == '7') {
+            echo "<pre>";
+            echo "Inside the earned leave \n";
             $usedEarnedLeave = usedEarnedLeave();
+            echo " usedEarnedLeave  => $usedEarnedLeave \n";
             $d1 = strtotime($start_date);
             $d2 = strtotime($end_date);
             $diff = $d2 - $d1;
             $day = $diff / (60*60*24);
-            
+            echo "NUmber of day => $day \n";
             if  (($day+$usedEarnedLeave) >= 6 ) {
+                echo "came inside this \n";
                 $stepsLog .= date(DATE_ATOM) . " :: Only Six Earned leave are allowed annually \n\n";
                 showResponse(false,'Only Six Earned leave are allowed annually');
                 saveLog();
@@ -306,7 +310,7 @@ function usedRestrictedLeave() {
 function usedEarnedLeave() {
 
     global $conn;
-    $query = "SELECT SUM(CASE WHEN leave_type = '7' AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND status = '1' THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `earned_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
+    $query = "SELECT SUM(CASE WHEN leave_type = '7' AND YEAR(start_date) = YEAR(CURRENT_DATE()) AND (status = '1' OR status = '3') THEN DATEDIFF(end_date,start_date)+1 ELSE 0 END) as `earned_day_used` FROM leave_record WHERE user_id = '".$_SESSION['ID']."'";
     $earnedLeave = $conn->query($query);
     $earnedLeave = mysqli_fetch_column($earnedLeave);
     return $earnedLeave;     
