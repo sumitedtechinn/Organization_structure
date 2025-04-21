@@ -1,0 +1,79 @@
+2025-04-21T08:24:46+02:00: got error => Call to undefined function createEmailData() in file => C:\xampp\htdocs\edtech_organizational_structure\api\ticket\StoreAndUpdateTicketApi.php on line => 1642025-04-21T08:24:46+02:00 :: respose => {"status":400,"message":"Error : Call to undefined function createEmailData()"}
+
+ ============ End Of Script ================== 
+
+2025-04-21T08:27:33+02:00: request received => {"ticket_heading":"Jamia ERP ","ticket_category":"1##12","ticket_description":"            sdvsaccvd dvbfvvfdvdvsdv    ","requestMethod":"insertTicket","requestfrom":"GLOCAL","priority":"3","status":"1","raised_by":"1","create_person_name":"Admin","create_person_email":"admin@osgu.com","create_person_number":"8851920153"} 
+
+2025-04-21T08:27:33+02:00 :: INSERT query => INSERT INTO `ticket_record`(`unique_id`, `task_name`, `task_description`, `requestfrom`, `raised_by`, `status`, `priority`, `category`, `department`, `create_person_name`, `create_person_number`, `create_person_email`, `attachment`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) 
+
+2025-04-21T08:27:33+02:00 :: INSERT param => ["GLOCAL-6","Jamia ERP ","            sdvsaccvd dvbfvvfdvdvsdv    ","GLOCAL","1","1","3","1","12","Admin","8851920153","admin@osgu.com",null] 
+
+2025-04-21T08:27:33+02:00 :: Insert into ticket successful 
+
+2025-04-21T08:27:33+02:00 :: insertTicketHistory_query => INSERT INTO `ticket_history` (`ticket_id`, `updated_by`, `status`, `priority`, `category`, `department`) VALUES (?,?,?,?,?,?) 
+
+2025-04-21T08:27:33+02:00 :: insertTicketHistory_param => [24,"1","1","3","1","12"] 
+
+2025-04-21T08:27:33+02:00 :: Ticket history is inserted successful 
+
+2025-04-21T08:27:33+02:00 :: method inside the getTopMostUserDetails 
+
+2025-04-21T08:27:33+02:00 :: requested data => 12 
+
+2025-04-21T08:27:33+02:00 :: Department details Query => SELECT * FROM `Department` WHERE id = '12' 
+
+2025-04-21T08:27:33+02:00 :: DepartmentUpperHierarchy user Query => SELECT Email FROM `users` WHERE Department_id = '12' AND Deleted_At IS NULL AND Hierarchy_value = (SELECT MIN(Hierarchy_value) FROM `users` WHERE Department_id = '12' AND Deleted_At IS NULL) 
+
+2025-04-21T08:27:33+02:00 :: verticalUpperHierarchyUser Query => SELECT GROUP_CONCAT(CASE WHEN Vertical_id IN (4) AND Department_id IS NULL THEN Email END) AS vertical_users FROM `users` WHERE Deleted_At IS NULL 
+
+2025-04-21T08:27:33+02:00 :: method inside the createEmailData 
+
+2025-04-21T08:27:33+02:00 :: requested ticket_info_data => {"ticketQniqueId":"GLOCAL-6","ticketSubject":"Jamia ERP ","ticketPriority":"3","raisedByPersonName":"Admin","createdTime":"21-Apr-2025 08:27:33"} email_function => {"successfulTicketGenerationMessageForTicketRaisedPerson":{"email":"admin@osgu.com"},"messageToDepartHeadForNewTicketCreate":{"email":{"to":"mahinder@edtechinnovate.com","cc":""}}} 
+
+2025-04-21T08:27:33+02:00 :: Resposne received from => successfulTicketGenerationMessageForTicketRaisedPerson 
+
+2025-04-21T08:27:33+02:00 :: TO => admin@osgu.com 
+
+ cc =>  
+
+ subject => Ticket Created Successfully Reference - GLOCAL-6 
+
+ body => <p>Dear Admin,</p>
+            <p>Thank you for reaching out to our support team.</p>
+            <div>We have received your ticket (Reference ID: GLOCAL-6) regarding <b>Jamia ERP </b>.</div>
+            <div>Our team is currently reviewing your request and will get back to you as soon as possible.</div>
+            <br>
+            <div>Best Regards</div>
+            <div>EDTECH Innovate Pvt. Ltd.</div>
+         
+
+2025-04-21T08:27:33+02:00 :: Resposne received from => messageToDepartHeadForNewTicketCreate 
+
+2025-04-21T08:27:33+02:00 :: TO => mahinder@edtechinnovate.com 
+
+ cc =>  
+
+ subject => Action Required: New Ticket Created - GLOCAL-6 
+
+ body => 
+        <p>Dear Manager,</p>
+        <p>This is to inform you that a new ticket (Reference ID: <b>GLOCAL-6</b>) has been created by <b>Admin</b> regarding Jamia ERP .</p>
+        <p>Ticket Details:</p>
+        <div><b>- Ticket ID: </b>GLOCAL-6</div>
+        <div><b>- Subject: </b>Jamia ERP </div>
+        <div><b>- Created On: </b>21-Apr-2025 08:27:33</div>
+        <p>Kindly review and assign this ticket to the appropriate team member for further handling.</p>
+        <div>Best Regards</div>
+        <div>EDTECH Innovate Pvt. Ltd.</div>
+         
+
+2025-04-21T08:27:33+02:00 :: mail_queue Data => [{"to":"admin@osgu.com","cc":null,"subject":"Ticket Created Successfully Reference - GLOCAL-6","body":"<p>Dear Admin,<\/p>\r\n            <p>Thank you for reaching out to our support team.<\/p>\r\n            <div>We have received your ticket (Reference ID: GLOCAL-6) regarding <b>Jamia ERP <\/b>.<\/div>\r\n            <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n            <br>\r\n            <div>Best Regards<\/div>\r\n            <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - GLOCAL-6","body":"\r\n        <p>Dear Manager,<\/p>\r\n        <p>This is to inform you that a new ticket (Reference ID: <b>GLOCAL-6<\/b>) has been created by <b>Admin<\/b> regarding Jamia ERP .<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>GLOCAL-6<\/div>\r\n        <div><b>- Subject: <\/b>Jamia ERP <\/div>\r\n        <div><b>- Created On: <\/b>21-Apr-2025 08:27:33<\/div>\r\n        <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}]
+
+2025-04-21T08:27:33+02:00 :: url => http://edtechstrucure.local/app/mailSystem/CreateMailQueue , request => {"data":[{"to":"admin@osgu.com","cc":null,"subject":"Ticket Created Successfully Reference - GLOCAL-6","body":"<p>Dear Admin,<\/p>\r\n            <p>Thank you for reaching out to our support team.<\/p>\r\n            <div>We have received your ticket (Reference ID: GLOCAL-6) regarding <b>Jamia ERP <\/b>.<\/div>\r\n            <div>Our team is currently reviewing your request and will get back to you as soon as possible.<\/div>\r\n            <br>\r\n            <div>Best Regards<\/div>\r\n            <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "},{"to":"mahinder@edtechinnovate.com","cc":"","subject":"Action Required: New Ticket Created - GLOCAL-6","body":"\r\n        <p>Dear Manager,<\/p>\r\n        <p>This is to inform you that a new ticket (Reference ID: <b>GLOCAL-6<\/b>) has been created by <b>Admin<\/b> regarding Jamia ERP .<\/p>\r\n        <p>Ticket Details:<\/p>\r\n        <div><b>- Ticket ID: <\/b>GLOCAL-6<\/div>\r\n        <div><b>- Subject: <\/b>Jamia ERP <\/div>\r\n        <div><b>- Created On: <\/b>21-Apr-2025 08:27:33<\/div>\r\n        <p>Kindly review and assign this ticket to the appropriate team member for further handling.<\/p>\r\n        <div>Best Regards<\/div>\r\n        <div>EDTECH Innovate Pvt. Ltd.<\/div>\r\n        "}]} 
+
+2025-04-21T08:27:34+02:00 :: response => {"status":200,"message":"Worker Start successfully!"} 
+
+2025-04-21T08:27:34+02:00 :: respose => {"status":200,"message":"Ticket create successfully!"}
+
+ ============ End Of Script ================== 
+

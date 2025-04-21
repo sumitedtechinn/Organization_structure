@@ -11,7 +11,6 @@ require '../../app/mailSystem/MailJob.php';
 require '../../app/mailSystem/CreateMailStructure.php';
 
 
-
 $obj = new StoreAndUpdateTicketApi();
 $obj->conn = $conn;
 $obj->mailjob = new MailJob();
@@ -42,13 +41,9 @@ class StoreAndUpdateTicketApi {
     public $stepsLog; 
     public $request;
     public $finalRes;
-    public $baseUrl;
+    public $baseUrl = BASE_URL;
     public $mailjob;
     public $createMailStructure;
-
-    public function __construct() {
-        $this->baseUrl = $this->createBaseURL();
-    }
 
     public function insertTicket() {
 
@@ -162,7 +157,7 @@ class StoreAndUpdateTicketApi {
                     ],
                 ];
                 
-                $queueMailResponse = createEmailData($ticket_info_data,$email_function);
+                $queueMailResponse = $this->createEmailData($ticket_info_data,$email_function);
                 $queueMailResponse = json_decode($queueMailResponse,true);
                 if ($queueMailResponse['status'] == 400) {
                     $this->showResponse(false,"Ticket create but mail not send");
@@ -362,17 +357,11 @@ class StoreAndUpdateTicketApi {
         $this->stepsLog .= date(DATE_ATOM) . " :: respose => " . json_encode($this->finalRes) . "\n\n";
     }
 
-    public function createBaseURL() : string {
-        $serverName = $_SERVER['SERVER_NAME'];
-        $httpRequest = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? "https://" : "http://";
-        return $httpRequest.$serverName;
-    }
-
     public function saveLog() {
         
         $this->stepsLog .= " ============ End Of Script ================== \n\n";
         $pdf_dir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/ticket_log/';
-        deleteOldTicketLogs($pdf_dir,5);
+        $this->deleteOldTicketLogs($pdf_dir,5);
         $fh = fopen($pdf_dir . 'createTicketAPI_' . date('y-m-d') . '.log' , 'a');
         fwrite($fh,$this->stepsLog);
         fclose($fh);

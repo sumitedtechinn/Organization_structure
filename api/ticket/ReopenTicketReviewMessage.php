@@ -37,7 +37,7 @@ function getTokenData() {
   } catch (Exception $e) {
     return showResponse(false,"Error","Error : "+$e->getMessage());
   }
-}#e1f4e5
+}
 
 ?>
 <!DOCTYPE html>

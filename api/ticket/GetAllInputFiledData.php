@@ -50,7 +50,8 @@ class GetAllInputFiledData {
         try{
             $dropDown = "";
             $role_json = json_encode([$role]);
-            $allCategory_query = "SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department WHERE JSON_CONTAINS(ticket_category.erpRole, '$role_json') GROUP BY ticket_category.department";
+            $filterQuery = ($role != 'Administrator') ? "WHERE JSON_CONTAINS(ticket_category.erpRole, '$role_json')" : "";
+            $allCategory_query = "SELECT GROUP_CONCAT(ticket_category.id,'@@',ticket_category.name) as `category` , Department.id as `department_id` , Department.department_name as `department_name` FROM `ticket_category` LEFT JOIN Department ON Department.id = ticket_category.department $filterQuery GROUP BY ticket_category.department";
             $this->stepsLog .= date(DATE_ATOM) . " allCategory query => $allCategory_query \n";
             $allCategory = $this->conn->query($allCategory_query);
             if ($allCategory->num_rows > 0) {
@@ -59,9 +60,9 @@ class GetAllInputFiledData {
                     $depart_id = $department_category['department_id'];
                     $optiongroup = '<optgroup label = "'.$depart_name.'">';
                     $category = explode(',',$department_category['category']);
-                    foreach ($category as $key => $value) {
+                    foreach ($category as $value) {
                         list($category_id,$category_name) = explode('@@',$value);
-                        $optiongroup .= '<option value="'.$category_id.'##'.$depart_id.'">'.$category_name.'</option>';                        
+                        $optiongroup .= '<option value ="'.$category_id.'##'.$depart_id.'">'.$category_name.'</option>';                        
                     }
                     $optiongroup .= '</optgroup>';
                     $dropDown .= $optiongroup;

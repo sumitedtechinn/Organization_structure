@@ -2,8 +2,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'C:/xampp/htdocs/edtech_organizational_structure/vendor/autoload.php';
+// for local Server Run
+//require 'C:/xampp/htdocs/edtech_organizational_structure/vendor/autoload.php';
 
+// for server run
+require "/home/edtechinnovate.com/devorganization.edtechinnovate.com/vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

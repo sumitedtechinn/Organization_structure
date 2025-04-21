@@ -10,5 +10,5 @@ $dark_logo_ratina = "";
 $light_logo = "";
 $light_logo_retina = "";
 $login_cover = "";
-
+define("BASE_URL","http://edtechstrucure.local");
 ?>

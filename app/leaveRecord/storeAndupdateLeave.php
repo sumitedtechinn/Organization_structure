@@ -78,17 +78,12 @@ function insertLeave() {
         }
 
         if ($leave_type == '7') {
-            echo "<pre>";
-            echo "Inside the earned leave \n";
             $usedEarnedLeave = usedEarnedLeave();
-            echo " usedEarnedLeave  => $usedEarnedLeave \n";
             $d1 = strtotime($start_date);
             $d2 = strtotime($end_date);
             $diff = $d2 - $d1;
             $day = $diff / (60*60*24);
-            echo "NUmber of day => $day \n";
             if  (($day+$usedEarnedLeave) >= 6 ) {
-                echo "came inside this \n";
                 $stepsLog .= date(DATE_ATOM) . " :: Only Six Earned leave are allowed annually \n\n";
                 showResponse(false,'Only Six Earned leave are allowed annually');
                 saveLog();

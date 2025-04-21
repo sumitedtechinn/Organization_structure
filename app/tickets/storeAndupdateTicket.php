@@ -630,9 +630,15 @@ function updateTicketStatusReviewToClose($ticket_id) {
             $email_queue['cc'] = $cc; 
             $email_function = [
                 "messageForTicketCloseConfirmation" => [
-                    "email" => $email_queue ,
-                ],
+                    "email" => $email_queue,
+                ]
             ];
+            
+            if (isset($_REQUEST['requestFromAutoClose'])) {
+                $email_function["messageForAutoCloseTicket"] = [
+                    "email" => $ticketAllInformation['createPersonEmail']
+                ];
+            }
             $queueMailResponse = createEmailData($ticketAllInformation,$email_function);
             $queueMailResponse = json_decode($queueMailResponse,true);
             if ($queueMailResponse['status'] == 400) {

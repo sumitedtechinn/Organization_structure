@@ -424,3 +424,23 @@ document.getElementById("closeButton").addEventListener("click" , async function
 
  ============ End Of Script ================== 
 
+2025-04-17T14:03:25+02:00 :: StoreAndupdateTicket Script Start 
+
+2025-04-17T14:03:25+02:00 :: method inside the insertNotification 
+
+2025-04-17T14:03:25+02:00 :: requested data : assign_to => 22 
+
+2025-04-17T14:03:25+02:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+
+2025-04-17T14:03:28+02:00 :: StoreAndupdateTicket Script Start 
+
+2025-04-17T14:03:28+02:00 :: method inside the insertNotification 
+
+2025-04-17T14:03:28+02:00 :: requested data : assign_to => 18 
+
+2025-04-17T14:03:28+02:00 :: respose => {"status":200,"message":"Notification already added successfully!"}
+
+ ============ End Of Script ================== 
+

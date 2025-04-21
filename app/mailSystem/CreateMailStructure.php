@@ -224,6 +224,27 @@ class CreateMailStructure {
         return $this->setData($mailBody,$mailSubject,$to,$cc);
     }
     
+    public function messageForAutoCloseTicket($ticket_info_data,$emailData) {
+        extract($ticket_info_data);
+        $to = ""; $cc = "";
+        if(is_array($emailData)) {
+            $to = $emailData['to'];
+            $cc = $emailData['cc']; 
+        } else {
+            $to = $emailData;
+            $cc = null;
+        }
+        $mailSubject = "Ticket Has Been Closed Due to Inactivity - $ticketQniqueId";
+        $mailBody = "<p>Dear $raisedByPersonName,</p>
+            <p>We wanted to let you know that your ticket (Reference ID: $ticketQniqueId) has been automatically closed because there was no response from you in the last 2 days while it was in review.</p>
+            <div>If you still need assistance, feel free to contact or create a new one at any time.</div>
+            <br>
+            <div>Best Regards</div>
+            <div>EDTECH Innovate Pvt. Ltd.</div>
+        ";
+        return $this->setData($mailBody,$mailSubject,$to,$cc);
+    }
+    
     public function createBaseURL() : string {
         $serverName = $_SERVER['SERVER_NAME'];
         $httpRequest = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? "https://" : "http://";
