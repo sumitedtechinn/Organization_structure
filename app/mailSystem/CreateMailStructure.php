@@ -13,7 +13,7 @@ class CreateMailStructure {
     public $baseUrl;
 
     public function __construct() {
-        $this->baseUrl = $this->createBaseURL();
+        $this->baseUrl = BASE_URL;
     }
 
     public function setData($mailBody,$mailSubject,$to,$cc) {
@@ -243,12 +243,6 @@ class CreateMailStructure {
             <div>EDTECH Innovate Pvt. Ltd.</div>
         ";
         return $this->setData($mailBody,$mailSubject,$to,$cc);
-    }
-    
-    public function createBaseURL() : string {
-        $serverName = $_SERVER['SERVER_NAME'];
-        $httpRequest = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? "https://" : "http://";
-        return $httpRequest.$serverName;
     }
 }
 

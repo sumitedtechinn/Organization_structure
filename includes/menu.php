@@ -1,6 +1,6 @@
 <?php 
-## Database configuration
-include 'db-config.php';
+// ## Database configuration
+// include 'db-config.php';
 $pages = $conn->query("SELECT * FROM pages");
 $pages = mysqli_fetch_all($pages,MYSQLI_ASSOC);
 
@@ -56,6 +56,23 @@ function checkPageTypePermission($type) : bool {
             <?php } ?>
             </ul>
         </li> 
+        <?php } ?>
+        <?php if(checkPageTypePermission('websiteLeads')) { ?>
+            <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-ticket"></i></div>
+                <div class="menu-title">WebSite Leads</div>
+            </a>
+                <ul>
+                <?php foreach ($page_type['websiteLeads'] as $page) { ?>
+                    <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+                    <li>
+                        <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                    </li>
+                    <?php } ?>
+                <?php } ?>
+                </ul>
+            </li>    
         <?php } ?>
         <?php if(checkPageTypePermission('organization_structure')) { ?>
         <li>

@@ -6,7 +6,7 @@ require '../../app/mailSystem/MailJob.php';
 require '../../app/mailSystem/CreateMailStructure.php';
 
 $stepsLog = "";
-
+$baseUrl = BASE_URL;
 try {
     $stepsLog .= date(DATE_ATOM) . " :: AutoCloseTicket CRON Start to execut \n\n";
     checkTicketforAutoClose();
@@ -51,10 +51,10 @@ function checkTicketforAutoClose() {
 
 function updateTicketStatus($ticketIdsArr) {
 
-    global $stepsLog;
+    global $stepsLog , $baseUrl;
 
     $stepsLog .= date(DATE_ATOM) . " :: method inside the updateTicketStatus \n\n";
-    $url = "/app/tickets/storeAndupdateTicket";
+    $url = $baseUrl ."/app/tickets/storeAndupdateTicket";
     foreach ($ticketIdsArr as $ticket_id) {
         try {
             $request = [];

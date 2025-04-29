@@ -1,6 +1,5 @@
 <?php  
-
-$app_title = "Edtech Organizational Structure";
+$app_title = "Edtech Organizational Panel";
 $organization_name = "";
 $default_center_code_suffix = "";
 $logged_in_users = "";

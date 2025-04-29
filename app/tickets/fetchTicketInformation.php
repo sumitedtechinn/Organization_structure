@@ -34,6 +34,10 @@ switch ($ticket_details['status_value']) {
         if ($ticket_details['raised_by'] == $current_user || $current_user == '1') {
             $validationForStatus = '';
         }
+        $allowed_users = explode(",", getTopMostUserDetails($ticket_details['department']));
+        if (in_array($current_user, $allowed_users)) {
+            $validationForStatus = '';
+        }
         break;
 
     case '5': // Status in close state

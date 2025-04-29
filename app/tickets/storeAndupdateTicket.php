@@ -12,7 +12,7 @@ if(empty($_REQUEST)) {
 }
 
 $stepsLog = "";
-$baseUrl = createBaseURL();
+$baseUrl = BASE_URL;
 $stepsLog .= date(DATE_ATOM) . " :: StoreAndupdateTicket Script Start \n\n";
 $request_data = [];
 $mailjob = new MailJob();
@@ -751,12 +751,6 @@ function showResponse($response, $message = "Something went wrong!") {
     $result = ($response) ? ['status' => 200, 'message' => "$message successfully!"] : ['status' => 400, 'message' => $message]; 
     $stepsLog .= date(DATE_ATOM) . " :: respose => " . json_encode($result) . "\n\n";
     return $result;   
-}
-
-function createBaseURL() : string {
-    $serverName = $_SERVER['SERVER_NAME'];
-    $httpRequest = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? "https://" : "http://";
-    return $httpRequest.$serverName;
 }
 
 function saveLog($response) {
