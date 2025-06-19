@@ -86,6 +86,11 @@ $(document).ready(function(){
         success : function(data) {
             for (const key in data) {
                 $("#"+key+"_filter").html(data[key]);
+                $("#"+key+"_filter").select2({
+                    placeholder: 'Choose ' + key.charAt(0).toUpperCase() + key.slice(1,key.length), 
+                    allowClear: true,
+                    width: '100%'
+                });
             }
         }   
     })

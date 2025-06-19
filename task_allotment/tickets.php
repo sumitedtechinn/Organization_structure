@@ -85,7 +85,7 @@
 
 .statusStyle{
     border-radius: 20px;
-    font-size: smaller;
+    font-size: x-small;
 }
 
 </style>
@@ -151,21 +151,23 @@ var ticketSetting = {
         },{
             data: "task_name",
             render : function(data,type,row) {
+                let create = row.create_date.split('-');
+                let createDate = create[1] + " " + create[0] + " " + create[2];   
                 let task_name = '<div class="text-medium fw-medium mb-1" id = "task_name">'+data+'</div>';
-                return '<div class ="col-sm-12" style = "text-wrap: auto;">'+task_name+'</div><div class = "d-flex justify-content-between"><span class="text-muted small">Created At: '+row.create_date+'</span></div>';
+                return '<div class ="col-sm-12" style = "text-wrap: auto;">'+task_name+'</div><div class = "d-flex justify-content-between"><span class="text-muted small">'+createDate+'</span></div>';
             } 
         },{
             data: "status",
             render : function(data,type,row) {
                 let statusaName = row.statusName;
                 let statusColor = row.statusColor;
-                return '<div class = "d-flex align-item-center justify-content-center p-2 statusStyle" style="background-color:'+statusColor+'">'+statusaName+'</div>';
+                return '<div class = "d-flex align-item-center justify-content-center p-1 statusStyle" style="background-color:'+statusColor+'">'+statusaName+'</div>';
             }
         },{
             data : "view" ,
             render : function(data,type,row) {
                 let sqNo = row.sqNo;
-                let view = '<button class="view-btn" id = "view_btn_'+sqNo+'" data-value = "'+row.ID+'" onclick = "viewTicketDetails('+row.ID+')">View</button>';
+                let view = '<button class="view-btn" id = "view_btn_'+sqNo+'" data-value = "'+row.ID+'" onclick = "viewTicketDetails('+row.ID+')" style = "font-size:small">View</button>';
                 return '<div class="d-flex justify-content-center align-items-center">'+view+'</div>';
             }
         }

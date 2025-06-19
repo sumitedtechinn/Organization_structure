@@ -382,7 +382,7 @@ declare class OrgChart extends OrgChartBase {
      * @param front show on front or back 
      * @param anim animation type
      */
-     magnify(id: string | number, scale: number, front?: boolean, anim?: OrgChart.anim | null, callback?: () => void): void;     
+    magnify(id: string | number, scale: number, front?: boolean, anim?: OrgChart.anim | null, callback?: () => void): void;     
 
     /**
      * Starts the move 

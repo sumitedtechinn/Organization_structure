@@ -4,9 +4,7 @@ include '../../includes/db-config.php';
 //session_start();
 
 $website_details = [];
-if (isset($_REQUEST['website_id'])) {
-
-}
+if (isset($_REQUEST['website_id'])) {}
 
 ?>
 <!-- Modal -->
@@ -87,7 +85,7 @@ $("#form-website").on('submit',function(e){
                 if (data.status == 200) {
                     $('.modal').modal('hide');
                     toastr.success(data.message);
-                    $('.table').DataTable().ajax.reload(null, false);
+                    $("#websiteTable").DataTable(websiteSetting);
                 } else {
                     toastr.error(data.message); 
                 }

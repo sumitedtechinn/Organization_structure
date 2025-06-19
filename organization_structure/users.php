@@ -2,13 +2,26 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-
+<style>
+.table_heading {
+    font-size: 14px;
+    font-weight: 500;
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 160px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+</style>
 <!--start content-->
 <main class="page-content">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">User Details</h5>
+                <h6 class="mb-0">User Details</h6>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
                     <?php if(in_array('User Delete',$_SESSION['permission'])) { ?>
                     <div class="theme-icons shadow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
@@ -23,7 +36,7 @@
                 </div>
             </div>
             <?php if($_SESSION['role'] != '2') { ?>
-            <div class="d-flex align-items-center justify-content-between gap-1 mt-3">
+            <div class="d-flex align-items-center justify-content-between gap-1 mt-3" id="filter_container">
                 <div class="col-sm-2" style="z-index: 0 !important;">
                     <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
                     </select>
@@ -47,17 +60,18 @@
             </div>
             <?php } ?>
             <div class="table-responsive mt-3">
-                <table class="table align-middle" id="userTable">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Photo</th>
-                            <th>User</th>
-                            <th>Password</th>
-                            <th>Organization Details</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                            <th>Assigned</th>
-                            <th>Action</th>
+                <table class="table align-middle" id="userTable" style="color: #515B73!important;">
+                    <thead class="table-primary">
+                        <tr class="table_heading">
+                            <td>Photo</td>
+                            <td>User</td>
+                            <td>Password</td>
+                            <td>Organization Details</td>
+                            <td>Address</td>
+                            <td>Reporting</td>
+                            <td>Assigned</td>
+                            <td>Assets</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                 </table>
@@ -73,16 +87,21 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-    var filter_data_field = ['organization','branch','vertical','department','designation'];
+    let filter_data_field = Array.from(document.getElementById("filter_container").querySelectorAll("select")).map((param) => param.id.split("_")[0]);
     $.ajax({
         url : "/app/common/getAllFilterData", 
         type : "post",
-        contentType: 'json',  // Set the content type to JSON 
+        contentType: 'application/json',  // Set the content type to JSON 
         data: JSON.stringify(filter_data_field), 
         dataType: 'json', 
         success : function(data) {
             for (const key in data) {
                 $("#"+key+"_filter").html(data[key]);
+                $("#"+key+"_filter").select2({
+                    placeholder: 'Choose ' + key.charAt(0).toUpperCase() + key.slice(1,key.length), 
+                    allowClear: true,
+                    width: '100%'
+                });
             }
         }   
     })
@@ -121,65 +140,87 @@ var UserSettings = {
     'columns': [{
             data: "image",
             render : function(data,type,row) {
-                var img = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>'
-                return img;
+                return `<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${data}" class="rounded-circle" width="44" height="44" alt=""></div>`;
             }
         },{
             data: "User" ,
             render : function(data, type, row) {
-                var name = row.Name;
-                var contact = row.Contact;
-                var country_code = '';
-                if(row.Country_code.length > 0) {
-                    var country_code = row.Country_code;
-                }
-                var email = row.Email;
-                var doj = row.doj;
-                var designation_name = (row.organization_info_assign == 'No') ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.designation+'</span>';
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p><p class = "mb-1"><b>Email : </b>'+email+'</p><p class = "mb-1"><b>DOJ : </b>'+doj+'</p><p class = "mb-1 text-wrap" style = "width:200px;"><b>Designation : </b>'+designation_name+'</p></div>';
+                let name = makeContent(row.Name);
+                let contact = makeContent(row.Contact);
+                let country_code = (row.Country_code.length > 0) ? row.Country_code : "";
+                let email = makeContent(row.Email);
+                let doj = makeContent(row.doj);
+                let designation_name = (row.organization_info_assign == 'No') ? '<span class="fw-bold text-danger">Not Assigned</span>': makeContent(row.designation);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Contact : </span>${country_code} ${contact}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Email : </span>${email}</p>
+                <p class = "mb-1"><span style="font-weight:500;">DOJ : </span>${doj}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation_name}</p>
+                </div>`;
             }
         },{
             data: "password" ,
             render : function(data,type,row) {
-                var pass = '<div class="row" style = "width:250px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye " onclick="showPassword('+ row.ID +')" ></i></div></div>';
-                return pass;
+                let password = `<div class="input-group input-group-sm">
+				<input type="password" class="form-control" id = "myinput_${row.ID}" disabled value="${data}">
+                <span class="input-group-text" onclick="showPassword(${row.ID})">
+                <i class = "bi bi-eye"></i>
+                </span></div>`;
+								
+                // var pass = '<div class="row" style = "width:175px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye " onclick="showPassword('+ row.ID +')" ></i></div></div>';
+                return password;
             }
         },{
             data: "organization" ,
             render : function(data,type,row) {
-                if (row.role_name == 'admin' && row.organization_name != null ) {
-                    var department = '<span>All</span>';
-                    var organization = '<span>'+row.organization_name+'</span>';
-                    var vertical = '<span>'+row.vertical_name+'</span>';
-                    var branch = (row.branch_name == null) ? '<span>All</span>': '<span>'+row.branch_name+'</span>';
-                    var role_name = row.role_name.toUpperCase();
+                let department, organization, vertical, branch, role_name;
+                if (row.role_name === 'admin' && row.organization_name !== null) {
+                    department = makeContent('All');
+                    organization = makeContent(row.organization_name);
+                    vertical = makeContent(row.vertical_name);
+                    branch = row.branch_name === null ? makeContent('All') : makeContent(row.branch_name);
+                    role_name = makeContent(row.role_name.toUpperCase());
                 } else {
-                    var department = (row.department == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.department+'</span>';
-                    var organization = (row.organization_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.organization_name+'</span>';
-                    var vertical = (row.vertical_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.vertical_name+'</span>';
-                    var branch = (row.branch_name == null) ? '<span class="fw-bold text-danger">Not Assigned</span>': '<span>'+row.branch_name+'</span>';
-                    var role_name = row.role_name.toUpperCase();
+                    department = row.department === null ? makeContent('Not Assigned') : makeContent(row.department);
+                    organization = row.organization_name === null ? makeContent('Not Assigned') : makeContent(row.organization_name);
+                    vertical = row.vertical_name === null ? makeContent('Not Assigned') : makeContent(row.vertical_name);
+                    branch = row.branch_name === null ? makeContent('Not Assigned') : makeContent(row.branch_name);
+                    role_name = makeContent(row.role_name.toUpperCase());
                 }
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b> '+organization+'</p><p class = "mb-1"><b>Branch : </b> '+branch+'</p><p class = "mb-1"><b>Vertical : </b> '+vertical+'</p><p class = "mb-1"><b>Department : </b> '+department+'</p><p class = "mb-1 text-wrap" style = "width:200px;"><b>Role : </b>'+role_name+'</p></div>';
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Organization : </span>${organization}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Branch : </span>${branch}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Vertical : </span>${vertical}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Role : </span>${role_name}</p>
+                </div>`;
             } 
         },{
             data: "Address" ,
             render : function(data,type,row) {
-                var country = row.Country;
-                var state = row.State;
-                var city = row.City;
-                var locality = row.Address;
-                return  '<div style="font-size:small;"><p class = "mb-1"><b>Country : </b>'+country+'</p><p class = "mb-1"><b>State : </b>'+state+'</p><p class = "mb-1"><b>City : </b>'+city+'</p><p class = "mb-1 text-wrap" style = "width:300px !important "><b>Locality : </b>'+locality+'</p></div>';
+                let country = makeContent(row.Country);
+                let state = makeContent(row.State);
+                let city = makeContent(row.City);
+                let locality = makeContent(row.Address);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Country : </span>${country}</p>
+                <p class = "mb-1"><span style="font-weight:500;">State : </span>${state}</p>
+                <p class = "mb-1"><span style="font-weight:500;">City : </span>${city}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Locality : </span>${locality}</p>
+                </div>`;
             } 
         },{
             data: "Status",
             render : function(data,type,row) {
-                var check_user = '';
+                let check_user = '';
                 <?php if($_SESSION['role'] == '2') { ?>
                     check_user = 'disabled';
                 <?php } ?>
                 var assigned_person = (row.assinged_person === null) ? '<button style="font-size:smaller" class="btn btn-danger btn-sm '+check_user+'" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Not Assigned</button>': '<button style="font-size:smaller" class="btn btn-success btn-sm '+check_user+'" onclick = "assignReportingPerson('+row.ID+',&#39;'+row.organization_info_assign+'&#39;)">Assigned</button>';
-                return '<div style="font-size:small;"><p class = "mb-1" ><b>Reporting : </b>'+assigned_person+'</p></div>';
+                return `<div style="font-size:small;">
+                <p class = "mb-1">${assigned_person}</p>
+                </div>`;
             } 
         },{
             data : "Assign" , 
@@ -189,8 +230,13 @@ var UserSettings = {
                 <?php if($_SESSION['role'] == '2') { ?>
                     check_user = 'disabled';
                 <?php } ?>
-                var assign = '<div class="col"><button type="button" class="btn btn-info '+check_user+'" style="font-size:small;color:white;" onclick = "assingOrganizationInfo('+row.ID+',&#39;'+role_name+'&#39;,&#39;'+row.organization_info_assign+'&#39;,&#39;'+row.designation_inside+'&#39;)">Assign</button></div>';
+                var assign = '<div class="col"><button type="button" class="btn btn-info btn-sm '+check_user+'" style="font-size:smaller;color:white;" onclick = "assingOrganizationInfo('+row.ID+',&#39;'+role_name+'&#39;,&#39;'+row.organization_info_assign+'&#39;,&#39;'+row.designation_inside+'&#39;)">Assign</button></div>';
                 return assign;
+            }
+        },{
+            data : 'assets_assignation',
+            render : function (data,type,row) {
+                return `<button class = "btn btn-info btn-sm" style = "font-size :smaller;color:white;" onclick = showAssetsAssignationDetails(${row.ID})>Assets</button>`;
             }
         },{         
             data : "Action" ,
@@ -223,53 +269,31 @@ $(document).ready(function() {
     $('#userTable').dataTable(UserSettings);
 });
 
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
+
 function showPassword(id) {
-    <?php if($_SESSION['role'] == '2') { ?>
-        return;
-    <?php } ?>
-    var x = document.getElementById("myInput".concat(id));
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
+    <?php if($_SESSION['role'] == '2') { ?> return <?php } ?>
+    let x = document.getElementById("myinput_".concat(id));
+    x.type = (x.type === "password") ? "text" : "password";
 }
 
 function assingOrganizationInfo(id,role,organization_info_assign,page_type) {
     if(role == 'admin') {
-        if (organization_info_assign == 'Yes') {
-            $.ajax({
-                url : "/app/user/adminOrganizationInfo", 
-                type : 'post',
-                data : {
-                    page_type,
-                    id
-                },
-                success : function(data){
-                    $('#md-modal-content').html(data);
-                    $('#mdmodal').modal('show');
-                }
-            });    
-        } else {
-            $.ajax({
-                url : "/app/user/selectOrganizationType", 
-                type : 'post',
-                data : {
-                    id
-                },
-                success : function(data){
-                    $('#md-modal-content').html(data);
-                    $('#mdmodal').modal('show');
-                }
-            });
-        }   
+        let postData = (organization_info_assign == 'Yes') ? {page_type,id} : {id};
+        $.ajax({
+            url : "/app/user/adminOrganizationInfo", 
+            type : 'post',
+            data : postData,
+            success : function(data){
+                $('#md-modal-content').html(data);
+                $('#mdmodal').modal('show');
+            } 
+        });   
     } else {
         $.ajax({
             url : "/app/user/userOrganizationInfo", 
             type : 'post',
-            data : {
-                id
-            },
+            data : {id},
             success : function(data){
                 $('#md-modal-content').html(data);
                 $('#mdmodal').modal('show');
@@ -366,6 +390,18 @@ function checkUserAssignDetails(user_id,table) {
             } else {
                 deleteUserDetails(user_id,table);
             }
+        }
+    })
+}
+
+function showAssetsAssignationDetails(id) {
+    $.ajax({
+        url : "/app/user/assetsAssignation",   
+        type: 'POST',
+        data: {id} ,
+        success : function(data){
+            $('#md-modal-content').html(data);
+            $('#mdmodal').modal('show');
         }
     })
 }

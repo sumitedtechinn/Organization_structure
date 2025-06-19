@@ -174,7 +174,6 @@ $(function(){
     });
 })
 
-
 $('#hide-modal').click(function() {
     $('.modal').modal('hide');
 });

@@ -19,7 +19,7 @@ function getOrganization() {
     if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
         $searchQuery .= "AND id = '".$_SESSION['Organization_id']."'";
     }
-    $option = '<option value="">Select Organization</option>'; 
+    $option = '<option value="">Choose Organization</option>'; 
     $organization = $conn->query("SELECT id , organization_name FROM `organization` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($organization)) {
         if($_SESSION['role'] == '3' && $_SESSION['Organization_id'] == $row['id']) {
@@ -37,7 +37,7 @@ function getBranch() {
     if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
         $searchQuery .= "AND Branch.organization_id = '".$_SESSION['Organization_id']."'";
     }
-    $option = '<option value="">Select Branch</option>'; 
+    $option = '<option value="">Choose Branch</option>'; 
     $branch = $conn->query("SELECT ID , Branch_name FROM `Branch` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($branch)) {
         $option .= '<option value = "'.$row['ID'].'" >'.$row['Branch_name'].'</option>';
@@ -51,7 +51,7 @@ function getVertical() {
     if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
         $searchQuery .= "AND Vertical.organization_id = '".$_SESSION['Organization_id']."'";
     }
-    $option = '<option value="">Select Vertical</option>'; 
+    $option = '<option value="">Choose Vertical</option>'; 
     $vertical = $conn->query("SELECT ID , Vertical_name FROM `Vertical` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($vertical)) {
         $option .= '<option value = "'.$row['ID'].'" >'.$row['Vertical_name'].'</option>';
@@ -65,7 +65,7 @@ function getDepartment() {
     if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
         $searchQuery .= "AND Department.organization_id = '".$_SESSION['Organization_id']."'";
     }
-    $option = '<option value="">Select Department</option>'; 
+    $option = '<option value="">Choose Department</option>'; 
     $department = $conn->query("SELECT id,department_name FROM `Department` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($department)) {
         $option .= '<option value = "'.$row['id'].'" >'.$row['department_name'].'</option>';
@@ -79,7 +79,7 @@ function getDesignation() {
     if($_SESSION['role'] == '2' || $_SESSION['role'] == '3') {
         $searchQuery .= "AND Designation.organization_id = '".$_SESSION['Organization_id']."'";
     }
-    $option = '<option value="">Select Designation</option>'; 
+    $option = '<option value="">Choose Designation</option>'; 
     $designation = $conn->query("SELECT ID,designation_name FROM `Designation` WHERE Deleted_At IS NULL $searchQuery");
     while($row = mysqli_fetch_assoc($designation)) {
         $option .= '<option value = "'.$row['ID'].'" >'.$row['designation_name'].'</option>';

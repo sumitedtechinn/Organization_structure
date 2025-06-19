@@ -2,7 +2,20 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-
+<style>
+.table_heading {
+    font-size: 14px;
+    font-weight: 500;
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 160px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+</style>
 <!--start content-->
 <main class="page-content">
     <div class="card">
@@ -12,15 +25,15 @@
                 <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Users</button>
             </div>
             <div class="table-responsive mt-3">
-                <table class="table align-middle" id="userTable">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Photo</th>
-                            <th>User</th>
-                            <th>Password</th>
-                            <th>Designation</th>
-                            <th>Address</th>
-                            <th>Action</th>
+                <table class="table align-middle" id="userTable" style="color: #515B73!important;">
+                    <thead class="table-primary">
+                        <tr class="table_heading">
+                            <td>Photo</td>
+                            <td>User</td>
+                            <td>Password</td>
+                            <td>Designation</td>
+                            <td>Address</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                 </table>
@@ -48,50 +61,69 @@ var UserSettings = {
     'columns': [{
             data: "image",
             render : function(data,type,row) {
-                var img = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>'
-                return img;
+                return `<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${data}" class="rounded-circle" width="44" height="44" alt=""></div>`;
             }
         },{
             data: "User" ,
             render : function(data, type, row) {
-                var name = row.Name;
-                var contact = row.Contact;
-                var country_code = '';
-                if(row.Country_code.length > 0) {
-                    var country_code = row.Country_code;
-                }
-                var email = row.Email;
-                var doj = row.doj;
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p><p class = "mb-1"><b>Email : </b>'+email+'</p><p class = "mb-1"><b>DOJ : </b>'+doj+'</p></div>';
+                let name = makeContent(row.Name);
+                let contact = makeContent(row.Contact);
+                let country_code = (row.Country_code.length > 0) ? row.Country_code : "";
+                let email = makeContent(row.Email);
+                let doj = makeContent(row.doj);
+                let designation_name = (row.organization_info_assign == 'No') ? '<span class="fw-bold text-danger">Not Assigned</span>': makeContent(row.designation);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Contact : </span>${country_code} ${contact}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Email : </span>${email}</p>
+                <p class = "mb-1"><span style="font-weight:500;">DOJ : </span>${doj}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation_name}</p>
+                </div>`;
             }
         },{
             data: "password" ,
             render : function(data,type,row) {
-                var pass = '<div class="row" style = "width:250px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye" onclick="showPassword('+ row.ID +')" ></i></div></div>';
+                var pass = '<div class="row" style = "width:175px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye " onclick="showPassword('+ row.ID +')" ></i></div></div>';
                 return pass;
             }
         },{
-            data: "designation" ,
+            data: "organization" ,
             render : function(data,type,row) {
-                var department = row.department;
-                var organization = row.organization_name;
-                var vertical = row.vertical_name;
-                var branch = '';
-                if (row.branch_name != null) {
-                    branch = '<p class = "mb-1"><b>Branch : </b>'+row.branch_name+'</p>';
+                let department, organization, vertical, branch, role_name;
+                if (row.role_name === 'admin' && row.organization_name !== null) {
+                    department = makeContent('All');
+                    organization = makeContent(row.organization_name);
+                    vertical = makeContent(row.vertical_name);
+                    branch = row.branch_name === null ? makeContent('All') : makeContent(row.branch_name);
+                    role_name = makeContent(row.role_name.toUpperCase());
                 } else {
-                    branch = '<p class = "mb-1 text-danger"><b>Branch : </b>Not Assigned</p>';
+                    department = row.department === null ? makeContent('Not Assigned') : makeContent(row.department);
+                    organization = row.organization_name === null ? makeContent('Not Assigned') : makeContent(row.organization_name);
+                    vertical = row.vertical_name === null ? makeContent('Not Assigned') : makeContent(row.vertical_name);
+                    branch = row.branch_name === null ? makeContent('Not Assigned') : makeContent(row.branch_name);
+                    role_name = makeContent(row.role_name.toUpperCase());
                 }
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b> '+organization+'</p>'+branch+'<p class = "mb-1"><b>Department : </b> '+department+'</p><p class = "mb-1 text-wrap" style = "width:200px;"><b>Designation : </b>'+data+'</p></div>';
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Organization : </span>${organization}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Branch : </span>${branch}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Vertical : </span>${vertical}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Role : </span>${role_name}</p>
+                </div>`;
             } 
         },{
             data: "Address" ,
             render : function(data,type,row) {
-                var country = row.Country;
-                var state = row.State;
-                var city = row.City;
-                var locality = row.Address;
-                return  '<div style="font-size:small;"><p class = "mb-1"><b>Country : </b>'+country+'</p><p class = "mb-1"><b>State : </b>'+state+'</p><p class = "mb-1"><b>City : </b>'+city+'</p><p class = "mb-1 text-wrap" style = "width:300px !important "><b>Locality : </b>'+locality+'</p></div>';
+                let country = makeContent(row.Country);
+                let state = makeContent(row.State);
+                let city = makeContent(row.City);
+                let locality = makeContent(row.Address);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Country : </span>${country}</p>
+                <p class = "mb-1"><span style="font-weight:500;">State : </span>${state}</p>
+                <p class = "mb-1"><span style="font-weight:500;">City : </span>${city}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Locality : </span>${locality}</p>
+                </div>`;
             } 
         },{         
             data : "Action" ,
@@ -127,6 +159,8 @@ function showPassword(id) {
         x.type = "password";
     }
 }
+
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 $("#return_button").on('click',function(){
     window.location.href = "/organization_structure/users";

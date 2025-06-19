@@ -91,6 +91,23 @@ function checkPageTypePermission($type) : bool {
             </ul>
         </li>
         <?php } ?>
+        <?php if(checkPageTypePermission('assetsManagement')) {?>
+        <li>
+        <a href="javascript:;" class="has-arrow">
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="menu-title">Assets Management</div>
+        </a>
+            <ul>
+            <?php foreach ($page_type['assetsManagement'] as $page) { ?>
+                <?php if (in_array( $page['Name'].' View',$_SESSION['permission'])) { ?>
+                <li>
+                    <a style="font-size:small;" href="/<?=$page['Type']?>/<?=$page['Slug']?>"><i class="bi bi-square"></i><?=$page['Name']?></a>
+                </li>
+                <?php } ?>
+            <?php } ?>
+            </ul>
+        </li>
+        <?php } ?>
         <?php if(checkPageTypePermission('leave')) {?>
         <li>
         <a href="javascript:;" class="has-arrow">

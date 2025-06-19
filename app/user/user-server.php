@@ -126,6 +126,7 @@ if ($users->num_rows > 0) {
             "organization_id" => $row['Organization_id'],
             "organization_name" => $row['organization'],
             "assinged_person" => $row['Assinged_Person_id'],
+            "assets_assignation" => $row['assets_assignation'],
             "role_name" => $row['role_name'],
             "role" => $row['role'],
             "organization_info_assign" => $organization_info_assign , 
