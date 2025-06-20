@@ -109,15 +109,20 @@ function makeSingleRow(selected = '') {
 
     const filter_assets_category = checkSelectedAssetsCategory();
     creatDropDown(filter_assets_category,`assets_category_${box_num}`,selected);
-    $(`#assets_category_${box_num}`).select2({
-        placeholder: 'Choose Category',
-        allowClear: true,
-        width: '100%'
-    });
-    $(`#assets_${box_num}`).select2({
-        placeholder: 'Choose Assets',
-        allowClear: true,
-        width: '100%'
+    [`assets_category_${box_num}`,`assets_${box_num}`].forEach((param) => {
+        let placeHolder = param.split("_").filter((ele,index,array) => (index == array.length -2) ? true : false)[0];
+        $(`#${param}`).select2({
+            placeholder: `choose ${placeHolder}`,
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#mdmodal')
+        });
+        $(`#${param}`).rules("add", {
+            required: true,
+            messages: {
+                required: `Please select an ${placeHolder}`
+            }
+        });
     });
     ++box_num;
 }
@@ -217,17 +222,14 @@ $(function() {
         unhighlight: function (element) {
             $(element).removeClass('error');
             $(element).closest('.form-control').removeClass('has-error');
-        }
-    });
-
-    // Dynamically add rules to all select fields matching prefix
-    $("select[id^='assets_category_'], select[id^='assets_']").each(function() {
-        $(this).rules("add", {
-            required: true,
-            messages: {
-                required: "This field is required"
+        },
+        errorPlacement: function (error, element) {
+            if (element.hasClass("select2-hidden-accessible")) {
+                error.insertAfter(element.next('.select2'));
+            } else {
+                error.insertAfter(element);
             }
-        });
+        }
     });
 });
 
@@ -235,6 +237,8 @@ document.getElementById("form-assetsAssignation").addEventListener("submit" , as
     e.preventDefault();
     const form = $("#form-assetsAssignation");
     if(form.valid()) {
+        const disabledFiled = document.getElementById("form-assetsAssignation").querySelectorAll(":disabled");
+        disabledFiled.forEach(el => el.disabled = false);
         let fromData = new FormData(this);
         fromData.append("method","insertOrUpdate");
         fromData.append("user_id",'<?=$_REQUEST['id']?>')

@@ -10,6 +10,10 @@ if (!empty($data_field)) {
     $_REQUEST = array_merge($_REQUEST,$data_field);
 }
 
+// echo "<pre>";
+// print_r($_REQUEST);
+// exit;
+
 $finalRes = [];
 $stepsLog = date(DATE_ATOM) . ": request received => " . json_encode($_REQUEST) . " \n\n";
 

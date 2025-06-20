@@ -3,13 +3,83 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <style>
+.assign-cell {
+    position: relative; /* anchor point for absolute tooltip */
+    overflow: visible !important; /* allow tooltip to overflow */
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 120px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
 .table_heading {
     font-size: 14px;
     font-weight: 500;
 }
-/* .select2-container {
-    z-index: 999999 !important;
-} */
+.user-btn {
+    position: relative;
+    cursor: pointer;
+    color: white;
+    font-size: small;
+    overflow: visible;
+}
+
+/* Tooltip base */
+.user-tooltip {
+    position: absolute;
+    top: -160%;
+    left: 110%;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    width: 220px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 9999;
+    text-align: center;
+    border-radius: 10px;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+/* Tooltip visible state */
+.user-btn.show-tooltip .user-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-tooltip img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+}
+
+.user-info p {
+    margin: 6px 0;
+    line-height: 1.3;
+}
+
+.user-info span {
+    font-weight: 600;
+    color: #444;
+}
+
 </style>
 <main class="page-content">
     <div class="card">
@@ -123,7 +193,31 @@ var assetsSetting = {
         },{
             data: "assets_assign_to", 
             render : function(data, type, row) {
-                return `<div>${data}</div>`;
+                console.log(type);
+                let button;
+                if(data != 'Not Assign') {
+                    let userInfo = JSON.parse(data);
+                    let image = userInfo['image'];
+                    let name = makeContent(userInfo['Name']);
+                    let department = makeContent(userInfo['department_name']);
+                    let designation = makeContent(userInfo['designation_name']);
+                    button = `<button class="user-btn btn btn-sm bg-success" onmouseover="showUserBox(this)" onmouseout="hideUserBox(this)"> Assign
+                    <div class="user-tooltip">
+                    <img src="${image}" alt="User"/>
+                    <div class="user-info">
+                    <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                    <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation}</p>
+                    <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                    </div></div>
+                    </button>`;
+                } else {
+                    button = `<button class = "btn btn-sm bg-info" style = "font-size: smaller;color:white;">${data}</button>`;
+                }
+                return button;
+            },
+            createdCell: function(td, cellData, rowData, rowIndex, colIndex) {
+                console.log(cellData);
+                $(td).addClass('assign-cell');
             }
         },{
             data: "assets_status_name", 
@@ -147,8 +241,7 @@ var assetsSetting = {
             render : function(data,type,row) {
                 return `<div onclick = showAssetsHistory(${row.ID})><button class = "btn btn-sm bg-info" style="font-size:small;color:white !important;">view</button>`;
             }
-        },
-        {         
+        },{         
             data : "Action",
             render : function(data, type, row) {
                 var edit = ''; var del = '';
@@ -181,29 +274,27 @@ var assetsTrashSetting = {
     'processing': true,
     'serverSide': true,
     'serverMethod': 'POST',
-    searching: false,
+    'searching' : false,
     'ajax': { 
         url : '/app/assetsManagment/assets/assetsServer',
         type : 'POST',
         data : function(d) {
             d.assetsType = "deleteAssets";
+            d.searchText = document.getElementById("assets-search-table").value;
+            d.assetsCategory = document.getElementById("assets_category_filter").value;
+            d.assetsStatus = document.getElementById("assets_status_filter").value;
+            d.assetsUser = document.getElementById("assets_user_filter").value;
         }
     },
     'columns': [{
             data: "assets_code",
-            render : function(data,type,row) {
-                return `<div class = "table_heading">${data}</div>`;
-            }
+            render : (data,type,row) => `<div class = "table_heading">${data}</div>`
         },{
             data: "brand_name" ,
-            render : function(data,type,row) {
-                return `<div>${data.toUpperCase()}</div>`;
-            }
+            render : (data,type,row) => `<div>${data.toUpperCase()}</div>`
         },{
             data: "model_number", 
-            render : function(data, type, row) {
-                return `<div>${data}</div>`;
-            }
+            render : (data,type,row) => `<div>${data}</div>`
         },{
             data: "assets_category_name",
             render : function(data, type, row) {
@@ -219,7 +310,26 @@ var assetsTrashSetting = {
         },{
             data: "assets_assign_to", 
             render : function(data, type, row) {
-                return `<div>${data}</div>`;
+                let button;
+                if(data != 'Not Assign') {
+                    let userInfo = JSON.parse(data);
+                    let image = userInfo['image'];
+                    let name = makeContent(userInfo['Name']);
+                    let department = makeContent(userInfo['department_name']);
+                    let designation = makeContent(userInfo['designation_name']);
+                    button = `<button class="user-btn btn btn-sm bg-success" onmouseover="showUserBox(this)" onmouseout="hideUserBox(this)"> Assign
+                    <div class="user-tooltip">
+                    <img src="${image}" alt="User"/>
+                    <div class="user-info">
+                    <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                    <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation}</p>
+                    <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                    </div></div>
+                    </button>`;
+                } else {
+                    button = `<button class = "btn btn-sm bg-info" style = "font-size: smaller;color:white;">${data}</button>`;
+                }
+                return button;
             }
         },{
             data: "assets_status_name", 
@@ -238,6 +348,11 @@ var assetsTrashSetting = {
             render : function(data, type, row) {
                 return `<div class="text-info" style="font-size:x-large;" onclick="viewAssetsDescription('${data}')"><i class = "fadeIn animated bx bx-info-circle" data-bs-toggle="tooltip" title="View Description"></i></div>`;
             }
+        },{
+            data : "assets_history" , 
+            render : function(data,type,row) {
+                return `<div onclick = showAssetsHistory(${row.ID})><button class = "btn btn-sm bg-info" style="font-size:small;color:white !important;">view</button>`;
+            }
         },{         
             data : "Action",
             render : function(data, type, row) {
@@ -250,7 +365,7 @@ var assetsTrashSetting = {
     ],
     "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     "destroy": true,
-    "scrollCollapse": true,
+    "scrollCollapse": true, 
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
@@ -355,5 +470,18 @@ async function getAllFilterData() {
     }
 }
 
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
+
+function showUserBox(el) {
+    showTimer = setTimeout(() => {
+        el.classList.add('show-tooltip');
+    }, 50); // delay before showing
+}
+
+function hideUserBox(el) {
+    hideTimer = setTimeout(() => {
+        el.classList.remove('show-tooltip');
+    }, 50); // delay before hiding
+}
 </script>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-bottom.php');?>  
