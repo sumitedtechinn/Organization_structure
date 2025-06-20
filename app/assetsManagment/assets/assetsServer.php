@@ -47,7 +47,7 @@ if($assets->num_rows > 0) {
         if($row['user_id'] != 'Not Assign') {
             // Get User all details
             $user_id = $row['user_id'];
-            $userDetails_query = "SELECT users.Name , Department.department_name , Designation.designation_name , users.Photo as `image` FROM `users` LEFT JOIN Department ON Department.id = users.Department_id LEFT JOIN Designation ON Designation.ID = users.ID WHERE users.ID = '$user_id'";
+            $userDetails_query = "SELECT users.Name , Department.department_name , Designation.designation_name , users.Photo as `image` FROM `users` LEFT JOIN Department ON Department.id = users.Department_id LEFT JOIN Designation ON users.Designation_id = Designation.ID WHERE users.ID = '$user_id'";
             $userDetails = $conn->query($userDetails_query);
             $userDetails = mysqli_fetch_assoc($userDetails);
             $assets_assign_to = json_encode($userDetails);

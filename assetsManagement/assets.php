@@ -3,10 +3,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <style>
-.assign-cell {
-    position: relative; /* anchor point for absolute tooltip */
-    overflow: visible !important; /* allow tooltip to overflow */
-}
 .truncate-label {
     display: inline-block;
     max-width: 120px; /* or use any fixed size */
@@ -193,7 +189,6 @@ var assetsSetting = {
         },{
             data: "assets_assign_to", 
             render : function(data, type, row) {
-                console.log(type);
                 let button;
                 if(data != 'Not Assign') {
                     let userInfo = JSON.parse(data);
@@ -216,9 +211,9 @@ var assetsSetting = {
                 return button;
             },
             createdCell: function(td, cellData, rowData, rowIndex, colIndex) {
-                console.log(cellData);
                 $(td).addClass('assign-cell');
             }
+            
         },{
             data: "assets_status_name", 
             render : function(data, type, row) {
@@ -226,10 +221,16 @@ var assetsSetting = {
                     'backup' : "badge bg-secondary",
                     'use' : "badge bg-success",
                     'repair' : "badge bg-warning",
-                    'retire' : "badge bg-danger" 
+                    'retired' : "badge bg-danger" 
                 }
-                let badge_val = badge_bg[(data.split(" ")[1]).toLowerCase()];
-                return `<div class = "${badge_val}" style = "font-size: smaller;font-weight: 400;">${data}</div>`;
+                let keys = Object.keys(badge_bg);
+                let selectkey = keys.filter( word => data.toLowerCase().includes(word) ? true : false);
+                let edit = '';
+                if(selectkey[0] != 'use') {
+                    edit = `<div class="font-14" onclick = "changeAssetsStatus(${row.ID})"><i class="fadeIn animated bx bx-edit"></i></div>`;
+                }
+                let badge_val = badge_bg[selectkey[0]];
+                return `<div class = "d-flex gap-4"><div class = "${badge_val}" style = "font-size: smaller;font-weight: 400;min-width:80px;">${data}</div>${edit}</div>`;
             }
         },{
             data: "assets_description", 
@@ -251,7 +252,7 @@ var assetsSetting = {
                     edit = '<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Disabled"><i class="bi bi-pencil-fill"></i></div>';
                 <?php } ?>
                 <?php if(in_array('Assets Delete',$_SESSION['permission'])) { ?>
-                    del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "deleteDetails(${row.ID},&#39;assets&#39;)"><i class="bi bi-trash-fill"></i></div>`;
+                    del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssetDeleteCondition(${row.ID},&#39;assets&#39;)"><i class="bi bi-trash-fill"></i></div>`;
                 <?php } else { ?>
                     del = '<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Disabled"><i class="bi bi-trash-fill"></i></div>';
                 <?php } ?>
@@ -338,9 +339,11 @@ var assetsTrashSetting = {
                     'backup' : "badge bg-secondary",
                     'use' : "badge bg-success",
                     'repair' : "badge bg-warning",
-                    'retire' : "badge bg-danger" 
+                    'retired' : "badge bg-danger" 
                 }
-                let badge_val = badge_bg[(data.split(" ")[1]).toLowerCase()];
+                let keys = Object.keys(badge_bg);
+                let selectkey = keys.filter( word => data.toLowerCase().includes(word) ? true : false);
+                let badge_val = badge_bg[selectkey[0]];
                 return `<div class = "${badge_val}" style = "font-size: smaller;font-weight: 400;">${data}</div>`;
             }
         },{
@@ -424,6 +427,15 @@ async function updateDetails(id) {
     }
 }
 
+async function changeAssetsStatus(assets_id) {
+    let url = `/app/assetsManagment/assets/updateAssetsStatus`;
+    const data = await postMethodWithTextResponse(url,{assets_id});
+    if (data != null) {
+        $('#sm-modal-content').html(data);
+        $('#smmodal').modal('show');
+    }
+}
+
 async function showAssetsHistory(id) { 
     let url = `/app/assetsManagment/assets/showAssetHistory`;
     const data = await postMethodWithTextResponse(url,{id});
@@ -466,6 +478,29 @@ async function getAllFilterData() {
                 allowClear: true,
                 width: '100%'
             });
+        }
+    }
+}
+
+async function checkAssetDeleteCondition(id,table_name) {
+    let url = `/app/assetsManagment/assets/fetchAndStoreAssets`;
+    const data = await postMethodWithJsonResponse(url,{
+        id,
+        method : "checkAssetsDeleteCondition" 
+    });
+    if (data != null) {
+        if(data.status == 200) {
+            if (data.message == "not_allow") {
+                Swal.fire({
+                    title : "Assets Delete Not Allow" , 
+                    text: "Only Assets In Retired State Are Allow",
+                    icon: 'warning',
+                });
+            } else {
+                deleteDetails(id,table_name);
+            }
+        } else {
+            toastr.error(data.message);
         }
     }
 }

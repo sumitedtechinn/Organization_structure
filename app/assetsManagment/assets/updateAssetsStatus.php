@@ -3,7 +3,11 @@ $data = file_get_contents('php://input');
 if(!empty($data)) {
     $_REQUEST = json_decode($data,true);
 }
+if(!isset($_REQUEST['assets_id'])) {
+    exit("Assets id is required");
+}
 ?>
+
 <style>
 label {
     font-size: 14px;
@@ -22,45 +26,17 @@ label {
             <a type="button" class="close" data-dismiss="modal" id = "hide-modal" aria-hidden="true"><i class="bi bi-x-circle-fill"></i></a>
         </div>
         <hr/>
-        <form role="form" id="form-assets" action="/app/assetsManagment/assets/fetchAndStoreAssets" method="POST">
-            <div class="row mb-1">
-                <div class="col-sm-6">
-                    <label for="brand_name" class="col-sm-12 col-form-label">Brand Name</label>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control form-control-sm" name="brand_name" id="brand_name" placeholder="eg :- Dell">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <label for="model_number" class="col-sm-12 col-form-label">Model Number</label>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control form-control-sm" name="model_number" id="model_number" placeholder="eg :- E7470">
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-1">
-                <div class="col-sm-6">
-                    <label class="col-sm-12 col-form-label">Assets Category</label>
-                    <div class="col-sm-12">
-                        <select type="text" class="form-control form-control-sm single-select select2" name = "assets_category" id="assets_category" onchange="getAssetsCode(this.value)"></select>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <label for="assets_code" class="col-sm-12 col-form-label">Assets Code</label>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control form-control-sm" name="assets_code" id="assets_code" readonly placeholder="eg :- EDLP001">
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-1">
-                <label class="col-sm-12 col-form-label">Assets Description</label>
+        <form role="form" id="form-changeAssetsStatus" action="/app/assetsManagment/assets/fetchAndStoreAssets" method="POST">
+            <div class="row">
+                <label for="assets_status" class="col-sm-12 col-form-label">Assets Status</label>
                 <div class="col-sm-12">
-                    <textarea class="form-control" name="assets_description" id = "assets_description" rows="2"></textarea>
-                </div> 
+                    <select type="text" class="form-control form-control-sm single-select select2" name = "assets_status" id="assets_status"></select>
+                </div>
             </div>
             <hr/>
             <div class="row mb-2"> 
                 <div class="col-sm-12 text-end">
-                    <button type="submit" class="btn btn-primary btn-sm" id="buttonText"></button>
+                    <button type="submit" class="btn btn-primary btn-sm" style="font-size: small;" id="buttonText"></button>
                 </div>
             </div>
         </form>
@@ -75,16 +51,9 @@ $('#hide-modal').click(function() {
 });
 
 $(function(){
-    $('#form-assets').validate({
+    $('#form-changeAssetsStatus').validate({
     rules: {
-        brand_name: {required:true},
-        model_number : {required:true},
-        assets_category : {required:true}, 
-        assets_code : {
-            required:true ,
-            readOnly : true
-        },
-        assets_description : {required:true}
+        assets_status: {required:true},
     },
     highlight: function (element) {
         $(element).addClass('error');
@@ -112,8 +81,8 @@ async function fetchData(url , param) {
 $(document).ready( async () => {
     let url = "/app/assetsManagment/assets/fetchAndStoreAssets";
     const data = await fetchData(url , JSON.stringify({  
-        id : "<?=$_REQUEST['id'] ?? '' ?>",
-        method : 'checkAssets'
+        assets_id : "<?=$_REQUEST['assets_id']?>",
+        method : 'checkAssetsStatus'
     }))  
     if (data != null) {
         document.getElementById("buttonText").innerText = data.buttonText;
@@ -130,32 +99,27 @@ $(document).ready( async () => {
                     formFiled.innerHTML = data.form_data[key];
                 } else if (formFiled.tagName == 'SELECT') {
                     creatDropDown(dropDownFiled[key],key,data.form_data[key]);
-                    formFiled.disabled = true;
                 } 
-            }
-        } else {
-            for (const filedName in dropDownFiled) {
-                creatDropDown(dropDownFiled[filedName],filedName,"");
             }
         }
     }
-    $('#assets_category').select2({
-        placeholder: 'Choose Category',
+    $('#assets_status').select2({
+        placeholder: 'Choose Status',
         allowClear: true,
         width: '100%',
-        dropdownParent: $('#mdmodal')
+        dropdownParent: $('#smmodal')
     });
 })
 
-document.getElementById("form-assets").addEventListener("submit" , async function (e) {
+document.getElementById("form-changeAssetsStatus").addEventListener("submit" , async function (e) {
     e.preventDefault();
-    const form = document.getElementById("form-assets");
+    const form = document.getElementById("form-changeAssetsStatus");
     if(form.checkValidity()) {
         const disabledFiled = form.querySelectorAll(":disabled");
         disabledFiled.forEach(el => el.disabled = false);
         let fromData = new FormData(this);
-        fromData.append("method","insertOrUpdate");
-        fromData.append("id",'<?=$_REQUEST['id'] ?? "" ?>')
+        fromData.append("method","updateAssetStatus");
+        fromData.append("id",'<?=$_REQUEST['assets_id'] ?? "" ?>')
         const data = await fetchData(this.action , fromData);
         if (data.status == 200) {
             $('.modal').modal('hide');
@@ -183,18 +147,4 @@ function creatDropDown(dropDownData,fieldName,selected) {
     } 
 }
 
-async function getAssetsCode(assets_category) {
-
-    const data = await fetchData("/app/assetsManagment/assets/fetchAndStoreAssets",JSON.stringify({
-        "assets_category" : assets_category , 
-        "method" : "getAssetsCode"
-    }));
-    if (data != null) {
-        if(data.status == 200) {
-            document.getElementById("assets_code").value = data?.message;
-        } else {
-            console.log(data.message);
-        }
-    }
-}
 </script>

@@ -32,6 +32,20 @@ if(isset($_REQUEST['method']) && $_REQUEST['method'] == 'checkAssets') {
 } elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'getAllFilterData') {
     $filterInputFiled = explode('@@@@',$_REQUEST['inputField']);
     $finalRes = getAllFilterData($filterInputFiled);
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'checkAssetsStatus') {
+    $assets_id = mysqli_real_escape_string($conn,$_REQUEST['assets_id']);
+    $assets_status = fetchAssetsStatus();
+    $status = array_filter($assets_status, fn($element) => !str_contains(strtolower($element),'use'));
+    $dropDownData = json_encode(["assets_status" => $status]);
+    $selected_status = checkAssetsStatus($assets_id);
+    $finalRes = setFormData("Update Status","Update",$selected_status,$dropDownData);
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'updateAssetStatus') {
+    $assets_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $assets_status = mysqli_real_escape_string($conn,$_REQUEST['assets_status']);
+    $finalRes = updateAssetStatus($assets_id,$assets_status);
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'checkAssetsDeleteCondition') {
+    $assets_id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $finalRes = checkAssetsDeleteCondition($assets_id);    
 }
 
 echo json_encode($finalRes);
@@ -129,7 +143,7 @@ function getAssetsCode($assets_category) {
         $getCodePrefix = mysqli_fetch_column($getCodePrefix);
 
         // check prefix assets exist or not 
-        $maxCode_query = "SELECT assets_code FROM assets WHERE assets_code LIKE '%$getCodePrefix%' ORDER BY id DESC LIMIT 1";
+        $maxCode_query = "SELECT assets_code FROM assets WHERE assets_code LIKE '%$getCodePrefix%' AND assets_category = '$assets_category' ORDER BY id DESC LIMIT 1";
         $maxCode = $conn->query($maxCode_query);
         if($maxCode->num_rows > 0) {
             $maxCode = mysqli_fetch_column($maxCode);
@@ -142,6 +156,43 @@ function getAssetsCode($assets_category) {
         }    
     } catch (Exception $e) {
         return sendResponse(false,$e->getMessage());
+    }
+}
+
+function checkAssetsStatus($assets_id) {
+    global $conn;
+
+    $assetsStatus_query = "SELECT assets_status FROM `assets` WHERE id = '$assets_id'";
+    $assetsStatus = $conn->query($assetsStatus_query);
+    $assetsStatus = mysqli_fetch_assoc($assetsStatus);
+    return $assetsStatus;
+}
+
+function updateAssetStatus($assets_id,$assets_status) {
+    global $conn;
+
+    try {
+        $updateAssetStatus_query = "UPDATE assets SET assets_status = '$assets_status' WHERE id = '$assets_id'";
+        $updateAssetStatus = $conn->query($updateAssetStatus_query);
+        return sendResponse($updateAssetStatus,"Status Updated");
+    } catch (Exception $e) {
+        return sendResponse(false,"Exception : " . $e->getMessage() . " on line => " . $e->getLine());
+    }
+}
+
+/**
+ * Assets is only delete when assets status is in retired state
+ */
+function checkAssetsDeleteCondition($assets_id) {
+    global $conn;
+
+    try {
+        $checkAssetStatus_query = "SELECT IF(assets_status = '4', 'allow' , 'not_allow') as `delete_status` FROM assets WHERE id = '$assets_id'";
+        $checkAssetStatus = $conn->query($checkAssetStatus_query);
+        $checkAssetStatus = mysqli_fetch_column($checkAssetStatus);
+        return ['status' => 200 , 'message' => $checkAssetStatus];
+    } catch (Exception $e) {
+        return sendResponse(false,"Exception : " . $e->getMessage() . " on line => " . $e->getLine());
     }
 }
 
@@ -159,6 +210,6 @@ function getAllFilterData($filterInputFiled) {
 }
 
 function sendResponse($response,$message = "Something Went Wrong") {
-    return ($response) ? ['status' => 200 , 'message' => "Category $message successfully"] : ['status' => 400 , 'message' => $message];
+    return ($response) ? ['status' => 200 , 'message' => "Asset $message successfully"] : ['status' => 400 , 'message' => $message];
 }
 ?>
