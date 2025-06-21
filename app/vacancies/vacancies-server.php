@@ -54,18 +54,20 @@ if (isset($_POST['selectDesignation']) && !empty($_POST['selectDesignation'])) {
     $searchQuery .= "AND Vacancies.Designation_id ='".$_POST['selectDesignation']."'";
 }
 
+$delete_query = isset($_POST['deletedVacancy']) && !empty($_POST['deletedVacancy']) ? "Vacancies.Deleted_At IS NOT NULL" : "Vacancies.Deleted_At IS NULL";
+
 ## Total number of records without filtering
-$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM Vacancies WHERE Deleted_At IS NULL $searchQuery");
+$all_count = $conn->query("SELECT COUNT(ID) as `allcount` FROM Vacancies WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($all_count);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$filter_count = $conn->query("SELECT COUNT(ID) as `filtered` FROM Vacancies WHERE Deleted_At IS NULL $searchQuery");
+$filter_count = $conn->query("SELECT COUNT(ID) as `filtered` FROM Vacancies WHERE $delete_query $searchQuery");
 $records = mysqli_fetch_assoc($filter_count);
 $totalRecordwithFilter = $records['filtered'];
 
 ## Fetch Record
-$vacancies = $conn->query("SELECT Vacancies.* , organization.organization_name as `organization` , Designation.designation_name as `designation` , Department.department_name as `department` , Branch.Branch_name as `branch` , Vertical.Vertical_name as `vertical` , users.Name as `raised_person_name` FROM `Vacancies` LEFT JOIN organization ON organization.id = Vacancies.Organization_id LEFT JOIN Designation ON Designation.ID = Vacancies.Designation_id LEFT JOIN Department ON Department.id = Vacancies.Department_id LEFT JOIN Branch ON Branch.ID = Vacancies.Branch_id LEFT JOIN Vertical ON Vertical.ID = Vacancies.Vertical_id LEFT JOIN users ON users.ID = Vacancies.Raised_by where Vacancies.Deleted_At IS NULL $searchQuery $orderby LIMIT $row , $rowperpage");
+$vacancies = $conn->query("SELECT Vacancies.* , organization.organization_name as `organization` , Designation.designation_name as `designation` , Department.department_name as `department` , Branch.Branch_name as `branch` , Vertical.Vertical_name as `vertical` , users.Name as `raised_person_name` FROM `Vacancies` LEFT JOIN organization ON organization.id = Vacancies.Organization_id LEFT JOIN Designation ON Designation.ID = Vacancies.Designation_id LEFT JOIN Department ON Department.id = Vacancies.Department_id LEFT JOIN Branch ON Branch.ID = Vacancies.Branch_id LEFT JOIN Vertical ON Vertical.ID = Vacancies.Vertical_id LEFT JOIN users ON users.ID = Vacancies.Raised_by where $delete_query $searchQuery $orderby LIMIT $row , $rowperpage");
 
 $data = [];
 if ($vacancies->num_rows > 0) {

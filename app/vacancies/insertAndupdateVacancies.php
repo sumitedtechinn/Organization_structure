@@ -15,9 +15,6 @@ if (isset($_REQUEST['id'])) {
 ?>
 
 <style>
-    .select2-container {
-        z-index: 999999 !important;
-    }
     .error {
         color: red;
         font-size: small;
@@ -90,8 +87,8 @@ if (isset($_REQUEST['id'])) {
 </div>
 
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
-<script src="/assets/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/js/form-select2.js"></script>
+<!-- <script src="/assets/plugins/select2/js/select2.min.js"></script>
+<script src="/assets/js/form-select2.js"></script> -->
 <script type="text/javascript">
 
 
@@ -102,7 +99,7 @@ $(document).ready(function(){
     <?php } ?>
     $.ajax({
         url : "/app/common/departmentList",
-        type : "post",
+        type : "POST",
         data : {
             department_id
         },
@@ -112,6 +109,16 @@ $(document).ready(function(){
                 $("#department").trigger('change');
             <?php } ?>
         }
+    });
+    document.getElementById("form-vacancies").querySelectorAll("select").forEach((param) => {
+        let id = param.id;
+        let placeholder = id.charAt(0).toUpperCase() + id.slice(1,id.length);
+        $(`#${id}`).select2({
+            placeholder: `Choose ${placeholder}`,
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $('#lgmodal')
+        });
     });
 });
 

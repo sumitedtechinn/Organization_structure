@@ -70,7 +70,7 @@ function fetchAssets($category_id,$user_id) {
     $stepsLog .= date(DATE_ATOM). " :: method inside the fetchAssets \n\n";
     try {
         $assets = [];
-        $fetchAssets_query = "SELECT id , CONCAT(UPPER(brand_name), ' ' ,model_number , '(', assets_code, ')') AS `assets_name` FROM `assets` WHERE assets_category = '$category_id' AND ( assets_assign_to IS NULL OR assets_assign_to = '$user_id')";
+        $fetchAssets_query = "SELECT assets.id , CONCAT(UPPER(assets.brand_name), ' ' ,assets.model_number , '(', assets.assets_code, ')') AS `assets_name` FROM `assets` LEFT JOIN assets_status ON assets_status.id = assets.assets_status WHERE assets.assets_category = '$category_id' AND ( assets.assets_assign_to IS NULL OR assets.assets_assign_to = '$user_id') AND (assets_status.status_name LIKE '%backup%' OR assets.assets_assign_to = '$user_id') AND assets.Deleted_at IS NULL";
         $stepsLog .= date(DATE_ATOM) . " :: fetchAssets_query => $fetchAssets_query \n\n";
         $fetchAssets = $conn->query($fetchAssets_query);
         while ($row = mysqli_fetch_assoc($fetchAssets)) {

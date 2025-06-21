@@ -510,13 +510,13 @@ const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="t
 function showUserBox(el) {
     showTimer = setTimeout(() => {
         el.classList.add('show-tooltip');
-    }, 50); // delay before showing
+    }, 50);
 }
 
 function hideUserBox(el) {
     hideTimer = setTimeout(() => {
         el.classList.remove('show-tooltip');
-    }, 50); // delay before hiding
+    }, 50);
 }
 </script>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-bottom.php');?>  

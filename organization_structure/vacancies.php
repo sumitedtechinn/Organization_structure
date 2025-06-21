@@ -6,15 +6,44 @@
 $node_color = $conn->query("SELECT color FROM Vacancies LIMIT 1");
 $node_color = mysqli_fetch_column($node_color);
 ?>
-
-
+<style>
+.table_heading {
+    font-size: 14px;
+    font-weight: 500;
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 180px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+.raised_btn{
+    background-color: #0388b8 !important;
+    font-weight: 200;
+    font-size: small;
+    width: 120px;
+    padding: 4%;
+}
+.vacancy_status{
+    font-weight:200;
+    font-size:small;
+}
+</style>
 <!--start content-->
 <main class="page-content">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Vacancies Details</h5>
-                <div class="d-flex justify-content-end col-sm-3">
+                <h6 class="mb-0">Vacancies Details</h6>
+                <div class="d-flex justify-content-end col-sm-3 gap-1">
+                    <?php if(in_array('Vacancies Delete',$_SESSION['permission'])) { ?>
+                    <div class="theme-icons sha dow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
+                        <i class="bi bi-trash-fill"></i>
+                    </div>
+                    <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Vacancy</button>
+                    <?php } ?>
                     <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
                     <div class="col-sm-2">
                         <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Vacancies')">
@@ -29,38 +58,37 @@ $node_color = mysqli_fetch_column($node_color);
             </div>
             <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
             <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                <div class="col-sm-2" style="z-index: 0 !important;">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
-                    </select>
+                <div class="col-sm-2">
+                    <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)"></select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
+                <div class="col-sm-2">
                     <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
+                <div class="col-sm-2">
                     <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-3" style="z-index: 0 !important;">
+                <div class="col-sm-3">
                     <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
-                <div class="col-sm-2" style="z-index: 0 !important;">
+                <div class="col-sm-2">
                     <select type="text" class="form-control form-control-sm single-select select2" name="designation_filter" id="designation_filter" onchange="reloadTable(this.id)">
                     </select>
                 </div>
             </div>
             <?php } ?>
             <div class="table-responsive mt-3">
-                <table class="table align-middle" id="vacanciesTable">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Designation</th>
-                            <th>No. of Vacancies</th>
-                            <th>Department Info</th>
-                            <th>Raised By</th>
-                            <th>status</th>
-                            <th>Action</th>
+                <table class="table align-middle w-100" id="vacanciesTable" style="color: #515B73!important;">
+                    <thead class="table-primary">
+                        <tr class="table_heading"> 
+                            <td>Vacancy Info</td>
+                            <td>Filled / Required</td>
+                            <td>Organization Info</td>
+                            <td>Raised By</td>
+                            <td>Status</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                 </table>
@@ -131,44 +159,49 @@ var vacanciesSettings = {
         {
             data: "designation" ,
             render : function(data, type, row) {
-                var department = row.department;  
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Designation : </b> '+data+'</p><p class = "mb-1"><b>Department : </b>'+department+'</p></div>';
+                let designation = makeContent(data);
+                let department = makeContent(row.department);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                </div>`;
             } 
         },{
             data: "numofvacancies" ,
-            render : function(data,type,row) {
-                var vacancies = '<div>'+row.numofvacanciesfill+'/'+data+'</div>';
-                return vacancies;
-            }
+            render : (data,type,row) => `<div>${row.numofvacanciesfill}<span class="table_heading">/${data}</span></div>`
         },{
             data: "Department_info" ,
             render : function(data, type, row) {
-                var branch = row.branch ; 
-                var vertical = row.vertical ; 
-                var organization = row.organization ; 
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Organization : </b> '+organization+'</p><p class = "mb-1"><b>Branch : </b>'+branch+'</p><p class = "mb-1"><b>Vertical : </b>'+vertical+'</p></div>';
+                let branch = makeContent(row.branch);
+                let vertical = makeContent(row.vertical);
+                let organization = makeContent(row.organization);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Organization : </span>${organization}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Branch : </span>${branch}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Vertical : </span>${vertical}</p>
+                </div>`;
             }
         },{
             data: "raised_by" ,
-            render : function(data,type,row) {
-                raised_by = '<span class="badge rounded-pill bg-info m-1" style="background-color:#0388b8 !important;font-weight:200!important;font-size:15px;">'+data+'</span>'; 
-                return raised_by;  
-            } 
+            render : (data,type,row) => `<span class="badge rounded-pill bg-info m-1 truncate-label raised_btn" data-bs-toggle="tooltip" title="${data}">${data}</span>`
         },{
             data: "status" , 
             render : function(data,type,row) {
-                var status = (row.status === 'In Progress') ? '<span class="badge bg-warning text-dark" style="font-weight:200!important;font-size:15px;">In Progress</span>' : '<span class="badge bg-success" style="font-weight:200!important;font-size:15px;">Completed</span>';
+                let status = (row.status === 'In Progress') ? '<span class="badge bg-warning text-dark vacancy_status">In Progress</span>' : '<span class="badge bg-success vacancy_status">Completed</span>';
                 return status;
             }
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var table = "Vacancies";
-                var edit = '';
+                let table = "Vacancies";
+                let edit = ''; let del = '';
                 <?php if(in_array('Vacancies Update',$_SESSION['permission'])) { ?>
                 edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.id+','+row.numofvacancies+',&#39;'+row.designation+'&#39;,&#39;'+row.branch+'&#39;,&#39;'+row.vertical+'&#39;,&#39;'+row.reaised_by+'&#39;)"><i class="bi bi-pencil-fill"></i></div>';
                 <?php } ?>
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit + '</div>';
+                <?php if(in_array('Vacancies Delete',$_SESSION['permission'])) { ?>
+                del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkDeleteCondition(${row.id},'${table}','${row.numofvacancies}')"><i class="bi bi-trash-fill"></i></div>`;
+                <?php } ?>
+                return `<div class="table-actions d-flex align-items-center gap-3 fs-6">${edit}${del}</div>`;
             }
         }
     ],
@@ -184,14 +217,95 @@ var vacanciesSettings = {
     "aaSorting": []
 };
 
+var vacanciesTrashSettings = {
+    'processing': true,
+    'serverSide': true,
+    'serverMethod': 'post',
+    "searching": false ,
+    'ajax': {
+        'url': '/app/vacancies/vacancies-server.php',
+        'type': 'POST',
+        'data' : function(d) {
+            d.deletedVacancy = "deleteType"
+        }
+    },
+    'columns': [
+        {
+            data: "designation" ,
+            render : function(data, type, row) {
+                let designation = makeContent(data);
+                let department = makeContent(row.department);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Designation : </span>${designation}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Department : </span>${department}</p>
+                </div>`;
+            } 
+        },{
+            data: "numofvacancies" ,
+            render : (data,type,row) => `<div>${row.numofvacanciesfill}<span class="table_heading">/${data}</span></div>`
+        },{
+            data: "Department_info" ,
+            render : function(data, type, row) {
+                let branch = makeContent(row.branch);
+                let vertical = makeContent(row.vertical);
+                let organization = makeContent(row.organization);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Organization : </span>${organization}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Branch : </span>${branch}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Vertical : </span>${vertical}</p>
+                </div>`;
+            }
+        },{
+            data: "raised_by" ,
+            render : (data,type,row) => `<span class="badge rounded-pill bg-info m-1 truncate-label raised_btn" data-bs-toggle="tooltip" title="${data}">${data}</span>`
+        },{
+            data: "status" , 
+            render : function(data,type,row) {
+                let status = (row.status === 'In Progress') ? '<span class="badge bg-warning text-dark vacancy_status">In Progress</span>' : '<span class="badge bg-success vacancy_status">Completed</span>';
+                return status;
+            }
+        },{         
+            data : "Action" ,
+            render : function(data, type, row) {
+                let table = "Vacancies";
+                let restore = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-store" onclick = "restoreDetails(${row.id},'${table}')"><i class="fadeIn animated bx bx-sync" style = "font-size:larger;"></i></div>`;
+                let del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parmanent Delete" onclick = "parmanentDeleteDetails(${row.id},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
+                return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${restore}${del}</div>`;
+            }
+            
+        }
+    ],
+    "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+    "destroy": true,
+    "scrollCollapse": true,
+    drawCallback: function(settings, json) {
+        $('[data-toggle="tooltip"]').tooltip({
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+
+        });
+    },
+    "aaSorting": []
+};
 
 $(document).ready(function() {
+    $("#return_button").css('display','none');
     $('#vacanciesTable').DataTable(vacanciesSettings);
 });
 
-function applyfilter(){
-    $('#vacanciesTable').DataTable().ajax.reload(null,false);
-}
+$("#trash_button").on('click',function(){
+    $('#vacanciesTable').DataTable(vacanciesTrashSettings);
+    $("#return_button").css('display','block');
+    $("#trash_button").css('display','none');
+});
+
+
+$("#return_button").on('click',function(){
+    $('#vacanciesTable').DataTable(vacanciesSettings);
+    $("#return_button").css('display','none');
+    $("#trash_button").css('display','block');
+});
+
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function updateDetails(id,numofvacancies,designation,branch,vertical,raisedby) {
     $.ajax({
@@ -203,6 +317,18 @@ function updateDetails(id,numofvacancies,designation,branch,vertical,raisedby) {
             $('#lgmodal').modal('show');
         }
     });
+}
+
+function checkDeleteCondition(id,table,required_vacancy) {
+    if(required_vacancy > 0) {
+        Swal.fire({
+            title : "Vacancy Delete Not Allow" , 
+            text: "Only Vacancy with Zero required Are Allow",
+            icon: 'warning',
+        });
+    } else {
+        deleteDetails(id,table);
+    }
 }
 
 </script>
