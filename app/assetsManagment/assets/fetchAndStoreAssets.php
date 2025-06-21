@@ -187,7 +187,7 @@ function checkAssetsDeleteCondition($assets_id) {
     global $conn;
 
     try {
-        $checkAssetStatus_query = "SELECT IF(assets_status = '4', 'allow' , 'not_allow') as `delete_status` FROM assets WHERE id = '$assets_id'";
+        $checkAssetStatus_query = "SELECT IF( assets_status.status_name LIKE '%retired%', 'allow' , 'not_allow') as `delete_status` FROM assets LEFT JOIN assets_status ON assets_status.id = assets.assets_status WHERE assets.id = '$assets_id'";
         $checkAssetStatus = $conn->query($checkAssetStatus_query);
         $checkAssetStatus = mysqli_fetch_column($checkAssetStatus);
         return ['status' => 200 , 'message' => $checkAssetStatus];

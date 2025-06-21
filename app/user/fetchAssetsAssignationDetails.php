@@ -10,10 +10,6 @@ if (!empty($data_field)) {
     $_REQUEST = array_merge($_REQUEST,$data_field);
 }
 
-// echo "<pre>";
-// print_r($_REQUEST);
-// exit;
-
 $finalRes = [];
 $stepsLog = date(DATE_ATOM) . ": request received => " . json_encode($_REQUEST) . " \n\n";
 
@@ -27,6 +23,9 @@ if(isset($_REQUEST['method']) && $_REQUEST['method'] == 'fetchUserAssets') {
 } elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'insertOrUpdate') {
     unset($_REQUEST['method']);
     $finalRes = insertOrUpdateAssetsAssignation();
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'fetchUserAssignedAssetsDetails') {
+    $user_id = isset($_REQUEST['user_id']) && !empty($_REQUEST['user_id']) ? mysqli_real_escape_string($conn,$_REQUEST['user_id']) : "";
+    $finalRes = fetchUserAssignedAssetsDetails($user_id);
 }
 
 $stepsLog .= date(DATE_ATOM) . " final response => " . json_encode($finalRes) . "\n\n";
@@ -78,6 +77,39 @@ function fetchAssets($category_id,$user_id) {
             $assets[$row['id']] = $row['assets_name'];
         }
         return ['status' => 200 , 'message' => json_encode($assets)];    
+    } catch (Exception $e) {
+        return sendResponse(false,"Exception : " . $e->getMessage());
+    }
+}
+
+function fetchUserAssignedAssetsDetails($user_id) {
+    global $conn , $stepsLog;
+
+    $stepsLog .= date(DATE_ATOM). " :: method inside the fetchUserAssignedAssetsDetails \n\n";
+    try {
+        // check User Assets assign or not 
+        $checkUserAssets_query = "SELECT assets_assignation FROM `users` WHERE ID = '$user_id'";
+        $stepsLog .= date(DATE_ATOM) . " :: checkUserAssets_query => $checkUserAssets_query \n\n";
+        $checkUserAssets = $conn->query($checkUserAssets_query);
+        $checkUserAssets = mysqli_fetch_column($checkUserAssets);
+        $stepsLog .= date(DATE_ATOM) . " :: checkUserAssets response => $checkUserAssets \n\n";
+
+        if(is_null($checkUserAssets)) {
+            return ['status' => 200 , 'assets_assignation' => false , 'message' => "No Assets Assign Yet"];    
+        }
+
+        $userAssets = json_decode($checkUserAssets,true);
+        $assetsInfo = [];
+        array_walk($userAssets, function($asset_id,$category_id) use(&$stepsLog,&$conn,&$assetsInfo) {
+            $fetchAssetsDetails_query = "SELECT assets_category.category_name as `assets_category` , assets.assets_code , assets.brand_name , assets.model_number FROM assets LEFT JOIN assets_category ON assets.assets_category = assets_category.id WHERE assets.id = '$asset_id'";      
+            $stepsLog .= date(DATE_ATOM) . " :: fetchAssetsDetails_query => $fetchAssetsDetails_query \n\n"; 
+            $fetchAssetsDetails = $conn->query($fetchAssetsDetails_query);
+            $fetchAssetsDetails = mysqli_fetch_assoc($fetchAssetsDetails);
+            $stepsLog .= date(DATE_ATOM) . " :: fetchAssetsDetails response =>  " . json_encode($fetchAssetsDetails)  . "\n\n"; 
+            $assetsInfo[$category_id] = $fetchAssetsDetails;      
+        });
+
+        return ['status' => 200  , 'assets_assignation' => true , 'message' => json_encode($assetsInfo)];    
     } catch (Exception $e) {
         return sendResponse(false,"Exception : " . $e->getMessage());
     }

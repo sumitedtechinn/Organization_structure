@@ -162,14 +162,11 @@ var UserSettings = {
         },{
             data: "password" ,
             render : function(data,type,row) {
-                let password = `<div class="input-group input-group-sm">
+                return `<div class="input-group input-group-sm">
 				<input type="password" class="form-control" id = "myinput_${row.ID}" disabled value="${data}">
                 <span class="input-group-text" onclick="showPassword(${row.ID})">
                 <i class = "bi bi-eye"></i>
                 </span></div>`;
-								
-                // var pass = '<div class="row" style = "width:175px !important" ><div class="col-md-10"><input type="password" style="font-size:small; " class="form-control" disabled="" style="border: 0ch;" value="'+data+'" id="myInput'+ row.ID +'"></div><div class="col-md-2 mt-1"><i class = "bi bi-eye " onclick="showPassword('+ row.ID +')" ></i></div></div>';
-                return password;
             }
         },{
             data: "organization" ,
@@ -272,7 +269,7 @@ $(document).ready(function() {
 const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function showPassword(id) {
-    <?php if($_SESSION['role'] == '2') { ?> return <?php } ?>
+    <?php if($_SESSION['role'] == '2') { ?> return; <?php } ?>
     let x = document.getElementById("myinput_".concat(id));
     x.type = (x.type === "password") ? "text" : "password";
 }
@@ -395,8 +392,14 @@ function checkUserAssignDetails(user_id,table) {
 }
 
 function showAssetsAssignationDetails(id) {
+    let url;
+    <?php if($_SESSION['role'] == '1') { ?>
+        url = "/app/user/assetsAssignation";
+    <?php } else { ?>
+        url = "/app/user/userAssetDisplay"; 
+    <?php } ?>
     $.ajax({
-        url : "/app/user/assetsAssignation",   
+        url : url,   
         type: 'POST',
         data: {id} ,
         success : function(data){

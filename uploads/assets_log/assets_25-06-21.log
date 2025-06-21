@@ -1,0 +1,64 @@
+2025-06-21T07:01:51+02:00: request received => {"user_id":"19","method":"fetchUserAssignedAssetsDetails"} 
+
+2025-06-21T07:01:51+02:00 :: method inside the fetchUserAssignedAssetsDetails 
+
+2025-06-21T07:01:51+02:00 :: checkUserAssets_query => SELECT assets_assignation FROM `users` WHERE ID = '19' 
+
+2025-06-21T07:01:51+02:00 :: checkUserAssets response =>  
+
+2025-06-21T07:01:51+02:00 final response => {"status":200,"assets_assignation":false,"message":"No Assets Assign Yet"}
+
+ ============ End Of Script ================== 
+
+2025-06-21T07:02:03+02:00: request received => {"user_id":"29","method":"fetchUserAssignedAssetsDetails"} 
+
+2025-06-21T07:02:03+02:00 :: method inside the fetchUserAssignedAssetsDetails 
+
+2025-06-21T07:02:03+02:00 :: checkUserAssets_query => SELECT assets_assignation FROM `users` WHERE ID = '29' 
+
+2025-06-21T07:02:03+02:00 :: checkUserAssets response => {"1":"5","4":"6"} 
+
+2025-06-21T07:02:03+02:00 :: fetchAssetsDetails_query => SELECT assets_category.category_name as `assets_category` , assets.assets_code , assets.brand_name , assets.model_number FROM assets LEFT JOIN assets_category ON assets.assets_category = assets_category.id WHERE assets.id = '5' 
+
+2025-06-21T07:02:03+02:00 :: fetchAssetsDetails response =>  {"assets_category":"Laptop","assets_code":"EDLP0003","brand_name":"HP","model_number":"E5470"}
+
+2025-06-21T07:02:03+02:00 :: fetchAssetsDetails_query => SELECT assets_category.category_name as `assets_category` , assets.assets_code , assets.brand_name , assets.model_number FROM assets LEFT JOIN assets_category ON assets.assets_category = assets_category.id WHERE assets.id = '6' 
+
+2025-06-21T07:02:03+02:00 :: fetchAssetsDetails response =>  {"assets_category":"Mobile","assets_code":"EDMB0002","brand_name":"Motorola","model_number":"G85"}
+
+2025-06-21T07:02:03+02:00 final response => {"status":200,"assets_assignation":true,"message":"{\"1\":{\"assets_category\":\"Laptop\",\"assets_code\":\"EDLP0003\",\"brand_name\":\"HP\",\"model_number\":\"E5470\"},\"4\":{\"assets_category\":\"Mobile\",\"assets_code\":\"EDMB0002\",\"brand_name\":\"Motorola\",\"model_number\":\"G85\"}}"}
+
+ ============ End Of Script ================== 
+
+2025-06-21T07:15:57+02:00: request received => {"user_id":"19","method":"fetchUserAssignedAssetsDetails"} 
+
+2025-06-21T07:15:57+02:00 :: method inside the fetchUserAssignedAssetsDetails 
+
+2025-06-21T07:15:57+02:00 :: checkUserAssets_query => SELECT assets_assignation FROM `users` WHERE ID = '19' 
+
+2025-06-21T07:15:57+02:00 :: checkUserAssets response =>  
+
+2025-06-21T07:15:57+02:00 final response => {"status":200,"assets_assignation":false,"message":"No Assets Assign Yet"}
+
+ ============ End Of Script ================== 
+
+2025-06-21T07:16:06+02:00: request received => {"user_id":"29","method":"fetchUserAssignedAssetsDetails"} 
+
+2025-06-21T07:16:06+02:00 :: method inside the fetchUserAssignedAssetsDetails 
+
+2025-06-21T07:16:06+02:00 :: checkUserAssets_query => SELECT assets_assignation FROM `users` WHERE ID = '29' 
+
+2025-06-21T07:16:06+02:00 :: checkUserAssets response => {"1":"5","4":"6"} 
+
+2025-06-21T07:16:06+02:00 :: fetchAssetsDetails_query => SELECT assets_category.category_name as `assets_category` , assets.assets_code , assets.brand_name , assets.model_number FROM assets LEFT JOIN assets_category ON assets.assets_category = assets_category.id WHERE assets.id = '5' 
+
+2025-06-21T07:16:06+02:00 :: fetchAssetsDetails response =>  {"assets_category":"Laptop","assets_code":"EDLP0003","brand_name":"HP","model_number":"E5470"}
+
+2025-06-21T07:16:06+02:00 :: fetchAssetsDetails_query => SELECT assets_category.category_name as `assets_category` , assets.assets_code , assets.brand_name , assets.model_number FROM assets LEFT JOIN assets_category ON assets.assets_category = assets_category.id WHERE assets.id = '6' 
+
+2025-06-21T07:16:06+02:00 :: fetchAssetsDetails response =>  {"assets_category":"Mobile","assets_code":"EDMB0002","brand_name":"Motorola","model_number":"G85"}
+
+2025-06-21T07:16:06+02:00 final response => {"status":200,"assets_assignation":true,"message":"{\"1\":{\"assets_category\":\"Laptop\",\"assets_code\":\"EDLP0003\",\"brand_name\":\"HP\",\"model_number\":\"E5470\"},\"4\":{\"assets_category\":\"Mobile\",\"assets_code\":\"EDMB0002\",\"brand_name\":\"Motorola\",\"model_number\":\"G85\"}}"}
+
+ ============ End Of Script ================== 
+
