@@ -62,3 +62,19 @@
 
  ============ End Of Script ================== 
 
+2025-06-21T09:20:39+02:00: request received => {"user_id":"3","method":"fetchUserAssets"} 
+
+2025-06-21T09:20:39+02:00 :: method inside the fetchUserAssets 
+
+2025-06-21T09:20:39+02:00 :: userAssets_query => SELECT assets_assignation FROM users WHERE ID = '3' 
+
+2025-06-21T09:20:39+02:00 :: userAssets =>  
+
+2025-06-21T09:20:39+02:00 :: method inside the assetsCategory 
+
+2025-06-21T09:20:39+02:00 :: fetchCategory_query => SELECT id, category_name FROM `assets_category` WHERE Deleted_at IS NULL 
+
+2025-06-21T09:20:39+02:00 final response => {"model_heading":"Add Assets","buttonText":"Save","form_data":[],"dropDownFiled":"{\"assets_category\":{\"1\":\"Laptop\",\"3\":\"Laptop Charger\",\"4\":\"Mobile\"}}"}
+
+ ============ End Of Script ================== 
+

@@ -233,7 +233,9 @@ var UserSettings = {
         },{
             data : 'assets_assignation',
             render : function (data,type,row) {
-                return `<button class = "btn btn-info btn-sm" style = "font-size :smaller;color:white;" onclick = showAssetsAssignationDetails(${row.ID})>Assets</button>`;
+                let assets_assignation = `<button class = "btn btn-info btn-sm" style = "font-size :smaller;color:white;" onclick = showAssetsAssignationDetails(${row.ID})>Assets</button>`; 
+                let assets_history = `<div class="p-2 cursor-pointer font-14" title="User Assets History" onclick="viewUserAssetsHistory(${row.ID})" data-bs-toggle="tooltip"><i class="lni lni-popup"></i></div>`;
+                return `<div class = "d-flex gap-2">${assets_assignation} ${assets_history}</div>`; 
             }
         },{         
             data : "Action" ,
@@ -405,6 +407,18 @@ function showAssetsAssignationDetails(id) {
         success : function(data){
             $('#md-modal-content').html(data);
             $('#mdmodal').modal('show');
+        }
+    })
+}
+
+function viewUserAssetsHistory(id) {
+    $.ajax({
+        url : "/app/user/showUserAssetsHistory",    
+        type: 'POST',
+        data: {id} ,
+        success : function(data){
+            $('#lg-modal-content').html(data);
+            $('#lgmodal').modal('show');
         }
     })
 }
