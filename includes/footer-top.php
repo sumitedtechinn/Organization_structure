@@ -255,7 +255,8 @@ function setNodeColor(color,table) {
             type : "post" , 
             data : {
                 color,
-                table
+                table,
+                method : "setNodeColor"
             },
             dataType: 'json',
             success : function(data) {
@@ -278,6 +279,26 @@ function setNodeColor(color,table) {
         }
     });
 }
+
+function fetchNodeColor(table) {
+  $.ajax({
+    url : "/app/common/setNodeColor",
+    type : "post" , 
+    data : {
+      table,
+      method : "fetchNodeColor"
+    },
+    dataType: 'json',
+    success : function(data) {
+      if (data.status == 200) {
+        $("#node_color").val(data.message);
+      } else {
+        toastr.error(data.message);
+      }
+    }
+  })
+}
+
 
 async function seeAllNotification() {
   let session_fetchData = await fetchSessionData(["numOfTicketNotSeen","notificationCount"]);

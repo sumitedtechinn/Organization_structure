@@ -2,10 +2,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-<?php 
-$node_color = $conn->query("SELECT color FROM Vacancies LIMIT 1");
-$node_color = mysqli_fetch_column($node_color);
-?>
 <style>
 .table_heading {
     font-size: 14px;
@@ -46,7 +42,7 @@ $node_color = mysqli_fetch_column($node_color);
                     <?php } ?>
                     <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
                     <div class="col-sm-2">
-                        <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Vacancies')">
+                        <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" onchange="setNodeColor(this.value,'Vacancies')">
                     </div>
                     <?php } ?>
                     <?php if( in_array('Vacancies Create',$_SESSION['permission'])) { ?>
@@ -57,26 +53,7 @@ $node_color = mysqli_fetch_column($node_color);
                 </div> 
             </div>
             <?php if($_SESSION['role'] == '1' || $_SESSION['role'] == '3') { ?>
-            <div class="d-flex align-items-center justify-content-between gap-2 mt-3">
-                <div class="col-sm-2">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)"></select>
-                </div>
-                <div class="col-sm-2">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="vertical_filter" id="vertical_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="col-sm-3">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select type="text" class="form-control form-control-sm single-select select2" name="designation_filter" id="designation_filter" onchange="reloadTable(this.id)">
-                    </select>
-                </div>
+            <div class="d-flex align-items-center justify-content-between gap-2 mt-3" id="filter_container">
             </div>
             <?php } ?>
             <div class="table-responsive mt-3">
@@ -104,6 +81,7 @@ $node_color = mysqli_fetch_column($node_color);
 <script type="text/javascript">
 
 $(document).ready(function(){
+    fetchNodeColor("Vacancies");
     var filter_data_field = ['organization','branch','vertical','department','designation'];
     $.ajax({
         url : "/app/common/getAllFilterData", 
@@ -112,8 +90,9 @@ $(document).ready(function(){
         data: JSON.stringify(filter_data_field), 
         dataType: 'json', 
         success : function(data) {
+            let filterBox = document.getElementById("filter_container");
             for (const key in data) {
-                $("#"+key+"_filter").html(data[key]);
+                filterBox.append(createSelectTag(key,data[key]));
                 $("#"+key+"_filter").select2({
                     placeholder: 'Choose ' + key.charAt(0).toUpperCase() + key.slice(1,key.length), 
                     allowClear: true,
@@ -123,6 +102,23 @@ $(document).ready(function(){
         }   
     })
 });
+
+function createSelectTag(key,inner_content) {
+
+    let div = document.createElement("div");
+    div.className = "col-sm-2";
+    let select = document.createElement("select");
+    select.type = "text";
+    select.classList.add("form-control","form-control-sm","single-select","select2");
+    select.name = `${key}_filter`;
+    select.id = `${key}_filter`;
+    select.onchange = function() {
+        reloadTable(this.id);
+    }
+    select.innerHTML = inner_content;
+    div.append(select);
+    return div;
+}
 
 function reloadTable() {
     $('.table').DataTable().ajax.reload(null, false);

@@ -94,7 +94,7 @@ function checkPageTypePermission($type) : bool {
         <?php if(checkPageTypePermission('assetsManagement')) {?>
         <li>
         <a href="javascript:;" class="has-arrow">
-            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="parent-icon"><i class="bi bi-box-seam"></i></div>
             <div class="menu-title">Assets Management</div>
         </a>
             <ul>

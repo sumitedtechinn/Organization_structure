@@ -2,24 +2,30 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-
-<?php 
-
-$node_color = $conn->query("SELECT color FROM organization LIMIT 1");
-$node_color = mysqli_fetch_column($node_color);
-
-?>
-
+<style>
+.table_heading {
+    font-size: 14px;
+    font-weight: 500;
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 160px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+</style>
 <!--start content-->
 <main class="page-content">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Organization Details</h5>
+                <h6 class="mb-0">Organization Details</h5>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
                     <?php if($_SESSION['role'] == '1') { ?>
                     <div>
-                        <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'organization')">
+                        <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" onchange="setNodeColor(this.value,'organization')">
                     </div>
                     <?php } ?>
                     <?php if(in_array('Organization Delete',$_SESSION['permission'])) { ?>
@@ -36,14 +42,14 @@ $node_color = mysqli_fetch_column($node_color);
                 </div>
             </div>
             <div class="table-responsive mt-3">
-                <table class="table align-middle" id="organizationTable">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Logo</th>
-                            <th>Organization Name</th>
-                            <th>Organization Head</th>
-                            <th>Start Date</th>
-                            <th>Actions</th>
+                <table class="table align-middle" id="organizationTable" style="color: #515B73!important;">
+                    <thead class="table-primary">
+                        <tr class="table_heading"> 
+                            <td>Logo</td>
+                            <td>Organization Name</td>
+                            <td>Organization Head</td>
+                            <td>Start Date</td>
+                            <td>Actions</td>
                         </tr>
                     </thead>
                 </table>
@@ -67,18 +73,12 @@ var organizationSettings = {
     'columns': [{
             data: "logo",
             render : function(data, type, row) {
-                if(data != null) {
-                    var image = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>';
-                } else { 
-                    var image = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="../../assets/images/sample_branch.jpg" class="rounded-circle" width="44" height="44" alt=""></div>';
-                }
-                return '<div class = "d-flex align-items-center gap-3 fs-6">'+image+'</div>';
+                let image = (data != null) ? data : "../../assets/images/sample_branch.jpg";
+                return `<div class ="d-flex align-items-center gap-3 fs-6"><div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${image}" class="rounded-circle" width="44" height="44" alt=""></div></div>`;
             }
         },{
             data: "organization_name" ,
-            render : function(data,type,row) {
-                return '<div class = "text-wrap" style = "width:250px;"><b>'+data+'</b></div>';
-            }
+            render : (data,type,row) => `<div class = "table_heading">${data}</div>`
         },{
             data: "organization_head", 
             render : function(data,type,row) {
@@ -86,7 +86,7 @@ var organizationSettings = {
                     var head = '';
                     for (const key in data) {
                         for(const keys in data[key]['user_name']) {
-                            head += '<p class = "mb-1"><b>'+data[key]['user_name'][keys]+' : </b> '+data[key]['designation']+'</p>';
+                            head += '<p class = "mb-1"><span class ="table_heading">'+data[key]['user_name'][keys]+' : </span> '+data[key]['designation']+'</p>';
                         }
                     }
                     return '<div>'+head+'</div>';
@@ -99,13 +99,13 @@ var organizationSettings = {
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var edit = '';var del = '';
-                var table = 'organization';
+                let edit = '';let del = '';
+                let table = 'organization';
                 <?php if(in_array('Organization Update',$_SESSION['permission'])) { ?>
-                    edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                    edit = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails(${row.ID})"><i class="bi bi-pencil-fill"></i></div>`;
                 <?php } ?>
                 <?php if(in_array('Organization Delete',$_SESSION['permission'])) { ?>
-                    del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;'+table+'&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails(${row.ID},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
                 <?php } ?>
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             }
@@ -136,18 +136,12 @@ var organizationTrashSettings = {
     'columns': [{
             data: "logo",
             render : function(data, type, row) {
-                if(data != null) {
-                    var image = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>';
-                } else { 
-                    var image = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="../../assets/images/sample_branch.jpg" class="rounded-circle" width="44" height="44" alt=""></div>';
-                }
-                return '<div class = "d-flex align-items-center gap-3 fs-6">'+image+'</div>';
+                let image = (data != null) ? data : "../../assets/images/sample_branch.jpg";
+                return `<div class ="d-flex align-items-center gap-3 fs-6"><div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${image}" class="rounded-circle" width="44" height="44" alt=""></div></div>`;
             }
         },{
             data: "organization_name" ,
-            render : function(data,type,row) {
-                return '<div class = "text-wrap" style = "width:250px;">'+data+'</div>';
-            }
+            render : (data,type,row) => `<div class = "text-wrap" style = "width:250px;"><b>${data}</b></div>`
         },{
             data: "organization_head" , 
             render : function(data,type,row) {
@@ -167,9 +161,9 @@ var organizationTrashSettings = {
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var table = "organization";
-                var restore = '<button type="button" class="btn btn-info text-white px-4" onclick = "restoreDetails('+row.ID+',&#39;'+table+'&#39;)">Restore</button>';
-                var del = '<button type="button" class="btn btn-danger px-4" onclick = "parmanentDeleteDetails('+row.ID+',&#39;'+table+'&#39;)">Delete</button>';
+                let table = "organization";
+                let restore = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-store" onclick = "restoreDetails(${row.ID},'${table}')"><i class="fadeIn animated bx bx-sync" style = "font-size:larger;"></i></div>`;
+                let del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parmanent Delete" onclick = "parmanentDeleteDetails(${row.ID},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' + restore+del + '</div>';
             }
         }
@@ -186,6 +180,7 @@ var organizationTrashSettings = {
 };
 
 $(document).ready(function() {
+    fetchNodeColor("organization");
     $("#return_button").css('display','none');
     $('#organizationTable').dataTable(organizationSettings);
 });
@@ -203,6 +198,7 @@ $("#return_button").on('click',function(){
     $("#trash_button").css('display','block');
 });
 
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function addOrganization() {
     $.ajax({
