@@ -51,20 +51,8 @@
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between mb-2">
-                <h5 class="mb-0">Designation Details</h5>
+                <h6 class="mb-0">Designation Details</h6>
                 <div class="d-flex justify-content-end gap-2 col-sm-2">
-                    <!-- <div class="col-sm-12" style="z-index: 0 !important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter" onchange="reloadTable(this.id)">
-                        </select>
-                    </div>
-                    <div class="col-sm-12" style="z-index: 0 !important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="branch_filter" id="branch_filter" onchange="reloadTable(this.id)">
-                        </select>
-                    </div>
-                    <div class="col-sm-12" style="z-index: 0 !important;">
-                        <select type="text" class="form-control form-control-sm single-select select2" name="department_filter" id="department_filter" onchange="reloadTable(this.id)">
-                        </select>
-                    </div> -->
                     <?php if( in_array('Department Create',$_SESSION['permission'])) { ?>
                     <div class="theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add" onclick="addDesignation()" data-bs-toggle="tooltip">
                         <i class="bi bi-person-plus-fill" id="add_user"></i>

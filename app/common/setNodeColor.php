@@ -29,7 +29,7 @@ function fetchNodeColor($tableName) {
     global $conn;
     try {
         $fetchNodeColor = $conn->query("SELECT `color` FROM $tableName WHERE `color` IS NOT NULL and `Deleted_At` IS NULL LIMIT 1");
-        $nodeColor = ($fetchNodeColor->num_rows > 0) ? mysqli_fetch_column($fetchNodeColor) : "#fffff";
+        $nodeColor = ($fetchNodeColor->num_rows > 0) ? mysqli_fetch_column($fetchNodeColor) : "#000000";
         
         return sendResponse(true,$nodeColor);
     } catch (Exception $e) {

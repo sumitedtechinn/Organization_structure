@@ -252,11 +252,10 @@ var vacanciesTrashSettings = {
             data : "Action" ,
             render : function(data, type, row) {
                 let table = "Vacancies";
-                let restore = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-store" onclick = "restoreDetails(${row.id},'${table}')"><i class="fadeIn animated bx bx-sync" style = "font-size:larger;"></i></div>`;
-                let del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parmanent Delete" onclick = "parmanentDeleteDetails(${row.id},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
+                let restore = restoreButton(row.id,table);
+                let del = paramanentDeleteButton(row.id,table);
                 return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${restore}${del}</div>`;
             }
-            
         }
     ],
     "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
@@ -265,7 +264,6 @@ var vacanciesTrashSettings = {
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
         });
     },
     "aaSorting": []

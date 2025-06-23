@@ -2,54 +2,47 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-<?php 
-$node_color = $conn->query("SELECT color FROM Branch LIMIT 1");
-$node_color = mysqli_fetch_column($node_color);
-?>
-
 <!--start content-->
 <main class="page-content">
     <div class="card">
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
-                <h5 class="mb-0">Branch Details</h5>
-                <div class="d-flex justify-content-end gap-2 col-sm-6">
+                <h6 class="mb-0">Branch Details</h6>
+                <div class="d-flex justify-content-end gap-2">
                     <?php if($_SESSION['role'] == '3' || $_SESSION['role'] == '1') { ?>
-                    <div class="row gap-2">
-                        <div class="col-sm-2 ">
-                            <input type="color" class="form-control form-control-color" name="node_color" id="node_color" title="Select Node Color" value="<?php echo !is_null($node_color) ? $node_color : '' ?>"  onchange="setNodeColor(this.value,'Branch')">
-                        </div>
-                        <?php if($_SESSION['role'] == '1') { ?>
-                        <div class="col-sm-9" style="z-index:0!important;">
-                            <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter"></select>
-                        </div>
-                        <?php } ?>
+                    <div class="col-sm-2">
+                        <input type="color" class="form-control form-control-sm form-control-color" name="node_color" id="node_color" title="Select Node Color" onchange="setNodeColor(this.value,'Branch')">
                     </div>
+                    <?php if($_SESSION['role'] == '1') { ?>
+                    <div class="col-sm-12">
+                        <select type="text" class="form-control form-control-sm single-select select2" name="organization_filter" id="organization_filter"></select>
+                    </div>
+                    <?php } ?>
                     <?php } ?>
                     <?php if(in_array('Branch Delete',$_SESSION['permission'])) { ?>
-                    <div class="theme-icons sha dow-sm p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
+                    <div class="theme-icons p-2 cursor-pointer rounded" title="Go to Trash" data-bs-toggle="tooltip" id = "trash_button">
                         <i class="bi bi-trash-fill"></i>
                     </div>
-                    <button class="btn btn-primary" style="font-size: small;" id ="return_button">Go To Branch</button>
+                    <button class="btn btn-primary btn-sm" id ="return_button" style="font-size: smaller;text-wrap:nowrap;">Go To Branch</button>
                     <?php } ?>
                     <?php if(in_array('Branch Create',$_SESSION['permission'])) { ?>
-                    <div class="d-flex align-items-center theme-icons shadow-sm p-2 cursor-pointer rounded" title="Add"  onclick="addBranches()" data-bs-toggle="tooltip">
+                    <div class="d-flex align-items-center theme-icons p-2 cursor-pointer rounded" title="Add"  onclick="addBranches()" data-bs-toggle="tooltip">
                     <i class="bi bi-plus-circle-fill" id="add_branch"></i>
                     </div>
                     <?php } ?>
                 </div>
             </div>
             <div class="table-responsive mt-3">
-                <table class="table align-middle" id="branchTable">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Logo</th>
-                            <th>Branch</th>
-                            <th>Branch Head</th>
-                            <th>Organization</th>
-                            <th>Start Date</th>
-                            <th>Address</th>
-                            <th>Actions</th>
+                <table class="table align-middle" id="branchTable" style="color: #515B73!important;">
+                    <thead class="table-primary">
+                        <tr class="table_heading">
+                            <td>Logo</td>
+                            <td>Branch</td>
+                            <td>Branch Head</td>
+                            <td>Organization</td>
+                            <td>Start Date</td>
+                            <td>Address</td>
+                            <td>Actions</td>
                         </tr>
                     </thead>
                 </table>
@@ -78,20 +71,19 @@ var branchSettings = {
     'columns': [{
             data: "image",
             render : function(data, type, row) {
-                if(data != null) {
-                    var logo = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>';
-                } else { 
-                    var logo = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="../../assets/images/sample_branch.jpg" class="rounded-circle" width="44" height="44" alt=""></div>';
-                }
-                return '<div class = "d-flex align-items-center gap-3 fs-6">'+logo+'</div>';
+                let image = (data != null) ? data : "../../assets/images/sample_branch.jpg";
+                return `<div class ="d-flex align-items-center gap-3 fs-6"><div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${image}" class="rounded-circle" width="44" height="44" alt=""></div></div>`;
             }
         },{
             data: "Branch" ,
             render : function(data,type,row) {
-                var name = row.Branch_name;
-                var country_code = row.Country_code;
-                var contact = row.Contact;
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p></div>';
+                let name = makeContent(row.Branch_name);
+                let country_code = makeContent(row.Country_code);
+                let contact = makeContent(row.Contact);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Contact : </span>+${country_code} ${contact}</p>
+                </div>`;
             }
         },{
             data: "Branch_head", 
@@ -100,42 +92,48 @@ var branchSettings = {
                     var head = '';
                     for (const key in data) {
                         for(const keys in data[key]['user_name']) {
-                            head += '<p class = "mb-1"><b>'+data[key]['user_name'][keys]+' : </b> '+data[key]['designation']+'</p>';
+                            head += `<p class = "mb-1"><span style="font-weight:500;">${data[key]['user_name'][keys]} : </span>${makeContent(data[key]['designation'])}</p>`;
                         }
                     }
                     return '<div>'+head+'</div>';
                 } else {
-                    return '<div><b>'+data+'</b></div>';    
+                    return `<div class = "table_heading">${data}</div>`;    
                 }
             }
         },{
             data: "organization_name" ,
-            render : function(data,type,row) {
-                return '<div><b>'+data+'</b></div>';
-            } 
+            render : (data,type,row) => `<div class = "table_heading">${data}</div>`
         },{
             data: "Start_date" , 
         },{
             data : "Address" ,
             render : function(data,type,row) {
-                var country = row.Country;
-                var state = row.State;
-                var city = row.City;
-                var locality = row.Address;
-                return  '<div class = "text-wrap" style="font-size:small;min-width:150px!important"><p class = "mb-1"><b>Country : </b>'+country+'</p><p class = "mb-1"><b>State : </b>'+state+'</p><p class = "mb-1"><b>City : </b>'+city+'</p><p class = "mb-1 text-wrap"><b>Locality : </b>'+locality+'</p></div>';
+                let country = makeContent(row.Country);
+                let state = makeContent(row.State);
+                let city = makeContent(row.City);
+                let locality = makeContent(row.Address);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Country : </span>${country}</p>
+                <p class = "mb-1"><span style="font-weight:500;">State : </span>${state}</p>
+                <p class = "mb-1"><span style="font-weight:500;">City : </span>${city}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Locality : </span>${locality}</p>
+                </div>`;
             }
         },{         
-            data : "Action",
+            data: "Action",
             render : function(data, type, row) {
-                var edit = '';
-                var del = '';
+                let edit = ''; let del = '';let table = 'Branch';
                 <?php if(in_array('Branch Update',$_SESSION['permission'])) { ?>
-                     edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                    edit = updateButton(row.ID);
+                <?php } else { ?>
+                    edit = updateDisabledButton();
                 <?php } ?>
                 <?php if(in_array('Branch Delete',$_SESSION['permission'])) { ?>
-                     del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;Branch&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    del = deleteButton(row.ID , table , 'checkAssignDetails');
+                <?php } else { ?>
+                    del = deleteDisabledButton();
                 <?php } ?>
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
+                return `<div class="table-actions d-flex align-items-center gap-3 fs-6">${edit}${del}</div>`;
             }
         }
     ],
@@ -145,7 +143,6 @@ var branchSettings = {
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
         });
     },
     "aaSorting": []
@@ -166,20 +163,19 @@ var branchTrashSettings = {
     'columns': [{
             data: "image",
             render : function(data, type, row) {
-                if(data != null) {
-                    var logo = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="'+data+'" class="rounded-circle" width="44" height="44" alt=""></div>';
-                } else { 
-                    var logo = '<div class="d-flex align-items-center gap-3 cursor-pointer"><img src="../../assets/images/sample_branch.jpg" class="rounded-circle" width="44" height="44" alt=""></div>';
-                }
-                return '<div class = "d-flex align-items-center gap-3 fs-6">'+logo+'</div>';
+                let image = (data != null) ? data : "../../assets/images/sample_branch.jpg";
+                return `<div class ="d-flex align-items-center gap-3 fs-6"><div class="d-flex align-items-center gap-3 cursor-pointer"><img src="${image}" class="rounded-circle" width="44" height="44" alt=""></div></div>`;
             }
         },{
             data: "Branch" ,
             render : function(data,type,row) {
-                var name = row.Branch_name;
-                var country_code = row.Country_code;
-                var contact = row.Contact;
-                return '<div style="font-size:small;"><p class = "mb-1"><b>Name : </b> '+name+'</p><p class = "mb-1"><b>Contact : </b>'+country_code+" "+contact+'</p></div>';
+                let name = makeContent(row.Branch_name);
+                let country_code = makeContent(row.Country_code);
+                let contact = makeContent(row.Contact);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Name : </span>${name}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Contact : </span>+${country_code} ${contact}</p>
+                </div>`;
             }
         },{
             data: "Branch_head", 
@@ -188,34 +184,40 @@ var branchTrashSettings = {
                     var head = '';
                     for (const key in data) {
                         for(const keys in data[key]['user_name']) {
-                            head += '<p class = "mb-1"><b>'+data[key]['user_name'][keys]+' : </b> '+data[key]['designation']+'</p>';
+                            head += `<p class = "mb-1"><span style="font-weight:500;">${data[key]['user_name'][keys]} : </span>${makeContent(data[key]['designation'])}</p>`;
                         }
                     }
                     return '<div>'+head+'</div>';
                 } else {
-                    return '<div><b>'+data+'</b></div>';    
+                    return `<div class = "table_heading">${data}</div>`;    
                 }
             }
         },{
-            data: "organization_name" , 
+            data: "organization_name" ,
+            render : (data,type,row) => `<div class = "table_heading">${data}</div>`
         },{
             data: "Start_date" , 
         },{
             data : "Address" ,
             render : function(data,type,row) {
-                var country = row.Country;
-                var state = row.State;
-                var city = row.City;
-                var locality = row.Address;
-                return  '<div class = "text-wrap" style="font-size:small;min-width:200px!important"><p class = "mb-1"><b>Country : </b>'+country+'</p><p class = "mb-1"><b>State : </b>'+state+'</p><p class = "mb-1"><b>City : </b>'+city+'</p><p class = "mb-1 text-wrap"><b>Locality : </b>'+locality+'</p></div>';
+                let country = makeContent(row.Country);
+                let state = makeContent(row.State);
+                let city = makeContent(row.City);
+                let locality = makeContent(row.Address);
+                return `<div style="font-size:small;">
+                <p class = "mb-1"><span style="font-weight:500;">Country : </span>${country}</p>
+                <p class = "mb-1"><span style="font-weight:500;">State : </span>${state}</p>
+                <p class = "mb-1"><span style="font-weight:500;">City : </span>${city}</p>
+                <p class = "mb-1"><span style="font-weight:500;">Locality : </span>${locality}</p>
+                </div>`;
             }
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var table = "Branch";
-                var restore = '<button type="button" class="btn btn-info text-white px-4" onclick = "restoreDetails('+row.ID+',&#39;'+table+'&#39;)">Restore</button>';
-                var del = '<button type="button" class="btn btn-danger px-4" onclick = "parmanentDeleteDetails('+row.ID+',&#39;'+table+'&#39;)">Delete</button>';
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' + restore+del + '</div>';
+                let table = "Branch";
+                let restore = restoreButton(row.ID,table);
+                let del = paramanentDeleteButton(row.ID,table);
+                return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${restore}${del}</div>`;
             }
         }
     ],
@@ -232,6 +234,7 @@ var branchTrashSettings = {
 };
 
 $(document).ready(function() {
+    fetchNodeColor("Branch");
     $("#return_button").css('display','none');
     $('#branchTable').dataTable(branchSettings);
 });
@@ -264,6 +267,11 @@ $(document).ready(function(){
         success : function(data) {
             for (const key in data) {
                 $("#"+key+"_filter").html(data[key]);
+                $("#"+key+"_filter").select2({
+                    placeholder: 'Choose ' + key.charAt(0).toUpperCase() + key.slice(1,key.length), 
+                    allowClear: true,
+                    width: '100%'
+                });
             }
         }   
     })

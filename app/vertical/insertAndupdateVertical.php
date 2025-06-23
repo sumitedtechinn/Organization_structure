@@ -12,10 +12,6 @@ if (isset($_REQUEST['vertical_id']) && !empty($_REQUEST['vertical_id'])) {
 
 ?>
 <style>
-    .select2-container {
-        z-index: 999999 !important;
-    }
-
     .error {
         color: red;
         font-size: small;
@@ -26,7 +22,7 @@ if (isset($_REQUEST['vertical_id']) && !empty($_REQUEST['vertical_id'])) {
 <div class="card-body">
     <div class="border p-4 rounded">
         <div class="card-title d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Add Vertical</h5>
+            <h6 class="mb-0">Add Vertical</h6>
             <a type="button" class="close" data-dismiss="modal" id = "hide-modal" aria-hidden="true"><i class="bi bi-x-circle-fill"></i></a>
         </div>
         <hr/>
@@ -61,13 +57,8 @@ if (isset($_REQUEST['vertical_id']) && !empty($_REQUEST['vertical_id'])) {
             </div>
             <hr/>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">
-                    <?php if (!empty($vertical_details)) { ?>
-                        Update
-                    <?php } else { ?>
-                        Register
-                    <?php }  ?>    
+                <div class="col-sm-12 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm"><?= (!empty($branch_details)) ? "Update" : "Register"?>   
                     </button>
                 </div>
             </div>
@@ -77,11 +68,17 @@ if (isset($_REQUEST['vertical_id']) && !empty($_REQUEST['vertical_id'])) {
 
 
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
-<script src="/assets/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/js/form-select2.js"></script>
 <script>
 
 $(document).ready(function(){
+    let filter_data_field = Array.from(document.getElementById("form-vertical").querySelectorAll("select")).map((param) => param.id).forEach(param => {
+        $("#"+param).select2({
+            placeholder: 'Choose ' + param.charAt(0).toUpperCase() + param.slice(1,param.length), 
+            allowClear: true,
+            width: '100%' , 
+            dropdownParent: $('#mdmodal')
+        });
+    });
     var organization_id = '';
     <?php if(isset($vertical_details['organization_id'])) { ?>
         organization_id = <?=$vertical_details['organization_id']?>;

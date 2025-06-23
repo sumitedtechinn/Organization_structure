@@ -49,3 +49,15 @@ async function postMethodWithJsonResponse(url,params) {
 }
 
 const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
+
+const updateButton = (id) => `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails(${id})"><i class="bi bi-pencil-fill"></i></div>`;
+
+const updateDisabledButton = () => `<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit Disabled"><i class="bi bi-pencil-fill"></i></div>`;
+
+const deleteButton = (id,table,funName) => `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "${funName}(${id},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
+
+const deleteDisabledButton = () => `<div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Disabled"><i class="bi bi-trash-fill"></i></div>`;
+
+const restoreButton = (id,table) => `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-store" onclick = "restoreDetails(${id},'${table}')"><i class="fadeIn animated bx bx-sync" style = "font-size:larger;"></i></div>`;
+
+const paramanentDeleteButton = (id,table) => `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parmanent Delete" onclick = "parmanentDeleteDetails(${id},'${table}')"><i class="bi bi-trash-fill"></i></div>`;

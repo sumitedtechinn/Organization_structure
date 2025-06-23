@@ -12,10 +12,6 @@ if (isset($_REQUEST['id'])) {
 
 ?>
 <style>
-    .select2-container {
-        z-index: 999999 !important;
-    }
-
     .error {
         color: red;
         font-size: small;
@@ -26,7 +22,7 @@ if (isset($_REQUEST['id'])) {
 <div class="card-body">
     <div class="border p-4 rounded">
         <div class="card-title d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Add Department</h5>
+            <h6 class="mb-0">Add Department</h6>
             <a type="button" class="close" data-dismiss="modal" id = "hide-modal" aria-hidden="true"><i class="bi bi-x-circle-fill"></i></a>
         </div>
         <hr/>
@@ -83,11 +79,17 @@ if (isset($_REQUEST['id'])) {
 </div>
 
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
-<script src="/assets/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/js/form-select2.js"></script>
 <script>
 
 $(document).ready(function(){
+    let filter_data_field = Array.from(document.getElementById("form-department").querySelectorAll("select")).map((param) => param.id).forEach(param => {
+        $("#"+param).select2({
+            placeholder: 'Choose ' + param.charAt(0).toUpperCase() + param.slice(1,param.length), 
+            allowClear: true,
+            width: '100%' , 
+            dropdownParent: $('#lgmodal')
+        });
+    });
     var organization_id = '';
     <?php if(isset($department_details['organization_id'])) { ?>
         organization_id = <?=$department_details['organization_id']?>;

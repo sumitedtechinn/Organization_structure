@@ -11,9 +11,6 @@ if (isset($_REQUEST['branch_id']) && !empty($_REQUEST['branch_id'])) {
 
 ?>
 <style>    
-    .select2-container {
-        z-index: 999999 !important;
-    }
 
     .iti__country-list{
         z-index: 9999999 !important;
@@ -115,13 +112,8 @@ if (isset($_REQUEST['branch_id']) && !empty($_REQUEST['branch_id'])) {
             </div>
             <hr/>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">
-                    <?php if (!empty($branch_details)) { ?>
-                        Update
-                    <?php } else { ?>
-                        Register
-                    <?php }  ?>    
+                <div class="col-sm-12 text-end">
+                    <button type="submit" class="btn btn-primary"><?= (!empty($branch_details)) ? "Update" : "Register"?>
                     </button>
                 </div>
             </div>
@@ -130,8 +122,8 @@ if (isset($_REQUEST['branch_id']) && !empty($_REQUEST['branch_id'])) {
 </div>
 
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
-<script src="/assets/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/js/form-select2.js"></script>
+<!-- <script src="/assets/plugins/select2/js/select2.min.js"></script>
+<script src="/assets/js/form-select2.js"></script> -->
 <script>
 
 var phoneInputField = document.querySelector("#contact_number");
@@ -205,6 +197,14 @@ $('#hide-modal').click(function() {
 });
 
 $(document).ready(function(){
+    let filter_data_field = Array.from(document.getElementById("form-branch").querySelectorAll("select")).map((param) => param.id).forEach(param => {
+        $("#"+param).select2({
+            placeholder: 'Choose ' + param.charAt(0).toUpperCase() + param.slice(1,param.length), 
+            allowClear: true,
+            width: '100%' , 
+            dropdownParent: $('#lgmodal')
+        });
+    });
     var organization_id = '';
     <?php if(isset($branch_details['organization_id'])) { ?>
         organization_id = <?=$branch_details['organization_id']?>;

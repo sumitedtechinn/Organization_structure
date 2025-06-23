@@ -88,12 +88,16 @@ var organizationSettings = {
                 let edit = '';let del = '';
                 let table = 'organization';
                 <?php if(in_array('Organization Update',$_SESSION['permission'])) { ?>
-                    edit = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails(${row.ID})"><i class="bi bi-pencil-fill"></i></div>`;
+                    edit = updateButton(row.ID);
+                <?php } else { ?>
+                    edit = updateDisabledButton();
                 <?php } ?>
                 <?php if(in_array('Organization Delete',$_SESSION['permission'])) { ?>
-                    del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails(${row.ID},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
+                    del = deleteButton(row.ID , table , 'checkAssignDetails');
+                <?php } else { ?>
+                    del = deleteDisabledButton();
                 <?php } ?>
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
+                return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${edit} ${del}</div>`;
             }
         }
     ],
@@ -127,7 +131,7 @@ var organizationTrashSettings = {
             }
         },{
             data: "organization_name" ,
-            render : (data,type,row) => `<div class = "text-wrap" style = "width:250px;"><b>${data}</b></div>`
+            render : (data,type,row) => `<div class = "table_heading">${data}</div>`
         },{
             data: "organization_head" , 
             render : function(data,type,row) {
@@ -148,9 +152,9 @@ var organizationTrashSettings = {
             data : "Action" ,
             render : function(data, type, row) {
                 let table = "organization";
-                let restore = `<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-store" onclick = "restoreDetails(${row.ID},'${table}')"><i class="fadeIn animated bx bx-sync" style = "font-size:larger;"></i></div>`;
-                let del = `<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Parmanent Delete" onclick = "parmanentDeleteDetails(${row.ID},'${table}')"><i class="bi bi-trash-fill"></i></div>`;
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' + restore+del + '</div>';
+                let restore = restoreButton(row.ID,table);
+                let del = paramanentDeleteButton(row.ID,table);
+                return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${restore}${del}</div>`;
             }
         }
     ],

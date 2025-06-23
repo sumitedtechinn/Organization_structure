@@ -226,16 +226,19 @@ var UserSettings = {
         },{         
             data : "Action" ,
             render : function(data, type, row) {
-                var edit = ''; var del = '';
+                let edit = ''; let del = ''; let table = 'users';
                 <?php if(in_array('User Update',$_SESSION['permission'])) { ?>
-                edit = '<div class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" onclick = "updateDetails('+row.ID+')"><i class="bi bi-pencil-fill"></i></div>';
+                    edit = updateButton(row.ID);
+                <?php } else { ?>
+                    edit = updateDisabledButton();
                 <?php } ?>
                 <?php if(in_array('User Delete',$_SESSION['permission'])) { ?>
-                del = '<div class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete" onclick = "checkAssignDetails('+row.ID+',&#39;users&#39;)"><i class="bi bi-trash-fill"></i></div>';
+                    del = deleteButton(row.ID , table , 'checkAssignDetails');
+                <?php } else { ?>
+                    del = deleteDisabledButton();
                 <?php } ?>
                 return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' +  edit+del + '</div>';
             },
-            //visible : false
         }
     ],
     "dom": '<"row"<"col-sm-12 col-md-6 d-flex justify-content-start"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
@@ -244,7 +247,6 @@ var UserSettings = {
     drawCallback: function(settings, json) {
         $('[data-toggle="tooltip"]').tooltip({
             template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
-
         });
     },
     "aaSorting": []

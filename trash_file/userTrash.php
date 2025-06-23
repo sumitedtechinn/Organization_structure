@@ -129,9 +129,9 @@ var UserSettings = {
             data : "Action" ,
             render : function(data, type, row) {
                 var table = "users";
-                var restore = '<button type="button" class="btn btn-info text-white px-4" onclick = "restoreDetails('+row.ID+',&#39;'+table+'&#39;)">Restore</button>';
-                var del = '<button type="button" class="btn btn-danger px-4" onclick = "parmanentDeleteDetails('+row.ID+',&#39;'+table+'&#39;)">Delete</button>';
-                return '<div class = "table-actions d-flex align-items-center gap-3 fs-6">' + restore+del + '</div>';
+                let restore = restoreButton(row.ID,table);
+                let del = paramanentDeleteButton(row.ID,table);
+                return `<div class = "table-actions d-flex align-items-center gap-3 fs-6">${restore}${del}</div>`;
             }
         }
     ],
@@ -159,8 +159,6 @@ function showPassword(id) {
         x.type = "password";
     }
 }
-
-const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 $("#return_button").on('click',function(){
     window.location.href = "/organization_structure/users";
