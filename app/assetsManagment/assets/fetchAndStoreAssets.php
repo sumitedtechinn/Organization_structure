@@ -129,7 +129,7 @@ function insertOrUpdateData() {
         $response = $conn->query($query);
         return sendResponse($response,$message);    
     } catch (Exception $e) {
-        return sendResponse(false,"Exception : " . $e->getMessage());
+        return sendResponse(false,"Exception : " . $e->getMessage() . " on line : " . $e->getLine());
     }
 }
 

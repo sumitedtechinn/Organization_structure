@@ -47,3 +47,5 @@ async function postMethodWithJsonResponse(url,params) {
         return null;
     }
 }
+
+const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;

@@ -1,0 +1,12 @@
+.table_heading {
+    font-size: 14px;
+    font-weight: 500;
+}
+.truncate-label {
+    display: inline-block;
+    max-width: 180px; /* or use any fixed size */
+    white-space: nowrap;
+    overflow: hidden;      /* required for ellipsis */
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}

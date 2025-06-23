@@ -34,34 +34,42 @@ saveLog();
 function fetchUserAssets($user_id) {
     global $conn,$stepsLog;
 
-    $stepsLog .= date(DATE_ATOM). " :: method inside the fetchUserAssets \n\n";
-    $userAssets_query = "SELECT assets_assignation FROM users WHERE ID = '$user_id'";
-    $stepsLog .= date(DATE_ATOM) . " :: userAssets_query => $userAssets_query \n\n";
-    $userAssets = $conn->query($userAssets_query);
-    $userAssets = mysqli_fetch_column($userAssets);
-    $stepsLog .= date(DATE_ATOM) . " :: userAssets => " . $userAssets . " \n\n";
-    $assets_category = assetsCategory();
-    $dropDownData = json_encode(["assets_category" => $assets_category]);
-    if(!is_null($userAssets)) {
-        $userAssets = json_decode($userAssets,true);
-        return setFormData("Update Assets","Save",$userAssets,$dropDownData);
-    } else {
-        return setFormData("Add Assets","Save",[],$dropDownData);
+    try{ 
+        $stepsLog .= date(DATE_ATOM). " :: method inside the fetchUserAssets \n\n";
+        $userAssets_query = "SELECT assets_assignation FROM users WHERE ID = '$user_id'";
+        $stepsLog .= date(DATE_ATOM) . " :: userAssets_query => $userAssets_query \n\n";
+        $userAssets = $conn->query($userAssets_query);
+        $userAssets = mysqli_fetch_column($userAssets);
+        $stepsLog .= date(DATE_ATOM) . " :: userAssets => " . $userAssets . " \n\n";
+        $assets_category = assetsCategory();
+        $dropDownData = json_encode(["assets_category" => $assets_category]);
+        if(!is_null($userAssets)) {
+            $userAssets = json_decode($userAssets,true);
+            return setFormData("Update Assets","Save",$userAssets,$dropDownData);
+        } else {
+            return setFormData("Add Assets","Save",[],$dropDownData);
+        }
+    } catch (Exception $e) {
+        $stepsLog .= date(DATE_ATOM) . " :: Exception => " . $e->getMessage() . " on line : " . $e->getLine();
     }   
 }
 
 function assetsCategory() {
     global $conn , $stepsLog;
     
-    $stepsLog .= date(DATE_ATOM). " :: method inside the assetsCategory \n\n";
-    $fetchCategory_query = "SELECT id, category_name FROM `assets_category` WHERE Deleted_at IS NULL";
-    $stepsLog .= date(DATE_ATOM) . " :: fetchCategory_query => $fetchCategory_query \n\n"; 
-    $fetchCategory = $conn->query($fetchCategory_query);
-    $assets_category = [];
-    while ($row = mysqli_fetch_assoc($fetchCategory)) {
-        $assets_category[$row['id']] = $row['category_name'];
+    try {
+        $stepsLog .= date(DATE_ATOM). " :: method inside the assetsCategory \n\n";
+        $fetchCategory_query = "SELECT id, category_name FROM `assets_category` WHERE Deleted_at IS NULL";
+        $stepsLog .= date(DATE_ATOM) . " :: fetchCategory_query => $fetchCategory_query \n\n"; 
+        $fetchCategory = $conn->query($fetchCategory_query);
+        $assets_category = [];
+        while ($row = mysqli_fetch_assoc($fetchCategory)) {
+            $assets_category[$row['id']] = $row['category_name'];
+        }
+        return $assets_category;
+    } catch (Exception $e) {
+        $stepsLog .= date(DATE_ATOM) . " :: Exception => " . $e->getMessage() . " on line : " . $e->getLine();
     }
-    return $assets_category;
 }
 
 function fetchAssets($category_id,$user_id) {

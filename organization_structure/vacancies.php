@@ -3,18 +3,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <style>
-.table_heading {
-    font-size: 14px;
-    font-weight: 500;
-}
-.truncate-label {
-    display: inline-block;
-    max-width: 180px; /* or use any fixed size */
-    white-space: nowrap;
-    overflow: hidden;      /* required for ellipsis */
-    text-overflow: ellipsis;
-    vertical-align: middle;
-}
 .raised_btn{
     background-color: #0388b8 !important;
     font-weight: 200;
@@ -300,8 +288,6 @@ $("#return_button").on('click',function(){
     $("#return_button").css('display','none');
     $("#trash_button").css('display','block');
 });
-
-const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function updateDetails(id,numofvacancies,designation,branch,vertical,raisedby) {
     $.ajax({

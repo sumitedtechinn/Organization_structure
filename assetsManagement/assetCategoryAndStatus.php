@@ -3,10 +3,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <style>
-.table_heading {
-    font-size: 14px;
-    font-weight: 500;
-}
 .hide{
     display: none !important;
 }
@@ -91,7 +87,6 @@
     </div>
 </main>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-top.php');?>
-<script src="../assets/js/helper.js"></script>
 <script type="text/javascript"> 
 
 var assetsCategorySetting = {

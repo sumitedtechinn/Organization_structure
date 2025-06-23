@@ -2,20 +2,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/header-bottom.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
-<style>
-.table_heading {
-    font-size: 14px;
-    font-weight: 500;
-}
-.truncate-label {
-    display: inline-block;
-    max-width: 160px; /* or use any fixed size */
-    white-space: nowrap;
-    overflow: hidden;      /* required for ellipsis */
-    text-overflow: ellipsis;
-    vertical-align: middle;
-}
-</style>
 <!--start content-->
 <main class="page-content">
     <div class="card">
@@ -267,8 +253,6 @@ var UserSettings = {
 $(document).ready(function() {
     $('#userTable').dataTable(UserSettings);
 });
-
-const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function showPassword(id) {
     <?php if($_SESSION['role'] == '2') { ?> return; <?php } ?>

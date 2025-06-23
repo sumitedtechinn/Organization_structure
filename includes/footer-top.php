@@ -83,6 +83,7 @@
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.21/build/jquery.datetimepicker.full.min.js"></script>
+<script src="../assets/js/helper.js"></script>
 <script type="text/javascript">
 
 function getVerticalList(vertical_id=null) {

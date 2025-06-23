@@ -70,6 +70,7 @@ function setPageHeader() : string {
   <link href="/assets/css/bootstrap-extended.css" rel="stylesheet" />
   <link href="/assets/css/style.css" rel="stylesheet" />
   <link href="/assets/css/icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/helper.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/cdn.jsdelivr.net/npm/bootstrap-icons%401.5.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>

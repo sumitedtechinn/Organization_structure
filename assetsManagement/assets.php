@@ -3,18 +3,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/topbar.php');?>
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/menu.php');?>
 <style>
-.truncate-label {
-    display: inline-block;
-    max-width: 120px; /* or use any fixed size */
-    white-space: nowrap;
-    overflow: hidden;      /* required for ellipsis */
-    text-overflow: ellipsis;
-    vertical-align: middle;
-}
-.table_heading {
-    font-size: 14px;
-    font-weight: 500;
-}
 .user-btn {
     position: relative;
     cursor: pointer;
@@ -140,7 +128,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'].'/includes/footer-top.php');?>
 <script src="/assets/plugins/select2/js/select2.min.js"></script>
 <script src="/assets/js/form-select2.js"></script>
-<script src="../assets/js/helper.js"></script>
 <script type="text/javascript"> 
 
 var assetsSetting = {
@@ -504,8 +491,6 @@ async function checkAssetDeleteCondition(id,table_name) {
         }
     }
 }
-
-const makeContent = (content) => `<span class="truncate-label" data-bs-toggle="tooltip" title="${content}">${content}</span>`;
 
 function showUserBox(el) {
     showTimer = setTimeout(() => {
