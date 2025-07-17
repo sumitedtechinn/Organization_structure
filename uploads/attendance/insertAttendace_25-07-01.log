@@ -1,0 +1,54 @@
+2025-07-01T10:56:31+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T10:56:31+02:00 :: mehod inside insertAttendanceData 
+
+2025-07-01T10:56:31+02:00 ::  File type is not matched 
+
+2025-07-01T10:56:31+02:00 :: respose => {"status":400,"message":"File type is not matched"}
+
+ ============ End Of Script ================== 
+
+2025-07-01T10:57:38+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T10:57:38+02:00 :: mehod inside insertAttendanceData 
+
+2025-07-01T10:57:38+02:00 ::  File type is not matched 
+
+2025-07-01T10:57:38+02:00 :: respose => {"status":400,"message":"File type is not matched"}
+
+ ============ End Of Script ================== 
+
+2025-07-01T11:00:11+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T11:00:11+02:00 :: mehod inside insertAttendanceData 
+
+2025-07-01T11:00:11+02:00 ::  File type is not matched 
+
+2025-07-01T11:00:11+02:00 :: respose => {"status":400,"message":"File type is not matched"}
+
+ ============ End Of Script ================== 
+
+2025-07-01T11:11:10+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T11:11:10+02:00 :: mehod inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+
+2025-07-01T11:12:22+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T11:12:22+02:00 :: mehod inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+
+2025-07-01T11:13:08+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T11:13:08+02:00 :: mehod inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+
+2025-07-01T11:14:59+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-01T11:14:59+02:00 :: mehod inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+

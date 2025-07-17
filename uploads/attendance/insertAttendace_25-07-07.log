@@ -1,0 +1,12 @@
+2025-07-07T07:44:03+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-07T07:44:03+02:00 :: mehod inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+
+2025-07-07T08:14:29+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-07T08:14:29+02:00 :: method inside insertAttendanceData 
+
+ ============ End Of Script ================== 
+

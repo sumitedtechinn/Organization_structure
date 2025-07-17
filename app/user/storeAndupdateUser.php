@@ -19,7 +19,7 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['user_email']) && isset($_REQUES
     $image_name = $_FILES['image']['name'];
     $password = str_replace("-","",$doj);
     $password = base64_encode($password);
-
+    $biometric_id = (isset($_REQUEST['biometric_id']) && !empty($_REQUEST['biometric_id'])) ? $_REQUEST['biometric_id'] : "NULL";
     $path_name = null;
     if(isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
         $image_name = $_FILES['image']['name'];
@@ -37,7 +37,7 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['user_email']) && isset($_REQUES
                 $path_name = "/../../assets/images/sample_user.jpeg";
             }
         }
-        $update_query = $conn->query("UPDATE users SET Name= '$user_name' , `role` = $role_id ,Email= '$email' , Mobile = '$contact' , Country_code = '$country_code' , DOJ = '$doj',Password = '$password' , Address = '$address' , Country = '$country' , State = '$state' , City = '$city' , Photo = '$path_name' , Updated_On = CURRENT_TIMESTAMP WHERE ID = '".$_REQUEST['ID']."'");
+        $update_query = $conn->query("UPDATE users SET Name= '$user_name' , `role` = $role_id ,Email= '$email' , Mobile = '$contact' , Country_code = '$country_code' , DOJ = '$doj',Password = '$password' , Address = '$address' , Country = '$country' , State = '$state' , City = '$city' , Photo = '$path_name' , biometric_id = $biometric_id ,  Updated_On = CURRENT_TIMESTAMP WHERE ID = '{$_REQUEST['ID']}'");
         showResponse($update_query,'Updated');
     } else {
         if (is_null($path_name)) {
@@ -45,9 +45,9 @@ if (isset($_REQUEST['name']) && isset($_REQUEST['user_email']) && isset($_REQUES
         }
         if($_SESSION['role'] == '3') {
             $organization_id = mysqli_real_escape_string($conn,$_SESSION['Organization_id']);
-            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,'$organization_id',null,'$password','$address','$pin_code','$state','$city','$country','$path_name')");
+            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo` , `biometric_id`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,'$organization_id',null,'$password','$address','$pin_code','$state','$city','$country','$path_name', $biometric_id)");
         } else {
-            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,null,null,'$password','$address','$pin_code','$state','$city','$country','$path_name')");
+            $insert_query = $conn->query("INSERT INTO `users`(`Name`, `role`, `Email`, `Mobile`, `Country_code`, `DOJ`, `Department_id`, `Designation_id`, `Hierarchy_value`, `Vertical_id`, `Branch_id`, `Organization_id`, `Assinged_Person_id`, `Password`, `Address`, `Pincode`, `State`, `City`, `Country`, `Photo`) VALUES ('$user_name','$role_id','$email','$contact','$country_code','$doj',null,null,null,null,null,null,null,'$password','$address','$pin_code','$state','$city','$country','$path_name',$biometric_id)");
         }
         showResponse($insert_query,'inserted');
     }

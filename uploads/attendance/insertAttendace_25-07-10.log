@@ -1,0 +1,700 @@
+2025-07-10T12:54:13+02:00 :: Request received for : {"method":"insertAttendanceData"}
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceData 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-01 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-01' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 09:39 , organization_id => 1 , date => 2025-05-01  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:22 , organization_id => 1 , date => 2025-05-01  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-01' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-01","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"09:39","out_time":"17:22","duration":"7:43","late_by":"00:00","early_by":"1:8","status":2,"punch_records":"09:39:in(USB) 09:39:(USB) 14:58:out(USB) 17:22:in(USB) 17:22:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-01','09:39','17:22','7:43','00:00','1:8','09:39:in(USB) 09:39:(USB) 14:58:out(USB) 17:22:in(USB) 17:22:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-02 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-02' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:57 , organization_id => 1 , date => 2025-05-02  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-02' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 18:20 , organization_id => 1 , date => 2025-05-02  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-02' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-02","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:57","out_time":"18:20","duration":"7:23","late_by":"0:27","early_by":"0:10","status":2,"punch_records":"10:57:in(USB) 10:57:(USB) 18:20:out(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-02','10:57','18:20','7:23','0:27','0:10','10:57:in(USB) 10:57:(USB) 18:20:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-03 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-03' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:22 , organization_id => 1 , date => 2025-05-03  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:56 , organization_id => 1 , date => 2025-05-03  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-03' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-03","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:22","out_time":"17:56","duration":"7:34","late_by":"00:00","early_by":"0:34","status":2,"punch_records":"10:22:in(USB) 10:22:(USB) 17:56:out(USB) 17:56:(USB) ","overtime":"07:34","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-03','10:22','17:56','7:34','00:00','0:34','10:22:in(USB) 10:22:(USB) 17:56:out(USB) 17:56:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-04 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-04' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkWeekOffStatus 
+
+2025-07-10T12:54:13+02:00 :: requested param :: date => 2025-05-04 , organization_id => 1 
+
+2025-07-10T12:54:13+02:00 :: getWeekOffDay_query => SELECT `week_off` FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-04","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"","out_time":"","duration":"00:00","late_by":"00:00","early_by":"00:00","status":5,"punch_records":"","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"Weekly Off"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-04','','','00:00','00:00','00:00','',5,'Weekly Off') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-05 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-05' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:31 , organization_id => 1 , date => 2025-05-05  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-05' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:43 , organization_id => 1 , date => 2025-05-05  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-05' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-05","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:31","out_time":"17:43","duration":"7:12","late_by":"0:1","early_by":"0:47","status":2,"punch_records":"10:31:in(USB) 10:31:(USB) 17:43:out(USB) 17:43:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-05','10:31','17:43','7:12','0:1','0:47','10:31:in(USB) 10:31:(USB) 17:43:out(USB) 17:43:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-06 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-06' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:25 , organization_id => 1 , date => 2025-05-06  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 18:18 , organization_id => 1 , date => 2025-05-06  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-06' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-06","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:25","out_time":"18:18","duration":"7:53","late_by":"00:00","early_by":"0:12","status":2,"punch_records":"10:25:in(USB) 14:08:out(USB) 18:18:in(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-06','10:25','18:18','7:53','00:00','0:12','10:25:in(USB) 14:08:out(USB) 18:18:in(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-07 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-07' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkWeekOffStatus 
+
+2025-07-10T12:54:13+02:00 :: requested param :: date => 2025-05-07 , organization_id => 1 
+
+2025-07-10T12:54:13+02:00 :: getWeekOffDay_query => SELECT `week_off` FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkParticularDayHoliday 
+
+2025-07-10T12:54:13+02:00 :: requested param :: date => 2025-05-07 , organization => 1 
+
+2025-07-10T12:54:13+02:00 :: checkHoliday_query => SELECT JSON_UNQUOTE(JSON_SEARCH(holiday, 'one', '2025-05-07')) AS `holiday_name` FROM attendance_setting WHERE organization_id = '1' AND JSON_SEARCH(holiday, 'one', '2025-05-07') IS NOT NULL 
+
+2025-07-10T12:54:13+02:00 :: respose => {"status":400,"message":"Not Assign any holiday"}
+
+2025-07-10T12:54:13+02:00 Response received from checkParticularDayHoliday => {"status":400,"message":"Not Assign any holiday"}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-07' BETWEEN leave_record.start_date AND leave_record.end_date AND leaveType.leaveWeightage = '1' AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 Response received from userFullDayLeaveStatus => {"status":200,"message":"Leave not applied mark as absent","data":null}
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-07","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"","out_time":"","duration":"00:00","late_by":"00:00","early_by":"00:00","status":1,"punch_records":"","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":null} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-07','','','00:00','00:00','00:00','',1,'') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-08 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-08' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:47 , organization_id => 1 , date => 2025-05-08  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-08' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:45 , organization_id => 1 , date => 2025-05-08  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-08' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-08","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:47","out_time":"17:45","duration":"6:58","late_by":"0:17","early_by":"0:45","status":2,"punch_records":"10:47:in(USB) 10:47:(USB) 13:51:out(USB) 13:51:(USB) 14:55:in(USB) 14:55:(USB) 17:45:out(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-08','10:47','17:45','6:58','0:17','0:45','10:47:in(USB) 10:47:(USB) 13:51:out(USB) 13:51:(USB) 14:55:in(USB) 14:55:(USB) 17:45:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-09 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-09' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:35 , organization_id => 1 , date => 2025-05-09  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-09' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:49 , organization_id => 1 , date => 2025-05-09  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-09' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-09","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:35","out_time":"17:49","duration":"7:14","late_by":"0:5","early_by":"0:41","status":2,"punch_records":"10:35:in(USB) 10:35:(USB) 14:29:out(USB) 17:49:in(USB) 17:49:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-09','10:35','17:49','7:14','0:5','0:41','10:35:in(USB) 10:35:(USB) 14:29:out(USB) 17:49:in(USB) 17:49:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-10 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-10' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 11:11 , organization_id => 1 , date => 2025-05-10  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-10' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 16:15 , organization_id => 1 , date => 2025-05-10  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-10' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-10","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"11:11","out_time":"16:15","duration":"5:4","late_by":"0:41","early_by":"2:15","status":2,"punch_records":"11:11:in(USB) 11:56:out(USB) 13:14:in(USB) 13:14:(USB) 13:23:out(USB) 14:24:in(USB) 16:15:out(USB) ","overtime":"05:04","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-10','11:11','16:15','5:4','0:41','2:15','11:11:in(USB) 11:56:out(USB) 13:14:in(USB) 13:14:(USB) 13:23:out(USB) 14:24:in(USB) 16:15:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-11 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-11' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkWeekOffStatus 
+
+2025-07-10T12:54:13+02:00 :: requested param :: date => 2025-05-11 , organization_id => 1 
+
+2025-07-10T12:54:13+02:00 :: getWeekOffDay_query => SELECT `week_off` FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-11","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"","out_time":"","duration":"00:00","late_by":"00:00","early_by":"00:00","status":5,"punch_records":"","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"Weekly Off"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-11','','','00:00','00:00','00:00','',5,'Weekly Off') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-12 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-12' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:30 , organization_id => 1 , date => 2025-05-12  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 18:07 , organization_id => 1 , date => 2025-05-12  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-12' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-12","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:30","out_time":"18:07","duration":"7:37","late_by":"00:00","early_by":"0:23","status":2,"punch_records":"10:30:in(USB) 18:04:out(USB) 18:06:(USB) 18:07:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-12','10:30','18:07','7:37','00:00','0:23','10:30:in(USB) 18:04:out(USB) 18:06:(USB) 18:07:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-13 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-13' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:30 , organization_id => 1 , date => 2025-05-13  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:44 , organization_id => 1 , date => 2025-05-13  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-13' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-13","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:30","out_time":"17:44","duration":"7:14","late_by":"00:00","early_by":"0:46","status":2,"punch_records":"10:30:in(USB) 17:44:out(USB) 17:44:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-13','10:30','17:44','7:14','00:00','0:46','10:30:in(USB) 17:44:out(USB) 17:44:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-14 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-14' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:21 , organization_id => 1 , date => 2025-05-14  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:56 , organization_id => 1 , date => 2025-05-14  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-14' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-14","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:21","out_time":"17:56","duration":"7:35","late_by":"00:00","early_by":"0:34","status":2,"punch_records":"10:21:in(USB) 10:21:(USB) 17:56:out(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-14','10:21','17:56','7:35','00:00','0:34','10:21:in(USB) 10:21:(USB) 17:56:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-15 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-15' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:15 , organization_id => 1 , date => 2025-05-15  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 18:00 , organization_id => 1 , date => 2025-05-15  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-15' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-15","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:15","out_time":"18:00","duration":"7:45","late_by":"00:00","early_by":"0:30","status":2,"punch_records":"10:15:in(USB) 10:15:(USB) 18:00:out(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-15','10:15','18:00','7:45','00:00','0:30','10:15:in(USB) 10:15:(USB) 18:00:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-16 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-16' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:28 , organization_id => 1 , date => 2025-05-16  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:02 , organization_id => 1 , date => 2025-05-16  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-16' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-16","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:28","out_time":"17:02","duration":"6:34","late_by":"00:00","early_by":"1:28","status":2,"punch_records":"10:28:in(USB) 11:20:out(USB) 11:21:(USB) 14:57:in(USB) 17:02:out(USB) 17:02:(USB) ","overtime":"00:00","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-16','10:28','17:02','6:34','00:00','1:28','10:28:in(USB) 11:20:out(USB) 11:21:(USB) 14:57:in(USB) 17:02:out(USB) 17:02:(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: mehod inside getEmplyeeDetails 
+
+2025-07-10T12:54:13+02:00 :: employeeDetails_query => SELECT users.ID as `user_id` , users.biometric_id as `user_biometric_id` ,  users.Name as `emp_name` , users.Organization_id as `organization` FROM `users` WHERE users.biometric_id = '1' 
+
+2025-07-10T12:54:13+02:00 Response received from getEmplyeeDetails => {"status":200,"message":{"user_id":"2","user_biometric_id":"1","emp_name":"Shilpa","organization":"1"}}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkEmployeeAttendancePresentOrNot 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , biometric_id => 1 , date => 2025-05-17 
+
+2025-07-10T12:54:13+02:00 :: checkEmployeeAttendance_query => SELECT * FROM `attendance` WHERE `user_id` = '2' AND `user_biometric_id` = '1' AND attendance_date = '2025-05-17' 
+
+2025-07-10T12:54:13+02:00 Response received from checkEmployeeAttendancePresentOrNot => {"status":200}
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkInTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , in_time => 10:30 , organization_id => 1 , date => 2025-05-17  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkOutTimeCase 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 , out_time => 17:49 , organization_id => 1 , date => 2025-05-17  
+
+2025-07-10T12:54:13+02:00 :: fetchOrganizationSetting_query => SELECT id, in_time , out_time , relaxation_time FROM `attendance_setting` WHERE organization_id = '1' 
+
+2025-07-10T12:54:13+02:00 :: mehod inside checkUserAppliedLeave 
+
+2025-07-10T12:54:13+02:00 :: requested param :: user_id => 2 
+
+2025-07-10T12:54:13+02:00 :: checkUserAppliedLeave_query => SELECT leave_record.id , leaveType.leaveName as `leaveType_name` , leave_record.leave_type as `leaveType_id` FROM `leave_record` LEFT JOIN leaveType ON leaveType.id = leave_record.leave_type WHERE leave_record.user_id = '2' AND '2025-05-17' BETWEEN leave_record.start_date AND leave_record.end_date AND (leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5') AND leave_record.status = '1' limit 1 
+
+2025-07-10T12:54:13+02:00 :: mehod inside insertAttendanceRecord 
+
+2025-07-10T12:54:13+02:00 :: requested param :: attendance_data => {"date":"2025-05-17","employee_code":"1","employee_name":"Shilpa","company":"Default","department":"Default","category":"Default","degination":"","grade":"","team":"","shift":"GS","in_time":"10:30","out_time":"17:49","duration":"7:19","late_by":"00:00","early_by":"0:41","status":2,"punch_records":"10:30:in(USB) 10:30:(USB) 10:30:(USB) 17:49:out(USB) ","overtime":"07:19","user_id":"2","user_biometric_id":"1","organization":"1","description":"No Short or half dat leave are applied"} 
+
+2025-07-10T12:54:13+02:00 :: insertattendance_query => INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES (2,1,'2025-05-17','10:30','17:49','7:19','00:00','0:41','10:30:in(USB) 10:30:(USB) 10:30:(USB) 17:49:out(USB) ',2,'No Short or half dat leave are applied') 
+
+2025-07-10T12:54:13+02:00 :: Insert into attendance successful 
+
+2025-07-10T12:54:13+02:00 :: respose => {"status":200,"message":"Attendance Inserted  successfully!"}
+
+ ============ End Of Script ================== 
+

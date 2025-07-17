@@ -7,34 +7,92 @@ namespace Composer\Autoload;
 class ComposerStaticInitbaf0b1b659e688a64051c5ee9742a77e
 {
     public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
+        ),
         'P' => 
         array (
+            'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Predis\\' => 7,
+            'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'M' => 
+        array (
+            'Matrix\\' => 7,
         ),
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'C' => 
+        array (
+            'Composer\\Pcre\\' => 14,
+            'Complex\\' => 8,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
+        'Psr\\SimpleCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
         'Predis\\' => 
         array (
             0 => __DIR__ . '/..' . '/predis/predis/src',
+        ),
+        'PhpOffice\\PhpSpreadsheet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
+        'Matrix\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'Composer\\Pcre\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/pcre/src',
+        ),
+        'Complex\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'OLERead' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/php-excel-reader/excel_reader2.php',
+        'Shuchkin\\SimpleXLSXGen' => __DIR__ . '/..' . '/shuchkin/simplexlsxgen/src/SimpleXLSXGen.php',
+        'SpreadsheetReader' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/SpreadsheetReader.php',
+        'SpreadsheetReader_CSV' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/SpreadsheetReader_CSV.php',
+        'SpreadsheetReader_ODS' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/SpreadsheetReader_ODS.php',
+        'SpreadsheetReader_XLS' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/SpreadsheetReader_XLS.php',
+        'SpreadsheetReader_XLSX' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/SpreadsheetReader_XLSX.php',
+        'Spreadsheet_Excel_Reader' => __DIR__ . '/..' . '/nuovo/spreadsheet-reader/php-excel-reader/excel_reader2.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

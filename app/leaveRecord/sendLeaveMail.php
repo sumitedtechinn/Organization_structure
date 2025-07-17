@@ -75,7 +75,7 @@ function sendMail($message, $sender_name, $receiver_email, $subject, $mail_cc)
         $mail->setFrom('noreply@yourdomain.com', $sender_name);
         $mail->addAddress($receiver_email);
 
-        // $mail->addCC('hr@edtechinnovate.com');
+        // $mail->addCC('hr@edtechinnovate.com','hrexecutive@edtechinnovate.com');
         // if(!is_null($mail_cc)) {
         //     $cc_email = explode(',',$mail_cc);
         //     foreach ($cc_email as $value) {

@@ -385,11 +385,11 @@ $("#return_button").on('click',function(){
 // Debouncing apply on search
 var timer1;
 document.getElementById("assets-search-table").addEventListener('input', (event) => {
-  const searchText = event.target.value.toLowerCase();
-  if(timer1) clearTimeout(timer1);
-  timer1 = setTimeout(()=> {
-    $("#assetsTable").DataTable(assetsSetting);
-  }, 1000)
+    const searchText = event.target.value.toLowerCase();
+    if(timer1) clearTimeout(timer1);
+    timer1 = setTimeout(()=> {
+        $("#assetsTable").DataTable(assetsSetting);
+    }, 1000)
 });
 
 function reloadTable(value) {

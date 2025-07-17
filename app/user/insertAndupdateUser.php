@@ -118,12 +118,18 @@ if (isset($_REQUEST['id'])) {
                     <div class="col-sm-12">
                         <select type="text" class="form-control form-control-sm single-select select2" name="role" id="role" onchange="checkUserOrganizationInfo(this.value)"></select>
                     </div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 col-form-label">BioMetric Id</label>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control form-control-sm" name="biometric_id" id="biometric_id" value="<?php echo !empty($user_details) ? $user_details['biometric_id'] : '' ?>" placeholder="Eg :- 32" onkeypress="return /[0-9]/i.test(event.key)">
+                    </div>
                 </div>     
             </div>
             <hr/>
             <div class="row mb-2">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">Register</button>
+                <div class="col-sm-12 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm">Register</button>
                 </div>
             </div>
         </form>
@@ -219,10 +225,7 @@ $(function(){
     $('#form-user').validate({
     rules: {
         name: {required:true},
-        user_email : {
-            required:true,
-            email : true
-        },
+        user_email : {required:true,email : true},
         contact_number : {
             required:true ,
             maxlength: 15,
