@@ -138,10 +138,11 @@ function insertAttendanceData() {
              * - Now for the half day if user applied then check user must came before 14:00 if after that then late by 
              */
             if (!empty($attendance['in_time']) && !empty($attendance['out_time'])) {
-                list($attendance['late_by'],$attendance['description']) = checkInTimeCase($attendance['user_id'],$attendance['in_time'],$attendance['organization'],$attendance['date']);
+                list($attendance['late_by'],$lateByDescription) = checkInTimeCase($attendance['user_id'],$attendance['in_time'],$attendance['organization'],$attendance['date']);
 
-                list($attendance['early_by'],$attendance['description']) = checkOutTimeCase($attendance['user_id'],$attendance['out_time'],$attendance['organization'],$attendance['date']);
+                list($attendance['early_by'],$earlyByDescription) = checkOutTimeCase($attendance['user_id'],$attendance['out_time'],$attendance['organization'],$attendance['date']);
 
+                $attendance['description'] = empty($lateByDescription) ? $earlyByDescription : $lateByDescription;  
                 $attendance['status'] = 2;
                 $attendance['duration'] = calculateLateByTime($attendance['out_time'],$attendance['in_time']);
                 $insertResponse =  insertAttendanceRecord($attendance);
@@ -173,20 +174,23 @@ function checkOutTimeCase($user_id,$out_time,$organization_id,$date) {
         if( strtotime($out_time) < strtotime($organizationSetOutTime)) {
             $leaveWeightage = "(leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5')";
             $userAppliedLeave = checkUserAppliedLeave($user_id,$date,$leaveWeightage); 
+            $stepsLog .= date(DATE_ATOM) . " :: Response received from UserAppliedLeave: " . json_encode($userAppliedLeave) . "\n\n";
             if($userAppliedLeave['status'] == 200) {
                 // If this case true means any leave is taken either short or casual 
                 if(!empty($userAppliedLeave['data'])) {
-                    if(strtolower(explode(" ",$userAppliedLeave['meaasge'])[0]) == 'short') {
-                        if(strtotime($out_time) > strtotime("16:30")) {
+                    $early_by = ""; $description = "";
+                    if(strtolower(explode(" ",$userAppliedLeave['message'])[0]) == 'short') {
+                        if(strtotime($out_time) < strtotime("16:30")) {
                             $early_by = calCulatEarlyTime($out_time,"16:30");
-                            $description = $userAppliedLeave['meaasge'];
+                            $description = $userAppliedLeave['message'];
                         }
                     } else {
-                        if(strtotime($out_time) > strtotime("13:30")) {
+                        if(strtotime($out_time) < strtotime("13:30")) {
                             $early_by = calCulatEarlyTime($out_time,"13:30");
-                            $description = $userAppliedLeave['meaasge'];
+                            $description = $userAppliedLeave['message'];
                         }
                     }
+                    $description = $userAppliedLeave['message'];
                 } else {
                     $early_by = calCulatEarlyTime($out_time,$organizationSetOutTime);
                     $description = "No Short or half dat leave are applied";
@@ -226,19 +230,24 @@ function checkInTimeCase($user_id,$in_time,$organization_id,$date) {
             // if true then check leave on present day 
             $leaveWeightage = "(leaveType.leaveWeightage = '0.25' OR leaveType.leaveWeightage = '0.5')";
             $userAppliedLeave = checkUserAppliedLeave($user_id,$date,$leaveWeightage);
+            $stepsLog .= date(DATE_ATOM) . " :: Response received from UserAppliedLeave: " . json_encode($userAppliedLeave) . "\n\n";
             if($userAppliedLeave['status'] == 200) {
                 // If this case true means any leave is taken either short or casual 
                 if(!empty($userAppliedLeave['data'])) {
-                    if(strtolower(explode(" ",$userAppliedLeave['meaasge'])[0]) == 'short') {
+                    $late_by = ""; $description = "";
+                    if(strtolower(explode(" ",$userAppliedLeave['message'])[0]) == 'short') {
                         if(strtotime($in_time) > strtotime("11:30")) {
                             $late_by = calculateLateByTime($in_time,"11:30");
-                            $description = $userAppliedLeave['meaasge'];
+                            $description = $userAppliedLeave['message'];
                         }
                     } else {
-                        if(strtotime($in_time) > strtotime("11:30")) {
+                        if(strtotime($in_time) > strtotime("14:00")) {
                             $late_by = calculateLateByTime($in_time,"14:00");
-                            $description = $userAppliedLeave['meaasge'];
-                        }
+                            $description = $userAppliedLeave['message'];
+                        } 
+                    }
+                    if(empty($description)) {
+                        $description = $userAppliedLeave['message'];
                     }
                 } else {
                     $late_by = calculateLateByTime($in_time,$relaxation_time);
@@ -277,14 +286,14 @@ function insertAttendanceRecord($attendance) {
         $user_id = (int)$attendance['user_id'];
         $biometric_id = (int)$attendance['user_biometric_id'];
         $date = mysqli_real_escape_string($conn, $attendance['date']);
-        $in_time = mysqli_real_escape_string($conn, $attendance['in_time'] ?? '');
-        $out_time = mysqli_real_escape_string($conn, $attendance['out_time'] ?? '');
-        $duration = mysqli_real_escape_string($conn, $attendance['duration'] ?? '00:00');
-        $late_by = mysqli_real_escape_string($conn, $attendance['late_by'] ?? '00:00');
-        $early_by = mysqli_real_escape_string($conn, $attendance['early_by'] ?? '00:00');
-        $punch_records = mysqli_real_escape_string($conn, $attendance['punch_records'] ?? '');
-        $status = (int)($attendance['status'] ?? 0);
-        $description = mysqli_real_escape_string($conn, $attendance['description'] ?? '');
+        $in_time = mysqli_real_escape_string($conn, isset($attendance['in_time']) && !empty($attendance['in_time']) ? $attendance['in_time']  : '00:00');
+        $out_time = mysqli_real_escape_string($conn, isset($attendance['out_time']) && !empty($attendance['out_time']) ? $attendance['out_time']  : '00:00');
+        $duration = mysqli_real_escape_string($conn, isset($attendance['duration']) && !empty($attendance['duration']) ? $attendance['duration']  : '00:00');
+        $late_by = mysqli_real_escape_string($conn, isset($attendance['late_by']) && !empty($attendance['late_by']) ? $attendance['late_by']  : '00:00');
+        $early_by = mysqli_real_escape_string($conn, isset($attendance['early_by']) && !empty($attendance['early_by']) ? $attendance['early_by']  : '00:00');
+        $punch_records = mysqli_real_escape_string($conn, isset($attendance['punch_records']) && !empty($attendance['punch_records']) ? $attendance['punch_records']  : '');
+        $status = (int)( isset($attendance['status']) && !empty($attendance['status']) ? $attendance['status'] : 0);
+        $description = mysqli_real_escape_string($conn, isset($attendance['description']) && !empty($attendance['description']) ? $attendance['description'] :  '');
 
         // Final query string
         $insertQuery = "INSERT INTO `attendance`(`user_id`, `user_biometric_id`, `attendance_date`, `in_time`, `out_time`, `work_duration`, `late_by`, `early_by`, `punch_in_record`, `status`, `description`) VALUES ($user_id,$biometric_id,'$date','$in_time','$out_time','$duration','$late_by','$early_by','$punch_records',$status,'$description')";
@@ -379,7 +388,7 @@ function checkUserAppliedLeave($user_id,$fromated_date,$leaveWeightage) {
         $stepsLog .= date(DATE_ATOM) . " :: checkUserAppliedLeave_query => $checkUserAppliedLeave_query \n\n";
         $checkUserAppliedLeave = $conn->query($checkUserAppliedLeave_query);
         if($checkUserAppliedLeave->num_rows > 0) {
-            $checkUserAppliedLeave = mysqli_fetch_all($checkUserAppliedLeave);
+            $checkUserAppliedLeave = mysqli_fetch_assoc($checkUserAppliedLeave);
             return ['status' => 200 , 'message' => "{$checkUserAppliedLeave['leaveType_name']} is applied" , "data" => $checkUserAppliedLeave['leaveType_id']];
         } else {
             return ['status' => 200 , 'message' => "Leave not applied mark as absent" , 'data' => null];

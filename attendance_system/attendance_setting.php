@@ -245,8 +245,27 @@ async function updateDetails(id) {
     }
 }
 
-function checkDeleteCondition(id,table) {
-
+async function checkDeleteCondition(id,table) {
+    let url = `/app/attendance_system/attendanceSetting/fetchAndStoreAttendanceSetting`;
+    const data = await postMethodWithJsonResponse(url,{
+        id,
+        method : "checkAttendanceSettingDeleteCondition" 
+    });
+    if (data != null) {
+        if(data.status == 200) {
+            if (data.message == "not_allow") {
+                Swal.fire({
+                    title : "Setting Delete Not Allow" , 
+                    text: "Attendance assign on this Organization Setting",
+                    icon: 'warning',
+                });
+            } else {
+                deleteDetails(id,table);
+            }
+        } else {
+            toastr.error(data.message);
+        }
+    }
 }
 
 // Debounce on serach 

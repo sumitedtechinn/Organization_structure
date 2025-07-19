@@ -34,10 +34,14 @@
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+$('#hide-modal').click(function() {
+    $('.modal').modal('hide');
+});
+
 $("#form-uploadAttendanceSheet").on("submit", function () {
     $('.modal').modal('hide');
     setTimeout(() => {
-        
+        $("#attendanceAdminTable").DataTable(attendanceAdminSetting);
     } , 1000);
 });
 

@@ -32,6 +32,9 @@ if(isset($_REQUEST['method']) && $_REQUEST['method'] == 'checkAttendanceSetting'
 } elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'fetchHolidayList') {
     $id = mysqli_real_escape_string($conn,$_REQUEST['id']);
     $finalRes = fetchHolidayList($id);
+} elseif (isset($_REQUEST['method']) && $_REQUEST['method'] == 'checkAttendanceSettingDeleteCondition') {
+    $id = mysqli_real_escape_string($conn,$_REQUEST['id']);
+    $finalRes = checkAttendanceSettingDeleteCondition($id);
 }
 
 echo json_encode($finalRes);
@@ -91,6 +94,11 @@ function insertOrUpdateData() {
         $out_time = mysqli_real_escape_string($conn,$_REQUEST['out_time']);
         $relaxation_time = mysqli_real_escape_string($conn,$_REQUEST['relaxation_time']);
         $week_off = json_encode($_REQUEST['week_off']);
+
+        $organization_response = checkOrganizationPresentAlreadyOrNot($organization_id);
+        if($organization_response['status'] == 400) {
+            return $organization_response;
+        }
         $holiday = [];
         foreach ($_REQUEST as $key => $value) {
             if(str_contains($key,'holiday')) {
@@ -131,6 +139,33 @@ function fetchHolidayList($id) {
         return sendResponse(false, 'Exception : ' . $e->getMessage() . " on  line : ". $e->getLine());        
     }
 } 
+
+function checkAttendanceSettingDeleteCondition($id) {
+    global $conn;
+
+    try {
+        $getOrganizationId = $conn->query("SELECT organization_id FROM `attendance_setting` WHERE id = '$id'");
+        $organization_Id = mysqli_fetch_column($getOrganizationId);
+        $checkAttendanceSettingDeleteCondition_query = "SELECT IF(COUNT(attendance.id) > 0 ,'not_allow','allow') as `delete_permission` FROM `attendance` LEFT JOIN users ON users.ID = attendance.user_id WHERE users.Organization_id = '$organization_Id'";
+        $checkAttendanceSettingDeleteCondition = $conn->query($checkAttendanceSettingDeleteCondition_query);
+        $checkAttendanceSettingDeleteCondition = mysqli_fetch_column($checkAttendanceSettingDeleteCondition);
+        return ['status' => 200 , 'message' => $checkAttendanceSettingDeleteCondition];
+    } catch (Exception $e) {
+        return sendResponse(false,"Exception : " . $e->getMessage() . " on line => " . $e->getLine());
+    }
+}
+
+function checkOrganizationPresentAlreadyOrNot($organization_id) {
+    global $conn;
+
+    try {
+        $checkOrganization = $conn->query("SELECT IF(COUNT(id) > 0 , 'present','not-present') as `check` FROM `attendance_setting` WHERE organization_id = '$organization_id'");
+        $checkOrganization = mysqli_fetch_column($checkOrganization);
+        return ($checkOrganization == 'present') ? sendResponse(false,"Setting Already Assign") : ['status' => 200];
+    } catch (Exception $e) {
+        return sendResponse(false,"Exception : " . $e->getMessage() . " on line => " . $e->getLine());
+    }
+}
 
 function sendResponse($response,$message = "Something Went Wrong") {
     return ($response) ? ['status' => 200 , 'message' => "Setting $message successfully"] : ['status' => 400 , 'message' => $message];

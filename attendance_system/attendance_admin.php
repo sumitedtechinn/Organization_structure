@@ -21,6 +21,7 @@
     .badge-absent   { background-color: #dc3545 !important; color: white; }
     .badge-leave    { background-color: #ffc107 !important; color: black; }
     .badge-weekoff  { background-color: #6c757d !important; color: white; }
+    .badge-holiday  { background-color: #19cfbc !important; color: white; }
     .badge-time     { background-color: #429ef5 !important; color: white; }
     .empty-badge {
         background-color: #6c6c6c45;

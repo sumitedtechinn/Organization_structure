@@ -23,7 +23,6 @@ $searchQuery = (!empty($searchValue)) ? "AND (users.Name LIKE '%$searchValue%')"
 $filter_query = '';
 if (isset($_REQUEST['month']) && isset($_REQUEST['year'])) {
     $month = mysqli_real_escape_string($conn,$_REQUEST['month']);
-    $month = 5;
     $year = mysqli_real_escape_string($conn,$_REQUEST['year']);
     $filter_query = "MONTH(attendance_date) = '$month' AND YEAR(attendance_date) = '$year'";
 }
